@@ -1,0 +1,35 @@
+.start-page {
+    display: flex;
+    width: 375px;
+    height: 100%; 
+    padding-top: 100px;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.start-page-text{
+    display: flex;
+    padding: 0 20px;
+    align-items: center;
+    gap: 10px;
+    align-self: stretch;
+}
+
+.start-page-text h1 {
+    color: var(--White-High, rgba(255, 255, 255, 0.88));
+
+    /* 타이틀/32/Semibold */
+    font-family: Pretendard;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 140%; /* 44.8px */
+}
+
+.content-space {
+    flex-grow: 1; 
+    flex-shrink: 0; /* 공간이 부족해도 줄어들지 않음 */
+    height: auto;   /* 높이를 자동으로 설정 */
+    min-height: 0;
+}

@@ -1,0 +1,40 @@
+/* 래퍼: 375px 폭으로 화면 중앙에 정렬 */
+.runningcount-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 375px;             /* ✅ 모바일 기준 폭 제한 */
+  height: 100vh;
+  margin: 0 auto;               /* ✅ 가운데 정렬 */
+  display: flex;
+  justify-content: center;      /* 가로 중앙 */
+  align-items: center;          /* 세로 중앙 */
+  background-color: #000;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* 숫자 중앙 고정 */
+.runningcount-number {
+  font-family: "Pretendard", sans-serif;
+  font-weight: 900;
+  font-size: 120px;
+  color: var(--Main, #FF003C);
+  line-height: 1;
+  text-align: center;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  animation: count-zoom 0.7s ease-out both;
+}
+
+@keyframes count-zoom {
+  0%   { transform: scale(0.8); opacity: 0; }
+  40%  { opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .runningcount-number { animation: none; }
+}

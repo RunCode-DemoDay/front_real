@@ -1,0 +1,32 @@
+.swiper-container {
+    width: 100%;
+    overflow-x: auto; /* 가로 스크롤 가능하게 함 */
+    -webkit-overflow-scrolling: touch; /* iOS에서 부드러운 스크롤 */
+    white-space: nowrap; /* 자식 요소들이 줄 바꿈 되지 않게 함 */
+    margin-bottom: 20px;
+  }
+  
+  .swiper-container::-webkit-scrollbar {
+    display: none; /* 스크롤바 숨기기 */
+  }
+  
+  .swiper-wrapper {
+    display: flex;
+    align-items: flex-start;
+  }
+  
+  .swiper-slide {
+    flex: 0 0 auto; /* 슬라이드 크기 고정 */
+    width: 122px; /* 피그마 디자인에 맞춰 고정 너비 설정 */
+    height: 122px;
+    background-color: #d9d9d9;
+    border-radius: 6px; /* 모서리 둥글게 */
+    overflow: hidden; /* 이미지가 밖으로 나가지 않게 함 */
+    margin-right: 16px; /* 슬라이드 간 간격 */
+  }
+  
+  .swiper-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지가 슬라이드에 꽉 차도록 함 */
+  }

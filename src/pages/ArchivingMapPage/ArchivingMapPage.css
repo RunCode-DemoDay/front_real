@@ -1,0 +1,328 @@
+/* src/pages/ArchivingMapPage/ArchivingMapPage.css */
+
+.arc-map-container {
+    width: 100%;
+    height: 100%; 
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; 
+    position: relative; 
+    background-color: #f0f0f0; 
+    overflow: hidden; 
+}
+.arc-map-container .arc-map-summary-card .course-meta {
+  filter: brightness(0) invert(1); /* 흰색으로 뒤집기 */
+  opacity: 0.6; /* 투명도 적용 */
+  
+  
+}
+
+/* ⭐ Google Map 컴포넌트의 크기 설정 ⭐ */
+.arc-map-area, .arc-map-full-size {
+    width: 100%;
+    height: 100%; 
+    flex-grow: 1; 
+    position: relative;
+    z-index: 1; 
+}
+
+
+/* --- 1. 상단 헤더 --- */
+.arc-map-header {
+    position: absolute; 
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 20px 20px 20px;
+    z-index: 20; 
+    background: var(--Black-Info, #1E1E1E);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+.arc-map-header .header-title {
+    color: var(--White-High, rgba(255, 255, 255, 0.88));
+
+    /* 타이틀/24/Semibold */
+    margin: 0;
+    font-family: Pretendard;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%; /* 33.6px */
+}
+
+.arc-map-header .header-icons {
+    display: flex;
+    gap: 16px;
+}
+
+.arc-map-header .header-icon-button-map {
+    display: flex;
+    padding: 8px;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    border-radius: 8px;
+    background: var(--Main, #FF003C);
+    outline: none !important; /* 포커스 테두리 제거 */
+    box-shadow: none !important;
+    border: none;
+    cursor: pointer;
+}
+
+.arc-map-header .header-icon-button-list {
+    display: flex;
+    padding: 8px;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    border-radius: 8px;
+    background: var(--Black-Interact, #2C2C2C);
+    outline: none !important; /* 포커스 테두리 제거 */
+    box-shadow: none !important;
+    border: none;
+    cursor: pointer;
+}
+
+/* --- 3. 하단 요약 카드 --- */
+.arc-map-summary-card {
+    position: absolute; 
+    left: 0;
+    right: 0;
+    z-index: 1001; 
+    width: 100%;
+    
+    /* height: auto와 top 속성으로 높이를 제어 */
+    height: auto; 
+    max-height: calc(100vh - 50px); 
+    bottom: 0; /* bottom: 0 유지 */
+    
+    background-color: #1E1E1E;
+    padding: 20px 20px 0 20px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+    cursor: default; 
+    
+    display: flex;
+    flex-direction: column;
+
+    /* JS가 인라인 top 속성으로 제어 */
+    transition: top 0.3s ease-out; 
+}
+
+/* ⭐ 드래그 핸들 (마우스/터치 시작점) */
+.arc-map-drag-handle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 30px; 
+    cursor: grab; /* 드래그 가능함을 표시 */
+    z-index: 5; 
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    &::before {
+        content: '';
+        width: 40px;
+        height: 4px;
+        background-color: #ddd;
+        border-radius: 2px;
+    }
+}
+
+
+/* ⭐⭐ 카드 내부 스크롤 영역 ⭐⭐ */
+.arc-map-card-scroll-content {
+    flex-grow: 1; 
+    overflow-y: auto; 
+    -webkit-overflow-scrolling: touch;
+    padding-right: 5px; 
+    scrollbar-width: none;
+}
+.arc-map-card-scroll-content::-webkit-scrollbar {
+    display: none;
+}
+
+/* 카드 내부 콘텐츠 스타일 (유지) */
+.arc-map-summary-card .archiving-course-info {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 12px 0;
+    margin-bottom: 0; 
+}
+.arc-map-summary-card .arc-map-run-details {
+    flex-shrink: 0; 
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding-bottom: 30px; 
+}
+
+/* --- 4. 기타 요소 --- */
+.arc-map-bottom-nav { 
+    position: fixed; 
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 420px; 
+    margin: 0 auto;
+    z-index: 50; 
+    background-color: #fff; 
+    height: 60px; 
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.arc-map-loading-screen {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    color: #333;
+}
+
+.course-thumbnail {
+    width: 60px; /* 썸네일 크기 조정 (이미지처럼 조금 더 크게) */
+    height: 60px;
+    background-color: #ddd; 
+    border-radius: 8px; /* 둥근 모서리 */
+    margin-right: 16px;
+    overflow: hidden; /* 이미지가 튀어나오지 않게 */
+}
+
+.course-title{
+    color: var(--White-High, rgba(255, 255, 255, 0.88));
+    font-family: Pretendard;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%; /* 22.4px */
+}
+
+
+.archiving-list-item {
+    padding: 16px 0; /* 내부 패딩 */
+    border-bottom: 1px solid #505050;
+    cursor: pointer;
+}
+
+.archiving-date {
+    color: var(--White-Low, rgba(255, 255, 255, 0.20));
+
+    /* 본문/14/Regular */
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 19.6px */
+    margin: 0 0 2px 0;
+}
+
+.archiving-title {
+    color: var(--White-Medium, rgba(255, 255, 255, 0.60));
+
+    /* 본문/14/Regular */
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 19.6px */
+    margin-bottom: 12px;
+    margin-top: 0;
+}
+
+/* ⭐⭐⭐ 상세 정보 섹션 (썸네일 + 컬럼들) - 수평 나열 ⭐⭐⭐ */
+.list-item-details {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap :20px;
+}
+
+
+/* 맵 썸네일 컨테이너 */
+.map-thumbnail-container {
+    width: 60px; /* 작은 썸네일 크기 */
+    height: 60px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #1A1A1A; 
+    flex-shrink: 0;
+}
+
+.map-thumbnail-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+
+/* 3컬럼 레이아웃 */
+.detail-columns {
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-between; /* 3개 컬럼을 균등하게 배치 */
+    text-align: center;
+    padding: 0 20px 0 0;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 52px;
+    
+}
+
+.detail-item .value {
+    color: var(--White-High, rgba(255, 255, 255, 0.88));
+
+    /* 타이틀/20/Semibold */
+    font-family: Pretendard;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%; /* 24px */
+}
+
+.detail-item .label {
+    color: var(--White-Medium, rgba(255, 255, 255, 0.60));
+
+    /* 본문/14/Regular */
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 140%; /* 19.6px */
+}
+
+.current-location-wrap {
+  /* 지도의 좌표를 기준으로 아이콘이 정중앙에 오게 보정 */
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* 지도 드래그/줌 방해 안 하도록 */
+}
+
+.current-location-icon {
+  width: 28px;   /* ← 여기 숫자만 바꿔서 크기 조절하면 됨 */
+  height: 28px;  /* ← 여기 숫자만 바꿔서 크기 조절하면 됨 */
+  object-fit: contain;
+
+  /* 아이콘을 블랙으로 강제하고 싶다면 아래 한 줄 활성화 */
+  /* filter: brightness(0) saturate(100%); */
+
+  /* 외곽선 살짝 주고 싶다면 아래 한 줄 활성화 (다크맵에서 선명) */
+  /* filter: drop-shadow(0 0 1px #fff); */
+}

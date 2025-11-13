@@ -1,0 +1,101 @@
+.reviewadd-page {
+  background-color: #0f0f0f;
+  color: #fff;
+  min-height: 100vh;
+  max-width: 375px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 20px 80px 20px; /* 좌우 20px 전체 규칙 유지 */
+  box-sizing: border-box;
+  font-family: "Pretendard", sans-serif;
+}
+
+/* 헤더 영역 전체 */
+.reviewadd-header {
+  width: 100%;
+  margin-bottom: 20px;
+  margin-left: -4px; /* 전체 padding 20px에서 4px 보정 → 시각적으로 16px처럼 보이게 */
+}
+
+/* 헤더 안쪽 래퍼 (세로 스택) */
+.reviewadd-header-inner {
+  display: flex;
+  flex-direction: column;
+  
+  gap: 28px; /* 화살표 줄과 타이틀 줄 사이 간격 (피그마 상단 박스 gap:12에 맞춤) */
+}
+
+/* 첫 줄: 뒤로가기 버튼 라인 */
+.reviewadd-back-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.reviewadd-back-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+  color: #9E9E9E;
+  cursor: pointer;
+  
+}
+
+/* 두 번째 줄: "코스 리뷰 (n)" 라인 */
+.reviewadd-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+
+  /* 피그마 보면 이 줄이 full width 박스처럼 보이고 배경(#1a1a1a) 카드들과 정렬되잖아.
+     이 줄 자체가 카드 컨텐츠와 같은 x축에서 시작하게 맞춰주고 싶으면 width: fit-content 로 두고 그냥 두면 돼.
+     (필요하면 background 주고 radius 주는 스타일도 여기서 시작 가능) */
+}
+
+.reviewadd-title {
+  color: var(--White-High, rgba(255, 255, 255, 0.88));
+
+/* 타이틀/24/Semibold */
+font-family: Pretendard;
+font-size: 24px;
+font-style: normal;
+font-weight: 500;
+line-height: 140%; /* 33.6px */
+padding-left: 4px;
+margin: 0;
+}
+
+.reviewadd-count {
+  font-size: 14px;
+  line-height: 140%;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* 본문 */
+.reviewadd-content {
+  width: 100%;
+}
+
+.reviewadd-empty {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 14px;
+  text-align: center;
+  margin-top: 40px;
+}
+
+/* 리스트 */
+.reviewadd-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewadd-listitem {
+  width: 100%;
+}

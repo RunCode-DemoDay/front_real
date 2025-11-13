@@ -1,0 +1,129 @@
+/* src/pages/QuizPage/QuizPage.css */
+
+.quiz-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%; 
+    background-color: #181818;
+    color: white;
+    padding-top: 40px;
+    /* 전체 패딩은 하위 요소에서 처리 */
+}
+
+/* --- 상단 네비게이션 (뒤로가기 버튼만) --- */
+.top-navigation {
+    display: flex;
+    padding: 8px 16px;
+    align-items: center;
+    gap: 10px;
+    align-self: stretch;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.back-button img {
+    width: 20px;
+    height: 20px;
+}
+
+/* --- 점 진행 표시기 (새로운 위치 및 중앙 정렬) --- */
+/* 래퍼를 사용해 중앙 정렬 */
+.progress-dots-wrapper {
+    width: 100%;
+    padding: 0 20px;
+    padding-top: 20px;
+}
+
+.progress-dots {
+    display: inline-flex; /* 점들을 가로로 나열 */
+    align-items: center;
+}
+
+.dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 8px;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    background-color: #333333; /* 비활성화 색상 (다크 그레이) */
+    transition: background-color 0.3s;
+}
+
+.dot.active {
+    background-color: #FF003C; /* 활성화 색상 (레드) */
+}
+
+
+/* --- 퀴즈 제목 영역 --- */
+.quiz-header {
+    display: flex;
+    padding: 0 20px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+    align-self: stretch;
+    margin-bottom: 40px;
+}
+
+.quiz-header h2 {
+    color: var(--White-High, rgba(255, 255, 255, 0.88));
+    margin: 10px 0; 
+    /* 타이틀/32/Semibold */
+    font-family: Pretendard;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 140%; /* 44.8px */
+    
+}
+
+/* --- 선택지 영역 --- */
+.quiz-options {
+    display: flex;
+    padding: 0 20px; 
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    align-self: stretch;
+    flex-grow: 1; /* 하단 버튼을 밀어냅니다. */
+}
+
+/* 선택지 버튼 스타일 */
+.option-button {
+    display: flex;
+    height: 44px;
+    padding: 8px 12px;
+    align-items: center;
+    gap: 10px;
+    align-self: stretch;
+    width: 100%; 
+    text-align: left;
+    
+    border-radius: 12px;
+    background: var(--Darkgray, #2E2E2E); /* 기본 상태 다크 그레이 */
+    color: var(--lightgray, #B3B3B3);
+    border: none;
+    box-shadow: none;
+    
+    font-size: 14px; 
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+/* 선택되었을 때 (selected 클래스 적용) */
+.option-button.selected {
+    background: Gray; 
+    color: white; 
+    
+    border-radius: 12px;
+    background: var(--White-Low, rgba(255, 255, 255, 0.20));
+    box-shadow: 2px 2px 8px 0 rgba(255, 255, 255, 0.12) inset;
+}
+

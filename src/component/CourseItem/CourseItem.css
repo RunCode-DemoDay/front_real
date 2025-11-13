@@ -1,0 +1,99 @@
+/* src/component/CourseItem/CourseItem.css */
+
+.course-item-card {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    
+    padding: 16px 12px;
+    gap: 16px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    margin-bottom: 12px;
+    cursor: pointer;
+    position: relative; /* 북마크 버튼 위치 기준 */
+}
+
+/* 1. 썸네일 영역 */
+.thumbnail-placeholder {
+    width: 88px;
+    height: 88px;
+
+    min-width: 88px;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #333; /* 이미지 로딩 전 배경 */
+}
+.thumbnail-placeholder img {
+    /* 이미지가 썸네일 영역을 채우도록 */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 2. 코스 상세 정보 */
+.course-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 88px;
+}
+
+.course-title {
+    color: var(--White-High, rgba(255, 255, 255, 0.88));
+/* 타이틀/16/Semibold */
+    margin: 0;
+    font-family: Pretendard;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%; /* 22.4px */
+}
+
+.course-content {
+    color: var(--Gray, #9E9E9E);
+    margin: 4px 0;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 350;
+    
+}
+
+/* 3. 메타 정보 (별점, 리뷰, 거리) */
+.course-meta {
+    display: flex;
+    align-items: flex-end;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 350;
+    line-height: 140%;
+    color: var(--White-High, rgba(255, 255, 255, 0.88));
+    gap: 8px; /* 정보 항목 사이의 간격 */
+    align-self: stretch;
+    margin-top: auto;
+}
+
+.star-rating, .review-count, .distance {
+    display: inline-flex;
+    align-items: center;
+}
+/* 아이콘과 텍스트 사이의 간격은 JSX에서 img style로 이미 처리됨 */
+
+
+/* 4. 북마크 버튼 (CourseItem.jsx에서 button 태그로 변경됨) */
+.bookmark-button {
+    position: absolute; /* 카드 우측 상단에 배치 */
+    top: 16px; 
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0; /* 기본 버튼 패딩 제거 */
+    line-height: 1; /* 높이 고정 */
+}
+.bookmark-button img {
+    width: 20px; 
+    height: 20px;
+}

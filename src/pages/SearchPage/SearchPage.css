@@ -1,0 +1,195 @@
+/* src/pages/SearchPage/SearchPage.css */
+
+/* 1. 최상위 컨테이너 */
+.search-page-container {
+    width: 100%;
+    height: 100%; /* AppContainer 높이를 꽉 채움 */
+    display: flex;
+    flex-direction: column;
+    
+    background: var(--Black, #121212);
+    color: #FFFFFF;
+    position: relative;
+    
+    /* 하단 네비게이터 영역을 피하기 위한 패딩 */
+    padding-bottom: 70px; 
+    overflow-y: auto; 
+}
+
+/* 2. 상단 검색 바 헤더 */
+.search-header {
+    display: flex;
+    width: 375px;
+    padding: 20px;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    background: var(--Black, #121212);
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+.back-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #FFFFFF;
+    margin-right: 10px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    flex-grow: 1; /* 남은 공간을 모두 차지 */
+    background-color: #2C2C2C; /* 입력창 배경색 */
+    border-radius: 10px;
+    padding: 8px 12px;
+}
+
+.search-input {
+    flex-grow: 1;
+    background: none;
+    border: none;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%;
+    color: var(--White-High, rgba(255, 255, 255, 0.88));
+    padding: 0;
+    margin-right: 12px;
+    outline: none; /* 포커스 시 테두리 제거 */
+}
+.search-input::placeholder {
+    color: #9E9E9E;
+}
+
+.search-input::-webkit-search-cancel-button {
+    /* 웹킷 기반 브라우저(Chrome, Safari)의 기본 스타일 제거 */
+    -webkit-appearance: none; 
+    
+    /* 완전히 숨기기 */
+    display: none; 
+    visibility: hidden;
+}
+
+.search-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.search-page-container .course-list .course-item-card {
+    /* 기본 배경은 투명(transparent)으로 설정 */
+    background-color: transparent;
+    
+    /* 기존 스타일에서 설정된 transition은 유지하는 것이 좋습니다. */
+    transition: background-color 0.1s; 
+}
+
+.search-page-container .course-list .course-item-card:active {
+    /* 누르는 순간만 나타나는 붉은색 투명 배경 */
+    background: var(--White-Hover, rgba(255, 255, 255, 0.04));
+}
+
+
+/* 3. 검색 결과 메인 영역 */
+.search-results-main {
+    padding: 80px 20px;
+    flex-grow: 1;
+}
+
+.placeholder-message, .loading-message, .no-results-message {
+    text-align: center;
+    color: #9E9E9E;
+    padding-top: 80px;
+    font-size: 16px;
+}
+
+/* 정렬 바 (검색 후 목록에만 표시) */
+.filter-sort-bar {
+    display: flex;
+    justify-content: flex-end; 
+    padding: 4px 0px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.sort-dropdown {
+    /* 기본 스타일 제거 */
+    -webkit-appearance: none; 
+    -moz-appearance: none;
+    appearance: none;         
+    
+    background: none;
+    color: var(--White-Medium, rgba(255, 255, 255, 0.60));
+    border: none;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: pointer;
+    
+    /* 커스텀 아이콘 공간 확보 */
+    padding: 0px 19px 0px 0px; 
+    
+    /* SVG 링크를 배경 이미지로 설정 */
+    background-image: url('https://runcode-likelion.s3.us-east-2.amazonaws.com/global/dropdown.svg');
+    background-repeat: no-repeat;
+    background-position: right center; 
+    background-size: 14px 14px; 
+}
+
+.skeleton-item-card {
+    display: flex;
+    padding: 16px 12px;
+    align-items: flex-start;
+    gap: 16px;
+    align-self: stretch;
+    border-radius: 16px;
+}
+
+.skeleton-thumbnail {
+    width: 88px;
+    height: 88px;
+    min-width: 88px;
+    border-radius: 12px;
+    padding-right: 16px;
+    background: var(--White-Hover, rgba(255, 255, 255, 0.04));
+    animation: pulse 1.5s infinite ease-in-out; 
+}
+
+.skeleton-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 5px;
+}
+
+.skeleton-line {
+    display: flex;
+    height: 22px;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    align-self: stretch;
+    border-radius: 6px;
+    background: var(--White-Hover, rgba(255, 255, 255, 0.04)); 
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+.skeleton-line.full-width { width: 100%; }
+.skeleton-line.medium-width { width: 182px; }
+.skeleton-line.short-width { width: 158px; }
+
+/* 스켈레톤 애니메이션 키프레임 */
+@keyframes pulse {
+    0% { opacity: 0.8; }
+    50% { opacity: 0.5; }
+    100% { opacity: 0.8; }
+}

@@ -1,0 +1,342 @@
+/* ------------------------------------------------ */
+/* ArchivingDetailPage.css */
+/* ------------------------------------------------ */
+
+/* 전체 컨테이너 설정 */
+.archiving-detail-container {
+    background-color: #121212; /* 전체 배경색 */
+    height: 100vh;
+    padding-bottom: 290px; /* 네비게이터 공간 확보 */
+    box-sizing: border-box;
+}
+
+/* ------------------ 1. 헤더 (뒤로가기 버튼) ------------------ */
+.detail-header {
+    position: absolute; 
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 20; 
+    padding: 50px 16px 30px 16px;
+    display: flex;
+    justify-content: space-between;
+    /* 배경은 투명하게 유지하여 아래 콘텐츠가 보이도록 */
+    background: transparent;
+    background-color: #121212;
+}
+
+/* .back-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    margin-left: -10px;
+} */
+
+.back-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-right: 15px;
+}
+
+/* ------------------ 2. 스크롤 영역 (본문) ------------------ */
+.detail-scroll-area {
+    /* 고정 헤더 높이만큼 밀어내기 */
+    margin-top: 104px;
+    padding: 0 20px;
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.detail-scroll-area::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+/* 2-1. 날짜 및 수정 가능 타이틀 */
+.title-section {
+    padding-top: 10px;
+    margin-bottom: 16px;
+}
+
+.detail-date {
+    color: var(--White-Low, rgba(255, 255, 255, 0.20));
+
+    /* 본문/14/Regular */
+    margin: 0;
+    margin-bottom: 2px;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 19.6px */
+}
+
+.title-edit-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    align-self: stretch;
+}
+
+.detail-title {
+    color: var(--White-High, rgba(255, 255, 255, 0.88));
+
+    /* 본문/16/Regular */
+    margin: 0;
+    font-family: Pretendard;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 22.4px */
+}
+
+.title-input {
+    background-color: #3C3C3C;
+    color: var(--White-High, rgba(255, 255, 255, 0.88));
+
+    /* 본문/16/Regular */
+    margin: 0;
+    font-family: Pretendard;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 22.4px */
+}
+
+.edit-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+    padding: 2px 4px 0 0;
+}
+
+
+/* 2-2. 상세 기록 정보 (6가지 항목, 2줄) */
+.run-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    text-align: center;
+    padding: 16px 4px 12px 4px;
+    border-top: 1px solid #3C3C3C;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.stat-item .value {
+    color: var(--White-High, rgba(255, 255, 255, 0.88));
+
+    /* 타이틀/24/Semibold */
+    font-family: Pretendard;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%; /* 33.6px */
+}
+
+.stat-item .label {
+    color: var(--White-Medium, rgba(255, 255, 255, 0.60));
+
+    /* 본문/14/Regular */
+    margin-top: 4px;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 140%; /* 19.6px */
+}
+
+/* 2-3. 아카이빙 사진 */
+.detail-image-container {
+    width: 100%;
+    height: 335px;
+    align-self: stretch;
+    
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    
+}
+
+.detail-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    
+}
+
+/* ------------------ 2-4. 코스 정보 섹션 (CourseItem 컨테이너) ------------------ */
+.course-info-section {
+    margin-bottom: 4px;
+    border-top: 1px solid #3C3C3C;
+}
+.ssection-title {
+    color: var(--White-High, rgba(255, 255, 255, 0.88));
+
+    /* 타이틀/20/Semibold */
+    margin: 16px 4px 0 4px;
+    font-family: Pretendard;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 120%; /* 24px */
+}
+
+
+
+.archiving-detail-course-wrapper .course-item-card {
+    background-color: #121212;
+}
+
+/* ------------------ 2-5. 구간 기록 (Laps) ------------------ */
+.laps-section {
+    margin-bottom: 30px;
+    border-top: 1px solid #3C3C3C;
+}
+
+
+.laps-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    color: #ffffff;
+    text-align: left;
+    background-color: #121212; /* 테이블 배경색 */
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+
+.laps-table th, .laps-table td {
+    padding: 8px 4px 0 4px ;
+    margin-right: 20px;
+    
+}
+
+.laps-table th:nth-child(1), .laps-table td:nth-child(1) {
+    width: 30%; 
+    text-align: left;
+    padding-right: 30px;
+}
+
+
+.laps-table th:nth-child(2), .laps-table td:nth-child(2) {
+    
+    width: 40%; 
+    text-align: left;
+    padding-right: 10px;
+}
+
+.laps-table th:nth-child(3), .laps-table td:nth-child(3) {
+    width: 30%;
+    
+    text-align: left;
+    padding-right: 10px;
+}
+
+
+.laps-table th {
+    color: var(--White-Medium, rgba(255, 255, 255, 0.60));
+
+    /* 본문/14/Regular */
+    font-family: Pretendard;
+    align-items: flex-start;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 140%; /* 19.6px */
+}
+
+.laps-table td{
+    color: var(--White-High, rgba(255, 255, 255, 0.88));
+
+    /* 본문/14/Regular */
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 350;
+    line-height: 140%; /* 19.6px */
+}
+
+.laps-table th:first-child, .laps-table td:first-child {
+    text-align: left;
+    width: 10%;
+}
+
+.laps-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.course-archiving-row {
+    cursor: pointer;
+}
+
+.course-archiving-row:hover {
+    background-color: #2c2c2c;
+}
+
+
+/* ------------------ 2-6. 메모 ------------------ */
+.memo-section {
+    padding-bottom: 20px;
+}
+
+.memo-content {
+    background-color: #2C2C2C;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 0;
+    white-space: pre-wrap; /* 줄바꿈 유지 */
+    color: var(--White-Medium, rgba(255, 255, 255, 0.60));
+
+    /* 본문/14/Regular */
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 350;
+    line-height: 140%; /* 19.6px */
+    margin: 0;
+}
+
+.memo-char-count {
+    color: var(--White-Medium, rgba(255, 255, 255, 0.60));
+
+    /* 본문/12/Regular */
+    font-family: Pretendard;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 16.8px */
+    text-align: right;
+    margin: 4px;
+}
+
+.memo-textarea {
+    width: 100%;
+     background-color: #2C2C2C;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 0;
+    white-space: pre-wrap; /* 줄바꿈 유지 */
+    color: var(--White-Medium, rgba(255, 255, 255, 0.60));
+
+    /* 본문/14/Regular */
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 350;
+    line-height: 140%; /* 19.6px */
+    margin: 0;
+}

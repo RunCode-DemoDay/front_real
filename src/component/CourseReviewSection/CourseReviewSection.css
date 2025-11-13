@@ -1,0 +1,123 @@
+.c-detail-review-summary {
+    display: flex;
+    align-items: center;
+    margin: 0; /* 아래 리뷰와의 간격 */
+    font-size: 16px; /* 이 줄 전체 폰트 크기 조정 */
+    gap : 2px;
+}
+
+
+/* ⭐ 평점(4.9) 글씨 크기 */
+.c-detail-review-score-text {
+    color: var(--White-High, rgba(255, 255, 255, 0.88));
+
+    /* 본문/14/Regular */
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 19.6px */
+}
+
+/* ⭐ 리뷰 개수((100)) 글씨 크기 */
+.c-detail-review-count-text {
+    color: var(--White-Medium, rgba(255, 255, 255, 0.60));
+
+    /* 본문/14/Regular */
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 19.6px */
+}
+
+
+.c-detail-review-item {
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.20); 
+}
+
+/* ⭐ 리뷰 항목 헤더 (날짜 포함) */
+.c-detail-review-item-header {
+    display: flex;
+    justify-content: flex-start; 
+    width: 100%;
+    margin-bottom: 5px;
+    font-size: 12px;
+}
+
+/* ⭐ 날짜 스타일 (시안에 맞춰 닉네임 위에 위치) */
+.c-detail-review-date {
+    color: var(--White-Low, rgba(255, 255, 255, 0.20));
+
+    /* 본문/14/Regular */
+    flex: 1 0 0;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 19.6px */
+}
+
+/* ⭐ 프로필, 닉네임, 별점 줄 */
+.c-detail-review-profile-line {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    margin-top: 8px;
+}
+
+.c-detail-user-profile-img {
+    width: 41px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+    background-color: #eee;
+    flex-shrink: 0;
+}
+
+/* 닉네임 + 별점 묶음 */
+.c-detail-user-text {
+    color: var(--White-High, rgba(255, 255, 255, 0.88));
+
+    /* 타이틀/16/Semibold */
+    font-family: Pretendard;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 140%; /* 22.4px */
+}
+
+.c-detail-user-nickname {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* ⭐ 별점 스타일 */
+.c-detail-review-stars {
+    display: flex;
+    margin-top: 2px;
+    align-items: center;
+}
+
+.c-detail-review-star-icon {
+    width: 14px; /* 별점 크기 약간 줄임 */
+    height: 14px;
+    margin-right: 2px;
+}
+
+.c-detail-review-content {
+    flex: 1 0 0;
+    color: var(--White-Medium, rgba(255, 255, 255, 0.60));
+
+    /* 본문/14/Regular */
+    margin-top: 12px;
+    margin-bottom: 0;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 19.6px */
+}
