@@ -1,15 +1,23 @@
 // src/pages/RunningStop/RunningStop.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { GoogleMap, useLoadScript, MarkerF, PolylineF } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  useLoadScript,
+  MarkerF,
+  PolylineF,
+} from "@react-google-maps/api";
 import "./RunningStop.css";
+import AppContainer from "../../AppContainer/AppContainer";
 
 // 아이콘
 const ICONS = {
   play: "https://runcode-likelion.s3.us-east-2.amazonaws.com/running/play.svg",
-  pause: "https://runcode-likelion.s3.us-east-2.amazonaws.com/running/pause.svg",
+  pause:
+    "https://runcode-likelion.s3.us-east-2.amazonaws.com/running/pause.svg",
   stop: "https://runcode-likelion.s3.us-east-2.amazonaws.com/running/stop.svg",
-  location: "https://runcode-likelion.s3.us-east-2.amazonaws.com/running/location.svg",
+  location:
+    "https://runcode-likelion.s3.us-east-2.amazonaws.com/running/location.svg",
 };
 
 const LOCATION_ICON_SIZE = 18;
@@ -24,16 +32,56 @@ const mapOptions = {
   zoomControl: false,
   keyboardShortcuts: false,
   styles: [
-    { featureType: "all", elementType: "labels.text.fill", stylers: [{ color: "#4A4A4A" }] },
-    { featureType: "all", elementType: "labels.text.stroke", stylers: [{ visibility: "on" }, { color: "#ffffff" }, { weight: 2 }] },
-    { featureType: "all", elementType: "labels.icon", stylers: [{ visibility: "off" }] },
-    { featureType: "landscape", elementType: "geometry", stylers: [{ color: "#2C2C2C" }, { lightness: 0 }] },
-    { featureType: "water", elementType: "geometry", stylers: [{ color: "#4A4A4A" }, { lightness: 0 }] },
-    { featureType: "road", elementType: "geometry", stylers: [{ color: "#4A4A4A" }] },
-    { featureType: "road.highway", elementType: "geometry.fill", stylers: [{ color: "#4A4A4A" }] },
-    { featureType: "road", elementType: "geometry.stroke", stylers: [{ visibility: "off" }] },
-    { featureType: "poi", elementType: "all", stylers: [{ visibility: "off" }] },
-    { featureType: "transit", elementType: "all", stylers: [{ visibility: "off" }] },
+    {
+      featureType: "all",
+      elementType: "labels.text.fill",
+      stylers: [{ color: "#4A4A4A" }],
+    },
+    {
+      featureType: "all",
+      elementType: "labels.text.stroke",
+      stylers: [{ visibility: "on" }, { color: "#ffffff" }, { weight: 2 }],
+    },
+    {
+      featureType: "all",
+      elementType: "labels.icon",
+      stylers: [{ visibility: "off" }],
+    },
+    {
+      featureType: "landscape",
+      elementType: "geometry",
+      stylers: [{ color: "#2C2C2C" }, { lightness: 0 }],
+    },
+    {
+      featureType: "water",
+      elementType: "geometry",
+      stylers: [{ color: "#4A4A4A" }, { lightness: 0 }],
+    },
+    {
+      featureType: "road",
+      elementType: "geometry",
+      stylers: [{ color: "#4A4A4A" }],
+    },
+    {
+      featureType: "road.highway",
+      elementType: "geometry.fill",
+      stylers: [{ color: "#4A4A4A" }],
+    },
+    {
+      featureType: "road",
+      elementType: "geometry.stroke",
+      stylers: [{ visibility: "off" }],
+    },
+    {
+      featureType: "poi",
+      elementType: "all",
+      stylers: [{ visibility: "off" }],
+    },
+    {
+      featureType: "transit",
+      elementType: "all",
+      stylers: [{ visibility: "off" }],
+    },
   ],
 };
 
@@ -187,83 +235,92 @@ export default function RunningStop() {
   }
 
   return (
-    <div className="runningstop-page">
-      {/* 지도 영역 */}
-      <div className="stop-map-wrap">
-        {isLoaded ? (
-          <GoogleMap
-            mapContainerClassName="stop-map"
-            center={center}
-            zoom={13}
-            options={mapOptions}
-            onLoad={(m) => (mapRef.current = m)}
-          >
-            {path.length >= 2 && (
-              <PolylineF
-                path={path}
-                options={{
-                  geodesic: true,
-                  strokeColor: "#FF003C",
-                  strokeOpacity: 1,
-                  strokeWeight: 4,
-                }}
-              />
-            )}
-            {currentPos && (
-              <MarkerF
-                position={currentPos}
-                icon={{
-                  url: ICONS.location,
-                  scaledSize: new window.google.maps.Size(
-                    LOCATION_ICON_SIZE,
-                    LOCATION_ICON_SIZE
-                  ),
-                  anchor: new window.google.maps.Point(
-                    LOCATION_ICON_ANCHOR,
-                    LOCATION_ICON_ANCHOR
-                  ),
-                }}
-              />
-            )}
-          </GoogleMap>
-        ) : (
-          <div className="map-fallback">지도를 불러오는 중…</div>
-        )}
-      </div>
-
-      {/* 하단 패널 */}
-      <div className="stop-panel">
-        <div className="stop-stats">
-          <div className="stat">
-            <div className="v">{mmss(elapsedSec)}</div>
-            <div className="k">시간</div>
-          </div>
-          <div className="stat">
-            <div className="v">{totalDistanceKm.toFixed(2)}</div>
-            <div className="k">km</div>
-          </div>
-          <div className="stat">
-            <div className="v">{avgPace}</div>
-            <div className="k">페이스</div>
-          </div>
+    <AppContainer>
+      <div className="runningstop-page">
+        {/* 지도 영역 */}
+        <div className="stop-map-wrap">
+          {isLoaded ? (
+            <GoogleMap
+              mapContainerClassName="stop-map"
+              center={center}
+              zoom={13}
+              options={mapOptions}
+              onLoad={(m) => (mapRef.current = m)}
+            >
+              {path.length >= 2 && (
+                <PolylineF
+                  path={path}
+                  options={{
+                    geodesic: true,
+                    strokeColor: "#FF003C",
+                    strokeOpacity: 1,
+                    strokeWeight: 4,
+                  }}
+                />
+              )}
+              {currentPos && (
+                <MarkerF
+                  position={currentPos}
+                  icon={{
+                    url: ICONS.location,
+                    scaledSize: new window.google.maps.Size(
+                      LOCATION_ICON_SIZE,
+                      LOCATION_ICON_SIZE
+                    ),
+                    anchor: new window.google.maps.Point(
+                      LOCATION_ICON_ANCHOR,
+                      LOCATION_ICON_ANCHOR
+                    ),
+                  }}
+                />
+              )}
+            </GoogleMap>
+          ) : (
+            <div className="map-fallback">지도를 불러오는 중…</div>
+          )}
         </div>
 
-        <div className="stop-controls">
-          {/* 정지 버튼 */}
-          <button className="ctrl-btn black" onClick={handleStop} aria-label="종료">
-            <img src={ICONS.stop} alt="종료" />
-          </button>
+        {/* 하단 패널 */}
+        <div className="stop-panel">
+          <div className="stop-stats">
+            <div className="stat">
+              <div className="v">{mmss(elapsedSec)}</div>
+              <div className="k">시간</div>
+            </div>
+            <div className="stat">
+              <div className="v">{totalDistanceKm.toFixed(2)}</div>
+              <div className="k">km</div>
+            </div>
+            <div className="stat">
+              <div className="v">{avgPace}</div>
+              <div className="k">페이스</div>
+            </div>
+          </div>
 
-          {/* 플레이/일시정지 토글 버튼 */}
-          <button
-            className="ctrl-btn red"
-            onClick={handleToggle}
-            aria-label={isRunning ? "일시정지" : "시작"}
-          >
-            <img src={isRunning ? ICONS.pause : ICONS.play} alt={isRunning ? "일시정지" : "시작"} />
-          </button>
+          <div className="stop-controls">
+            {/* 정지 버튼 */}
+            <button
+              className="ctrl-btn black"
+              onClick={handleStop}
+              aria-label="종료"
+            >
+              <img src={ICONS.stop} alt="종료" />
+            </button>
+
+            {/* 플레이/일시정지 토글 버튼 */}
+            <button
+              className="ctrl-btn red"
+              onClick={handleToggle}
+              aria-label={isRunning ? "일시정지" : "시작"}
+            >
+              <img
+                src={isRunning ? ICONS.pause : ICONS.play}
+                alt={isRunning ? "일시정지" : "시작"}
+              />
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </AppContainer>
   );
 }
