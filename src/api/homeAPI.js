@@ -1,5 +1,5 @@
 // src/api/homeAPI.js
-import { apiClient } from "./index"; // apiClient 사용
+import apiClient from "./index"; // apiClient 사용
 
 /**
  * 런비티아이 + 태그 4종류 조회
