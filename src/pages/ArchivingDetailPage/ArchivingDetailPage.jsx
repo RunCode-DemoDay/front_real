@@ -3,8 +3,8 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import AppContainer from '../../AppContainer/AppContainer';
 import BottomNavigator from '../../component/BottomNavigator/BottomNavigator';
 import CourseItem from '../../component/CourseItem/CourseItem'; 
-import { fetchCourseDetail, fetchCourseReviews } from '../../api/mockCourseDetailAPI'; // 코스 정보 및 리뷰 API 임포트
-import { fetchArchivingDetail, fetchArchivingsByCourse } from '../../api/mockArchivingAPI'; // 아카이빙 관련 API 임포트
+import { fetchCourseDetail, fetchCourseReviews } from '../../api/mockCourseDetailAPI'; // TODO: 실제 코스 API로 교체
+import { fetchArchivingDetail, fetchArchivingsByCourse, updateArchiving, updateArchivingImage } from '../../api/archivingAPI';
 import './ArchivingDetailPage.css';
 
 // --- 상수 및 에셋 ---
@@ -49,73 +49,38 @@ function ArchivingDetailPage() {
         const loadData = async () => {
             setLoading(true);
             try {
-                let courseIdForFetch = null;
-                let data;
-                // ✅ 'new'는 새로 만드는 기록, locationState에서 데이터를 가져옴
-                if (archivingId === 'new') {
-                    // locationState가 없으면 새 기록을 만들 수 없으므로 에러 처리
-                    if (!locationState) {
-                        throw new Error("새로운 기록을 생성하기 위한 데이터가 없습니다.");
-                    }
-                    const today = getTodayDate();
+                // 1. 아카이빙 상세 정보 조회
+                const response = await fetchArchivingDetail(archivingId);
+                if (!response.success) throw new Error(response.message);
+                let data = response.data;
 
-                    // 평균 페이스 계산
-                    const paceSecPerKm = (locationState.distanceKm > 0) ? (locationState.elapsedSec || 0) / locationState.distanceKm : 0;
-                    const paceMin = Math.floor(paceSecPerKm / 60);
-                    const paceSec = String(Math.floor(paceSecPerKm % 60)).padStart(2, '0');
-                    const calculatedPace = paceSecPerKm > 0 ? `${paceMin}'${paceSec}"` : "0'00\"";
-
-                    courseIdForFetch = locationState.courseId;
-                    // 코스 정보 객체 생성
-                    let newCourse = null;
-                    if (locationState.courseId) {
-                        // courseId로 코스 상세 정보를 API로 다시 불러옵니다.
-                        const [courseData, reviewData] = await Promise.all([
-                            fetchCourseDetail(locationState.courseId),
-                            fetchCourseReviews(locationState.courseId)
-                        ]);
-
-                        if (courseData && reviewData) {
-                            // 두 API의 결과를 조합하여 CourseItem이 필요로 하는 완전한 객체를 만듭니다.
-                            newCourse = { 
-                                ...courseData, 
-                                ...reviewData,
-                                course_id: locationState.courseId };
-                        }
-                    }
-
-                    data = {
-                        archiving_id: 'new',
-                        date: today,
-                        title: `${today} 러닝 기록`, // 기본 제목 설정
-                        content: "", // 메모는 비워둠
-                        detailImage: locationState.detailImage, // S3에서 받은 이미지 URL
-                        distance: locationState.distanceKm || 0,
-                        time: new Date((locationState.elapsedSec || 0) * 1000).toISOString().substr(14, 5),
-                        average_pace: calculatedPace,
-                        // 백엔드 연동 전 임시 데이터
-                        calorie: 0,
-                        altitude: 0,
-                        cadence: 0,
-                        course: newCourse,
-                    };
-                } else {
-                    // ✅ 기존 기록은 API로 조회
-                    data = await fetchArchivingDetail(archivingId);
-                    if (data && data.course?.course_id) {
-                        courseIdForFetch = data.course.course_id;
-                        const courseData = await fetchCourseDetail(data.course.course_id);
-                        const reviewData = await fetchCourseReviews(data.course.course_id);
-                        data.course = { ...courseData, ...reviewData, course_id: data.course.course_id };
+                // 2. 사진 촬영 페이지에서 새로운 이미지를 받아온 경우, 이미지 업데이트 API 호출
+                if (locationState?.newImage) {
+                    const imageUpdateResponse = await updateArchivingImage(archivingId, locationState.newImage);
+                    if (imageUpdateResponse.success) {
+                        // API 응답에 새로운 이미지 URL이 있다면 그것을 사용, 없다면 로컬 데이터를 임시로 사용
+                        data.detailImage = imageUpdateResponse.data?.imageUrl || locationState.newImage;
+                        // state에서 이미지 정보를 제거하여, 새로고침 시 다시 업로드되지 않도록 함
+                        navigate(location.pathname, { state: { ...locationState, newImage: undefined }, replace: true });
+                    } else {
+                        alert('이미지 업로드에 실패했습니다.');
                     }
                 }
 
-                // ✅ courseId가 있으면, 이 코스의 다른 아카이빙 기록들을 불러옵니다.
-                if (courseIdForFetch) {
-                    const archivings = await fetchArchivingsByCourse(courseIdForFetch);
-                    // 현재 보고 있는 기록(new 포함)은 목록에서 제외
-                    const filteredArchivings = archivings.filter(a => String(a.archiving_id) !== String(archivingId));
-                    setCourseArchivings(filteredArchivings);
+                // 3. 코스 정보가 있다면, 코스 상세 정보와 다른 아카이빙 기록들을 불러옴
+                if (data.course?.course_id) {
+                    const courseIdForFetch = data.course.course_id;
+                    
+                    // TODO: 실제 코스 상세/리뷰 API로 교체 필요
+                    const courseData = await fetchCourseDetail(courseIdForFetch);
+                    const reviewData = await fetchCourseReviews(courseIdForFetch);
+                    data.course = { ...courseData, ...reviewData, course_id: courseIdForFetch };
+
+                    const archivingsResponse = await fetchArchivingsByCourse(courseIdForFetch);
+                    if(archivingsResponse.success) {
+                        const filteredArchivings = archivingsResponse.data.filter(a => String(a.archiving_id) !== String(archivingId));
+                        setCourseArchivings(filteredArchivings);
+                    }
                 }
 
                 if (!data) {
@@ -135,7 +100,7 @@ function ArchivingDetailPage() {
         };
 
         loadData();
-    }, [archivingId]);
+    }, [archivingId, locationState, navigate]);
 
     // 제목 수정 핸들러 (더미 로직)
     // ✅ 뒤로가기 핸들러: 러닝 플로우에서 왔으면 홈으로, 아니면 뒤로
@@ -147,22 +112,33 @@ function ArchivingDetailPage() {
         }
     }, [navigate, locationState]);
 
-    const handleTitleUpdate = () => {
-        if (newTitle.trim() !== '') {
-            // ⭐ API 호출 로직 (생략)
+    const handleTitleUpdate = async () => {
+        if (newTitle.trim() === '' || newTitle === detailData.title) {
+            setIsEditingTitle(false);
+            setNewTitle(detailData.title); // 원상 복구
+            return;
+        }
+        try {
+            await updateArchiving(archivingId, { title: newTitle });
             setDetailData(prev => ({ ...prev, title: newTitle }));
-        }
+        } catch (error) {
+            console.error("제목 업데이트 실패:", error);
+            alert("제목 수정에 실패했습니다.");
+            setNewTitle(detailData.title); // 실패 시 원상 복구
+        }
         setIsEditingTitle(false);
     };
     
     // ⭐ 메모 수정 핸들러
-    const handleMemoUpdate = () => {
-        // API 호출 로직 (생략)
-        
-        // 메모 100자 자르기 (혹시 입력 중 100자를 넘길 경우 대비)
+    const handleMemoUpdate = async () => {
         const contentToSave = newContent.substring(0, MAX_MEMO_LENGTH);
-        
-        setDetailData(prev => ({ ...prev, content: contentToSave }));
+        try {
+            await updateArchiving(archivingId, { content: contentToSave });
+            setDetailData(prev => ({ ...prev, content: contentToSave }));
+        } catch (error) {
+            console.error("메모 업데이트 실패:", error);
+            alert("메모 수정에 실패했습니다.");
+        }
         setIsEditingMemo(false);
     };
 
@@ -257,7 +233,14 @@ function ArchivingDetailPage() {
 
                     {/* 2-3. 아카이빙 사진 */}
                     <div className="detail-image-container">
-                        <img src={detailImage} alt={title} className="detail-image" />
+                            {detailImage ? (
+                            <img src={detailImage} alt={title} className="detail-image" />
+                            ) : (
+                                <div className="no-image-placeholder" onClick={() => navigate('/archiving/picture', { state: { archivingId, fromRunning: locationState?.fromRunning }})}>
+                                    <p>사진을 추가하여</p>
+                                    <p>러닝을 기록해보세요!</p>
+                                </div>
+                            )}
                     </div>
                     
                     {/* 2-4. 코스 정보 (CourseItem 컴포넌트 사용) */}

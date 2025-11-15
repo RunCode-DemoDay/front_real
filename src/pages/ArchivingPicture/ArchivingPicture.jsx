@@ -5,7 +5,7 @@ import FixedBottomButton from "../../component/FixedBottomButton/FixedBottomButt
 
 export default function ArchivingPicture() {
   const navigate = useNavigate();
-  const { state: runningData } = useLocation(); // RunningStopPage에서 전달받은 state
+  const { state: locationState } = useLocation(); // 이전 페이지에서 전달받은 state
   const fileInputRef = useRef(null);
   const [isUploading, setIsUploading] = useState(false); // 업로드 상태를 관리할 state
   
@@ -35,13 +35,21 @@ export default function ArchivingPicture() {
     const reader = new FileReader();
     reader.onload = (e) => {
       const imageDataUrl = e.target.result;
+      const archivingId = locationState?.archivingId;
 
-      // 아카이빙 상세 페이지로 러닝 데이터와 이미지 데이터 URL을 함께 전달
-      navigate('/archiving/new', {
+      if (!archivingId) {
+        alert("기록 ID가 없어 상세 페이지로 이동할 수 없습니다.");
+        setIsUploading(false);
+        navigate('/home'); // 에러 발생 시 홈으로 이동
+        return;
+      }
+
+      // 생성된 아카이빙의 상세 페이지로 이미지 데이터와 함께 이동
+      navigate(`/archiving/${archivingId}`, {
         replace: true,
         state: {
-          ...runningData, // courseId, courseTitle 등이 포함된 runningData를 그대로 전달
-          detailImage: imageDataUrl, // 이미지 데이터 URL 전달
+          ...locationState, // fromRunning: true 등의 상태 유지
+          newImage: imageDataUrl, // 새로 촬영한 이미지 데이터 전달
         },
       });
     };
