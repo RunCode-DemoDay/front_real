@@ -5,9 +5,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
 
-// ✅ Vite 프록시 경유 (CORS 안전)
-const KAKAO_CALLBACK_API = "/api/login/oauth2/code/kakao";
-const ME_API = "/api/users/me";
+// ✅ 환경 변수에서 백엔드 API 기본 URL 가져오기
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+
+// ✅ 전체 URL로 API 경로 설정
+const KAKAO_CALLBACK_API = `${API_BASE_URL}/api/login/oauth2/code/kakao`;
+const ME_API = `${API_BASE_URL}/api/users/me`;
 
 // 공통: 로컬스토리지에 토큰 저장(스네이크/카멜 키 모두)
 function storeTokens({ accessToken, refreshToken }) {
