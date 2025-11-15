@@ -1,5 +1,5 @@
 // src/api/userTypeAPI.js
-import { apiClient } from "./api"; // ✅ apiClient import
+import apiClient from "./index"; // ✅ apiClient import
 
 const API_PREFIX = ""; // '/api' 제거
 

@@ -1,8 +1,5 @@
 // src/api/authAPI.js
-import axios from "axios";
-
-const API_BASE_URL = "/api";
-axios.defaults.withCredentials = true;
+import apiClient from "./index";
 
 // "필요하면"만 refresh 하는 함수
 export const refreshAccessToken = async () => {
@@ -27,18 +24,9 @@ export const refreshAccessToken = async () => {
   }
 
   try {
-    const res = await axios.post(
-      `${API_BASE_URL}/auth/token/refresh`,
-      {
-        refreshToken: storedRefresh,
-      },
-      {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    // apiClient를 사용하면 baseURL, withCredentials, Content-Type이 자동으로 처리됩니다.
+    // vite.config.js의 프록시 설정에 따라 '/auth/token/refresh'로 요청해야 합니다.
+    const res = await apiClient.post("/auth/token/refresh", { refreshToken: storedRefresh });
 
     const newAccess =
       res.data?.data?.accessToken ||

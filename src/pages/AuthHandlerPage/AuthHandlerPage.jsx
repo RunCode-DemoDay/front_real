@@ -3,7 +3,8 @@
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { apiClient } from "../../api/api"; // ✅ apiClient import
+import apiClient from "../../api"; // ✅ apiClient import
+import { getMyInfo } from "../../api/userAPI"; // userAPI에서 직접 함수 import
 
 // ✅ API 경로는 apiClient가 기본 URL을 관리하므로, 상대 경로만 정의합니다.
 const KAKAO_CALLBACK_API = "/login/oauth2/code/kakao";
@@ -45,29 +46,24 @@ function hasRunType(type) {
 
 // 공통: /users/me 로 프로필 가져와서 AuthContext에 반영
 async function fetchAndLoginUser(loginSuccess) {
-  const token = getStoredAccessToken();
-  if (!token) return null;
-
   try {
-    const res = await apiClient.get(ME_API); // ✅ apiClient 사용
-    // 백엔드 응답 형태 최대한 유연하게 처리
-    const raw = res?.data?.data ?? res?.data?.user ?? res?.data ?? {};
+    // userAPI의 getMyInfo 함수를 재사용합니다.
+    const response = await getMyInfo();
+    const raw = response.data; // getMyInfo는 이미 data 객체를 반환한다고 가정
 
     const userProfile = {
       id: raw.id ?? raw.userId ?? null,
-      // ✅ 앱 닉네임(nickname) 우선, 없으면 카카오 name 사용
       name: raw.nickname || raw.name || raw.username || "러너",
       nickname: raw.nickname ?? raw.name ?? null,
       email: raw.email ?? null,
       profileImage: raw.profileImage || raw.thumbnailImage || null,
-      type: raw.type ?? null, // 문자열 또는 { id, name }
+      type: raw.type ?? null,
     };
 
     loginSuccess(userProfile);
     return userProfile;
   } catch (e) {
     console.error("❌ /users/me 호출 실패:", e?.response?.data || e.message);
-    // 프로필을 못 가져와도 로그인은 된 상태일 수 있으니 null 반환
     return null;
   }
 }
