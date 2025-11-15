@@ -36,8 +36,6 @@
   cursor: pointer;
 }
 
-
-
 .reviewmy-title-row {
   display: flex;
   align-items: baseline;
@@ -51,6 +49,7 @@
   font-weight: 500;
   line-height: 140%;
   color: rgba(255,255,255,0.88);
+  font-family: "Pretendard", sans-serif;
 }
 
 .reviewmy-count {
@@ -82,6 +81,7 @@
   flex-direction: column;
   gap: 12px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  position: relative;  /* ✅ 수정: 삭제 버튼 absolute 기준 */
 }
 
 /* 카드 상단: 썸네일 + 코스정보 + (선택)더보기 버튼 */
@@ -117,13 +117,13 @@
 
 /* 코스 제목 */
 .reviewmy-course-title {
- color: var(--White-Medium, rgba(255, 255, 255, 0.60));
-font-family: Pretendard;
-font-size: 16px;
-font-style: normal;
-font-weight: 500;
-line-height: 140%; /* 22.4px */
-margin: 0;
+  color: var(--White-Medium, rgba(255, 255, 255, 0.60));
+  font-family: Pretendard;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%; /* 22.4px */
+  margin: 0;
 }
 
 /* 메타: 평점/리뷰수/거리 */
@@ -141,7 +141,7 @@ margin: 0;
 .reviewmy-meta span {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 
 .reviewmy-meta-icon {
@@ -154,65 +154,67 @@ margin: 0;
 /* (선택) 더보기 버튼 자리 */
 .reviewmy-more-btn {
   width: 16px;
-height: 16px;
-display: flex;
-align-items: center;
-margin-right: 4px;
-flex-shrink: 0;
-cursor: pointer;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  margin-right: 4px;
+  flex-shrink: 0;
+  cursor: pointer;
 }
 
 /* 날짜 */
 .reviewmy-date {
   color: var(--White-Low, rgba(255, 255, 255, 0.20));
-
-/* 본문/14/Regular */
-font-family: Pretendard;
-font-size: 14px;
-font-style: normal;
-font-weight: 350;
-padding-left: 4px;
-line-height: 140%;
-margin-bottom: 4px;
-margin-top: 0;
-
- /* 19.6px */
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 350;
+  padding-left: 4px;
+  line-height: 140%;
+  margin-bottom: 4px;
+  margin-top: 0;
 }
 
-/* 내 별점 표시 */
+
+/* ===================== ⭐ 내 별점 표시 ===================== */
 .reviewmy-stars {
   display: flex;
   align-items: center;
+  padding-left: 4px;
   gap: 4px;
-  width: 16px;
-  height: 16px;
-  
-  
+  width: 10.021px;
+  height: 9.6px;
+  flex-shrink: 0;
+  aspect-ratio: 10.02/9.60;
 }
 
-.reviewmy-star {
+/* 이 아이가 <img src={StarIcon} />에 들어가는 클래스 */
+.reviewmy-star-icon {
   width: 16px;
   height: 16px;
-  opacity: 0.4; /* 비활성 */
+  display: block;
 }
 
-.reviewmy-star.active {
-  opacity: 1;    /* 활성 별 */
+/* 채워진 별 (활성) */
+.reviewmy-star-icon.filled {
+  opacity: 0.88;
+}
+
+/* 빈 별 (비활성) */
+.reviewmy-star-icon.empty {
+  opacity: 0.22;
 }
 
 /* 리뷰 본문 텍스트 */
 .reviewmy-content-text {
   color: var(--White-High, rgba(255, 255, 255, 0.88));
-
-/* 본문/14/Regular */
-font-family: Pretendard;
-font-size: 14px;
-font-style: normal;
-font-weight: 350;
-line-height: 140%; /* 19.6px */
-
-padding-left: 4px;
-margin: 0;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 350;
+  line-height: 140%; /* 19.6px */
+  padding-left: 4px;
+  margin: 0;
 }
 
 /* 카드 내부/카드 사이 구분선 */
@@ -233,9 +235,6 @@ margin: 0;
   color: rgba(255,255,255,0.6);
 }
 
-
-
-
 /* ... 버튼 */
 .reviewmy-more-btn {
   background: none;
@@ -246,10 +245,14 @@ margin: 0;
   cursor: pointer;
   opacity: 0.88;
 }
+
 .reviewmy-more-btn img {
-  width: 20px; height: 20px; display: block;
+  width: 20px;
+  height: 20px;
+  display: block;
   filter: brightness(0) invert(1);
 }
+
 .reviewmy-more-btn:hover { opacity: 1; }
 
 /* 썸네일 영역과 날짜 사이 구분선 */
@@ -258,20 +261,144 @@ margin: 0;
   height: 1px;
   background: #2a2a2a;
   border-radius: 1px;
-  
   opacity: 0.6;
 }
 
-/* 별(평점) — rating 만큼 컬러, 나머지는 회색 */
-.reviewmy-stars { display: flex; align-items: center;
-    padding-left: 4px;
-     gap: 4px;
-     }
-.reviewmy-stars .star { width: 16px;
-height: 16px; line-height: 1
-; }
-.reviewmy-stars .star.filled { fill: var(--White-High, rgba(255, 255, 255, 0.88)); } /* 채워진 별 */
-.reviewmy-stars .star.empty  { color: rgba(255, 255, 255, 0.20); } /* 비활성 별 */
+/* ===================== 인라인 "리뷰 삭제" 메뉴 ===================== */
+.reviewmy-delete-inline {
+  position: absolute;
+  top: 48px;          /* 점 3개 바로 아래. 필요하면 36~44px 사이로 조절 */
+  right: 0px;
+
+  display: flex;
+  align-items: center;        /* ✅ 텍스트 수직 가운데 */
+  justify-content: center;    /* ✅ 텍스트 가로 가운데 */
+
+  width: 131px;
+  height: 36px;
+  padding: 8px 12px;
+  display: flex;
+flex-direction: column;
 
 
+  border-radius: 12px;
+  background: var(--Black-Interact, #2C2C2C);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.40);
 
+  color: var(--White-High, rgba(255, 255, 255, 0.88));
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 350;
+  line-height: 140%;
+  text-align: center;
+  cursor: pointer;
+  z-index: 10;
+  white-space: nowrap;
+  border: 1px solid #2C2C2C;
+
+
+  /* ❌ 요 두 줄은 빼야 돼 */
+  /* gap: 10px; */
+  /* align-self: stretch; */
+}
+
+
+.reviewmy-delete-inline:hover {
+border-radius: 12px;
+background: #545454;
+box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.40);
+border: 1px solid #545454;
+}
+
+/* 모달 배경 */
+.reviewmy-modal-backdrop {
+  position: absolute;        /* reviewmy-page 기준 중앙 고정 */
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* 모달 박스 */
+.reviewmy-modal {
+ display: flex;
+width: 270px;
+flex-direction: column;
+align-items: flex-start;
+ 
+ 
+ border-radius: 12px;
+background: rgba(30, 30, 30, 0.75);
+backdrop-filter: blur(11px);
+overflow: hidden; 
+  
+  
+}
+
+/* 상단 텍스트 영역 */
+.reviewmy-modal-text {
+align-self: stretch;
+color: var(--White-High, rgba(255, 255, 255, 0.88));
+text-align: center;
+
+/* 타이틀/16/Semibold */
+font-family: Pretendard;
+font-size: 16px;
+font-style: normal;
+font-weight: 500;
+line-height: 140%; /* 22.4px */
+}
+
+/* 버튼 영역 전체 (가로 구분선 포함) */
+.reviewmy-modal-actions {
+  display: flex;
+  align-self: stretch;
+ 
+  border-top: 0.5px solid rgba(255, 255, 255, 0.14);  /* ✅ 가로 선 */
+  width: 270px;
+}
+
+/* 공통 버튼 스타일 */
+.reviewmy-modal-btn {
+ display: flex;
+padding: 11px 43px;
+justify-content: center;
+align-items: center;
+gap: 10px;
+flex: 1 0 0;
+align-self: stretch;
+color: var(--Main, #FF003C);
+text-align: center;
+
+
+/* 본문/14/Regular */
+font-family: Pretendard;
+font-size: 14px;
+font-style: normal;
+font-weight: 350;
+line-height: 140%; /* 19.6px */
+background: transparent;
+border: none;
+}
+
+/* "예" (왼쪽) */
+.reviewmy-modal-btn-confirm {
+  color: var(--Main, #FF003C);   /* 피그마 느낌 나는 핑크 레드 톤 */
+}
+
+/* "아니요" (오른쪽) */
+.reviewmy-modal-btn-cancel {
+ color: var(--Main, #FF003C);
+}
+
+/* 버튼 사이 세로 구분선 */
+.reviewmy-modal-actions .reviewmy-modal-btn + .reviewmy-modal-btn {
+  border-left: 0.5px solid rgba(255, 255, 255, 0.14);  /* ✅ 세로 선 얇게 */
+}
+
+.reviewmy-modal-btn:hover {
+  background: #545454;
+}

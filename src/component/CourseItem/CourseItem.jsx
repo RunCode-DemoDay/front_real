@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
-import { createBookmark, deleteBookmark, MOCK_BOOKMARKS } from '../../api/mockHomeAPI'; 
+import { createBookmark, deleteBookmark } from '../../api/bookmarkAPI'; 
 import './CourseItem.css'; 
 
 const META_ICONS = {
@@ -16,13 +16,9 @@ const META_ICONS = {
 // ⭐ onClick을 부모에서 주입받을 수 있게 추가
 const CourseItem = ({ course, onClick }) => {
   const navigate = useNavigate();
-  
-  const initialBookmarkId = course.is_bookmarked
-    ? MOCK_BOOKMARKS[course.course_id]
-    : null;
 
   const [isBookmarked, setIsBookmarked] = useState(course.is_bookmarked); 
-  const [bookmarkId, setBookmarkId] = useState(initialBookmarkId); 
+  const [bookmarkId, setBookmarkId] = useState(course.bookmark_id); 
     
   const iconStyle = { 
     width: '16px', 
@@ -34,29 +30,43 @@ const CourseItem = ({ course, onClick }) => {
   const handleBookmarkToggle = async (e) => {
     e.stopPropagation(); // 카드 전체 클릭 막기
         
-    const nextStatus = !isBookmarked;
-    setIsBookmarked(nextStatus); 
-        
+    const originalBookmarkStatus = isBookmarked;
+    const originalBookmarkId = bookmarkId;    
+
+    // 1. UI를 먼저 업데이트 (낙관적 업데이트)
+    setIsBookmarked(!originalBookmarkStatus);
+    if (!originalBookmarkStatus) {
+      // 북마크 생성 시, 임시 ID를 설정하여 삭제 요청을 방지
+      setBookmarkId(-1); 
+    } else {
+      // 북마크 삭제 시
+      setBookmarkId(null);
+    }
+
     try {
-      if (isBookmarked) {
-        if (bookmarkId) {
-          await deleteBookmark(bookmarkId);
-          setBookmarkId(null);
+      // 2. API 요청
+      if (!originalBookmarkStatus) {
+        // 북마크 생성 API 호출
+        console.log(
+          `[북마크 생성 요청] course_id: ${course.course_id}, 타입: ${typeof course.course_id}`
+        );
+        const result = await createBookmark(course.course_id);
+        console.log("북마크 생성 결과:", result);
+        if (result.success) {
+          setBookmarkId(result.data.bookmark_id); // 성공 시, 실제 ID로 업데이트
         } else {
-          throw new Error("저장 ID 없음. 삭제 불가.");
+          throw new Error(result.message || "북마크 생성에 실패했습니다.");
         }
       } else {
-        const result = await createBookmark(course.course_id);
-        if (result.success) {
-          setBookmarkId(result.data.bookmark_id);
-        } else {
-          throw new Error("북마크 생성 실패");
-        }
+        // 북마크 삭제 API 호출
+        await deleteBookmark(originalBookmarkId);
       }
     } catch (error) {
       console.error("북마크 토글 에러:", error);
       alert("북마크 처리 중 에러가 발생했습니다.");
-      setIsBookmarked(!nextStatus); // 롤백
+      // 3. API 요청 실패 시, UI 상태를 원래대로 롤백
+      setIsBookmarked(originalBookmarkStatus);
+      setBookmarkId(originalBookmarkId);
     }
   };
     

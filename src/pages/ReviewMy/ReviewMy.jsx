@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react"; // ✅ useState 추가
 import { useNavigate } from "react-router-dom";
 
 import StarIcon from "../../assets/Star.svg";
@@ -6,7 +6,8 @@ import DistanceIcon from "../../assets/Distance.svg";
 import ReviewsIcon from "../../assets/Reviews.svg";
 import SettingIcon from "../../assets/Setting.svg";
 
-const LeftArrow = 'https://runcode-likelion.s3.us-east-2.amazonaws.com/global/back.svg'
+const LeftArrow =
+  "https://runcode-likelion.s3.us-east-2.amazonaws.com/global/back.svg";
 
 import "./ReviewMy.css";
 
@@ -16,14 +17,16 @@ import { mockMyWrittenReviews as DATA } from "../../api/mockMyPageAPI";
 // ⭐ rating 만큼 색칠되는 별
 const Stars = ({ value }) => {
   const filled = Math.max(0, Math.min(5, Math.floor(Number(value) || 0)));
-  const empty = 5 - filled;
+
   return (
     <div className="reviewmy-stars" aria-label={`별점 ${filled}점`}>
-      {Array.from({ length: filled }).map((_, i) => (
-        <span key={`f-${i}`} className="star filled">★</span>
-      ))}
-      {Array.from({ length: empty }).map((_, i) => (
-        <span key={`e-${i}`} className="star empty">★</span>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <img
+          key={i}
+          src={StarIcon} // 👉 이모티콘(★) 대신 asset 사용
+          alt={i < filled ? "채워진 별" : "빈 별"}
+          className={`reviewmy-star-icon ${i < filled ? "filled" : "empty"}`}
+        />
       ))}
     </div>
   );
@@ -33,11 +36,51 @@ const ReviewMy = () => {
   const navigate = useNavigate();
   const handleBack = () => navigate(-1);
 
+  // ================== ✅ 추가된 상태들 ==================
+  // 어떤 카드의 점3개 메뉴가 열려 있는지
+  const [openedMenuId, setOpenedMenuId] = useState(null);
+  // 삭제 확인 모달 표시 여부
+  const [showConfirm, setShowConfirm] = useState(false);
+  // 실제 삭제 대상 (지금은 네비용)
+  const [targetReviewId, setTargetReviewId] = useState(null);
+  // ====================================================
+
+  // 점 3개 버튼 클릭
+  const handleMoreClick = (e, reviewId) => {
+    e.stopPropagation();
+    setOpenedMenuId((prev) => (prev === reviewId ? null : reviewId));
+  };
+
+  // "리뷰 삭제" 인라인 버튼 클릭 → 모달 띄우기
+  const handleDeleteClick = (e, reviewId) => {
+    e.stopPropagation();
+    setTargetReviewId(reviewId);
+    setShowConfirm(true);
+    setOpenedMenuId(null);
+  };
+
+  // 모달에서 "아니요" 또는 바깥 클릭
+  const handleConfirmCancel = () => {
+    setShowConfirm(false);
+    setTargetReviewId(null);
+  };
+
+  // 모달에서 "예" 클릭 → MyPage로 이동
+  const handleConfirmOk = () => {
+    // TODO: 나중에 실제 삭제 API 연동시 여기에서 호출
+    setShowConfirm(false);
+    navigate("/mypage"); // ✅ MyPage.jsx 라우트
+  };
+
   return (
     <div className="reviewmy-page">
       {/* 헤더 */}
       <header className="reviewmy-header">
-        <button type="button" className="reviewmy-back-btn" onClick={handleBack}>
+        <button
+          type="button"
+          className="reviewmy-back-btn"
+          onClick={handleBack}
+        >
           <img className="reviewmy-back-icon" src={LeftArrow} alt="뒤로가기" />
         </button>
 
@@ -63,22 +106,42 @@ const ReviewMy = () => {
 
                   <div className="reviewmy-meta">
                     <span>
-                      <img className="reviewmy-meta-icon" src={StarIcon} alt="" aria-hidden="true" />
+                      <img
+                        className="reviewmy-meta-icon"
+                        src={StarIcon}
+                        alt=""
+                        aria-hidden="true"
+                      />
                       {r.course_star_average}
                     </span>
                     <span>
-                      <img className="reviewmy-meta-icon" src={ReviewsIcon} alt="" aria-hidden="true" />
+                      <img
+                        className="reviewmy-meta-icon"
+                        src={ReviewsIcon}
+                        alt=""
+                        aria-hidden="true"
+                      />
                       리뷰 {r.course_review_count}건
                     </span>
                     <span>
-                      <img className="reviewmy-meta-icon" src={DistanceIcon} alt="" aria-hidden="true" />
+                      <img
+                        className="reviewmy-meta-icon"
+                        src={DistanceIcon}
+                        alt=""
+                        aria-hidden="true"
+                      />
                       {r.course_distance}km
                     </span>
                   </div>
                 </div>
 
                 {/* 오른쪽 위 ... 버튼 */}
-                <button type="button" className="reviewmy-more-btn" aria-label="옵션">
+                <button
+                  type="button"
+                  className="reviewmy-more-btn"
+                  aria-label="옵션"
+                  onClick={(e) => handleMoreClick(e, r.review_id)} // ✅ 메뉴 열기
+                >
                   <img src={SettingIcon} alt="" aria-hidden="true" />
                 </button>
               </div>
@@ -94,10 +157,46 @@ const ReviewMy = () => {
 
               {/* 내용 */}
               <p className="reviewmy-content-text">{r.content}</p>
+
+              {/* ✅ 점 3개 눌렀을 때 나오는 "리뷰 삭제" 바 */}
+              {openedMenuId === r.review_id && (
+                <button
+                  type="button"
+                  className="reviewmy-delete-inline"
+                  onClick={(e) => handleDeleteClick(e, r.review_id)}
+                >
+                  리뷰 삭제
+                </button>
+              )}
             </li>
           ))}
         </ul>
       </main>
+
+      {/* ✅ 삭제 확인 모달 */}
+      {showConfirm && (
+        <div className="reviewmy-modal-backdrop" onClick={handleConfirmCancel}>
+          <div className="reviewmy-modal" onClick={(e) => e.stopPropagation()}>
+            <p className="reviewmy-modal-text">리뷰를 삭제하시겠습니까?</p>
+            <div className="reviewmy-modal-actions">
+              <button
+                type="button"
+                className="reviewmy-modal-btn reviewmy-modal-btn-confirm"
+                onClick={handleConfirmOk}
+              >
+                예
+              </button>
+              <button
+                type="button"
+                className="reviewmy-modal-btn reviewmy-modal-btn-cancel"
+                onClick={handleConfirmCancel}
+              >
+                아니요
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

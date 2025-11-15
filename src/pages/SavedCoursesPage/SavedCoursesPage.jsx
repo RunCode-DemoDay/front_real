@@ -7,15 +7,15 @@ import './SavedCoursesPage.css';
 import { useNavigate } from 'react-router-dom';
 import CustomSelect from '../../component/CustomSelect/CustomSelect';
 
-// ⭐ Mock API import (fetchBookmarks 함수)
-import { fetchBookmarks } from '../../api/mockBookmarkAPI'; 
+// 1. API import 경로 변경
+import { getBookmarks } from '../../api/bookmarkAPI'; 
 
 // 드롭다운 아이콘 (HomePage/SearchPage에서 사용된 아이콘 재사용)
 const DROPDOWN_ARROW_SRC = 'https://runcode-likelion.s3.us-east-2.amazonaws.com/global/dropdown.svg'; 
 
 // 정렬 옵션 정의
 const ORDER_OPTIONS = [
-    { label: "최신 순", value: "LATEST" }, 
+    { label: "최신 순", value: "latest" }, // API 명세에 따라 소문자로 변경
     { label: "짧은 순", value: "DISTANCE_ASC" },
     { label: "별점 순", value: "RATING_DESC" },
 ];
@@ -44,22 +44,24 @@ function SavedCoursesPage() {
     const loadBookmarks = useCallback(async (order) => {
         setLoading(true);
         try {
-            const apiData = await fetchBookmarks(order); 
+            // 2. 실제 API 호출로 변경
+            const result = await getBookmarks(order); 
             
-            // ⭐ 핵심 수정: API 데이터 형태 변환 (distance: number -> string)
-            const formattedBookmarks = apiData.map(item => ({
-                // API 명세의 필드를 그대로 사용
-                ...item,
-                // CourseItem에서 'km'를 붙여주므로, 여기서는 숫자 값만 전달합니다.
-                distance: item.distance, 
-                // 북마크 목록 조회이므로, is_bookmarked는 항상 true라고 가정
-                is_bookmarked: true 
-            }));
-            
-            setBookmarks(formattedBookmarks); 
+            if (result.success) {
+                // 3. API 응답 데이터(result.data)를 상태에 맞게 가공
+                const formattedBookmarks = result.data.map(item => ({
+                    ...item,
+                    // CourseItem 호환성을 위해 is_bookmarked 필드 추가
+                    is_bookmarked: true 
+                }));
+                setBookmarks(formattedBookmarks);
+            } else {
+                throw new Error(result.message || "북마크 목록 조회에 실패했습니다.");
+            }
 
         } catch (error) {
             console.error("북마크 로드 실패:", error);
+            alert("저장된 코스를 불러오는 중 오류가 발생했습니다.");
             setBookmarks([]);
         } finally {
             setLoading(false);
