@@ -81,105 +81,89 @@ export default function AuthHandlerPage() {
   const navigate = useNavigate();
   const { loginSuccess } = useAuth();
 
+  // 시나리오 A: URL 쿼리에 토큰이 직접 포함된 경우 처리
+  const handleTokenFromQuery = async (params) => {
+    const tokenFromQuery =
+      params.get("token") ||
+      params.get("access") ||
+      params.get("access_token") ||
+      params.get("accessToken");
+    const refreshFromQuery =
+      params.get("refresh") ||
+      params.get("refresh_token") ||
+      params.get("refreshToken");
+
+    if (!tokenFromQuery) return false;
+
+    console.log("✅ query에서 accessToken 수신:", tokenFromQuery);
+    storeTokens({
+      accessToken: tokenFromQuery,
+      refreshToken: refreshFromQuery,
+    });
+
+    const me = await fetchAndLoginUser(loginSuccess);
+    const hasType = hasRunType(me?.type);
+    navigate(hasType ? "/home" : "/quiz/1", { replace: true });
+    return true;
+  };
+
+  // 시나리오 B: 카카오 인증 후 받은 code로 토큰을 교환하는 경우 처리
+  const handleCodeFromQuery = async (params) => {
+    const code = params.get("code");
+    const state = params.get("state");
+
+    if (!code) return false;
+
+    try {
+      const res = await axios.get(KAKAO_CALLBACK_API, {
+        params: { code, state },
+        withCredentials: true,
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const payload = res?.data?.data ?? res?.data ?? {};
+      const accessToken = payload.accessToken || payload.access_token || null;
+      const refreshToken = payload.refreshToken || payload.refresh_token || null;
+
+      storeTokens({ accessToken, refreshToken });
+
+      let userProfile = null;
+      if (payload.user || payload.profile || payload.name || payload.nickname) {
+        const user = payload.user || payload.profile || payload;
+        userProfile = {
+          id: user.id ?? user.userId ?? null,
+          name: user.nickname || user.name || user.username || "러너",
+          nickname: user.nickname ?? user.name ?? null,
+          email: user.email ?? null,
+          profileImage: user.profileImage || user.thumbnailImage || null,
+          type: user.type ?? payload.type ?? null,
+        };
+        loginSuccess(userProfile);
+      } else {
+        userProfile = await fetchAndLoginUser(loginSuccess);
+      }
+
+      const hasType = hasRunType(userProfile?.type);
+      navigate(hasType ? "/home" : "/quiz/1", { replace: true });
+    } catch (err) {
+      console.error("❌ 카카오 로그인 교환 실패:", err);
+      if (err.response) {
+        console.error("❌ 서버 응답:", err.response.status, err.response.data);
+      }
+      navigate("/login", { replace: true });
+    }
+    return true;
+  };
+
   useEffect(() => {
     const handleLogin = async () => {
       const params = new URLSearchParams(location.search);
 
-      // 백엔드가 쿼리로 내려줄 수 있는 다양한 키 대응
-      const tokenFromQuery =
-        params.get("token") ||
-        params.get("access") ||
-        params.get("access_token") ||
-        params.get("accessToken") ||
-        null;
-
-      const refreshFromQuery =
-        params.get("refresh") ||
-        params.get("refresh_token") ||
-        params.get("refreshToken") ||
-        null;
-
-      const code = params.get("code");
-      const state = params.get("state");
-
       // ✅ (A) 백엔드가 query로 accessToken(및 refresh)을 바로 내려주는 경우
-      if (tokenFromQuery) {
-        console.log("✅ query에서 accessToken 수신:", tokenFromQuery);
-        storeTokens({
-          accessToken: tokenFromQuery,
-          refreshToken: refreshFromQuery,
-        });
-
-        // 프로필 조회 시도 (이름/유형 반영)
-        const me = await fetchAndLoginUser(loginSuccess);
-
-        // 🔥 유형이 있으면 홈, 없으면 런BTI 첫 문제(/quiz/1)
-        const hasType = hasRunType(me?.type);
-        navigate(hasType ? "/home" : "/quiz/1", { replace: true });
-        return;
-      }
+      if (await handleTokenFromQuery(params)) return;
 
       // ✅ (B) code/state만 온 경우 → 백엔드에 교환 요청
-      if (code) {
-        try {
-          const res = await axios.get(KAKAO_CALLBACK_API, {
-            params: { code, state },
-            withCredentials: true,
-            headers: { "Content-Type": "application/json" },
-          });
-
-          const payload = res?.data?.data ?? res?.data ?? {};
-          const accessToken =
-            payload.accessToken || payload.access_token || null;
-          const refreshToken =
-            payload.refreshToken || payload.refresh_token || null;
-
-          // 토큰 저장
-          storeTokens({ accessToken, refreshToken });
-
-          // 우선 응답에 유저 정보가 있으면 쓰고, 없으면 /users/me로 보강
-          let userProfile = null;
-
-          if (
-            payload.user ||
-            payload.profile ||
-            payload.name ||
-            payload.nickname
-          ) {
-            const user = payload.user || payload.profile || payload;
-
-            userProfile = {
-              id: user.id ?? user.userId ?? null,
-              // ✅ 여기서도 nickname 우선
-              name: user.nickname || user.name || user.username || "러너",
-              nickname: user.nickname ?? user.name ?? null,
-              email: user.email ?? null,
-              profileImage:
-                user.profileImage || user.thumbnailImage || null,
-              type: user.type ?? payload.type ?? null,
-            };
-            loginSuccess(userProfile);
-          } else {
-            userProfile = await fetchAndLoginUser(loginSuccess);
-          }
-
-          // 🔥 여기서도 동일하게: 유형 있으면 홈, 없으면 퀴즈 첫 페이지
-          const hasType = hasRunType(userProfile?.type);
-          navigate(hasType ? "/home" : "/quiz/1", { replace: true });
-          return;
-        } catch (err) {
-          console.error("❌ 카카오 로그인 교환 실패:", err);
-          if (err.response) {
-            console.error(
-              "❌ 서버 응답:",
-              err.response.status,
-              err.response.data
-            );
-          }
-          navigate("/login", { replace: true });
-          return;
-        }
-      }
+      if (await handleCodeFromQuery(params)) return;
 
       // ✅ (C) token도 code도 없음 → 잘못 진입
       console.error("❌ token/code 없음 → /login 이동");
