@@ -1,7 +1,7 @@
 // src/api/userTypeAPI.js
 import { apiClient } from "./api"; // ✅ apiClient import
 
-const API_PREFIX = "/api";
+const API_PREFIX = ""; // '/api' 제거
 
 /** 코드(HFNT 등)로 타입 조회 */
 export const getTypeByCode = async ({ code }) => {

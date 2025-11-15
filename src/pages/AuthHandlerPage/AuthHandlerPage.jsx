@@ -6,8 +6,8 @@ import { useAuth } from "../../contexts/AuthContext";
 import { apiClient } from "../../api/api"; // ✅ apiClient import
 
 // ✅ API 경로는 apiClient가 기본 URL을 관리하므로, 상대 경로만 정의합니다.
-const KAKAO_CALLBACK_API = "/api/login/oauth2/code/kakao";
-const ME_API = "/api/users/me";
+const KAKAO_CALLBACK_API = "/login/oauth2/code/kakao";
+const ME_API = "/users/me";
 
 // 공통: 로컬스토리지에 토큰 저장(스네이크/카멜 키 모두)
 function storeTokens({ accessToken, refreshToken }) {
