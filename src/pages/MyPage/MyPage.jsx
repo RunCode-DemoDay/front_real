@@ -1,12 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MyPage.css";
 import LeftArrow from "../../assets/Left.svg";
 import BottomNavigator from "../../component/BottomNavigator/BottomNavigator";
+import { getMyInfo } from "../../api/userAPI"; // ✅ 사용자 정보 API 임포트
 
 const MyPage = () => {
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [userProfile, setUserProfile] = useState(null); // ✅ 사용자 프로필 상태
+  const [loading, setLoading] = useState(true); // ✅ 로딩 상태
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        setLoading(true);
+        const res = await getMyInfo();
+        if (res.success) {
+          setUserProfile(res.data);
+        } else {
+          console.warn("사용자 정보 조회 실패:", res.message);
+          // TODO: 사용자 정보 조회 실패 시 에러 처리 (예: 로그인 페이지로 리디렉션)
+        }
+      } catch (error) {
+        console.error("사용자 정보 조회 중 에러 발생:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
 
   const handleGoToReviewAdd = () => {
     navigate("/reviewadd");
@@ -33,6 +57,14 @@ const MyPage = () => {
     setShowLogoutModal(false);
   };
 
+  if (loading) {
+    return (
+      <div className="mypage-loading">
+        <p>사용자 정보를 불러오는 중입니다...</p>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="mypage">
@@ -42,18 +74,22 @@ const MyPage = () => {
         {/* 프로필 */}
         <section className="mypage-profile">
           <img
-            src="/images/profile-default.png"
+            src={
+              userProfile?.profileImage || "/images/profile-default.png"
+            }
             alt="프로필"
             className="mypage-avatar"
           />
-          <p className="mypage-username">송명은카톡아이디</p>
+          <p className="mypage-username">
+            {userProfile?.nickname || userProfile?.name || "사용자"}
+          </p>
         </section>
 
         {/* 러너 유형 */}
         <section className="mypage-runner" onClick={handleGoToRunnerType}>
           <div className="runner-info">
             <p className="runner-label">러너 유형</p>
-            <p className="runner-value">새벽 출몰 도전자</p>
+            <p className="runner-value">{userProfile?.type || "유형 미등록"}</p>
           </div>
           <img src={LeftArrow} alt="arrow" className="runner-arrow rotated" />
         </section>
