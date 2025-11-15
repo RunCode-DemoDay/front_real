@@ -2,15 +2,12 @@
 
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useAuth } from "../../contexts/AuthContext";
+import { apiClient } from "../../api/api"; // ✅ apiClient import
 
-// ✅ 환경 변수에서 백엔드 API 기본 URL 가져오기
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
-
-// ✅ 전체 URL로 API 경로 설정
-const KAKAO_CALLBACK_API = `${API_BASE_URL}/api/login/oauth2/code/kakao`;
-const ME_API = `${API_BASE_URL}/api/users/me`;
+// ✅ API 경로는 apiClient가 기본 URL을 관리하므로, 상대 경로만 정의합니다.
+const KAKAO_CALLBACK_API = "/api/login/oauth2/code/kakao";
+const ME_API = "/api/users/me";
 
 // 공통: 로컬스토리지에 토큰 저장(스네이크/카멜 키 모두)
 function storeTokens({ accessToken, refreshToken }) {
@@ -52,11 +49,7 @@ async function fetchAndLoginUser(loginSuccess) {
   if (!token) return null;
 
   try {
-    const res = await axios.get(ME_API, {
-      headers: { Authorization: `Bearer ${token}` },
-      withCredentials: true,
-    });
-
+    const res = await apiClient.get(ME_API); // ✅ apiClient 사용
     // 백엔드 응답 형태 최대한 유연하게 처리
     const raw = res?.data?.data ?? res?.data?.user ?? res?.data ?? {};
 
@@ -118,12 +111,7 @@ export default function AuthHandlerPage() {
     if (!code) return false;
 
     try {
-      const res = await axios.get(KAKAO_CALLBACK_API, {
-        params: { code, state },
-        withCredentials: true,
-        headers: { "Content-Type": "application/json" },
-      });
-
+      const res = await apiClient.get(KAKAO_CALLBACK_API, { params: { code, state } }); // ✅ apiClient 사용
       const payload = res?.data?.data ?? res?.data ?? {};
       const accessToken = payload.accessToken || payload.access_token || null;
       const refreshToken = payload.refreshToken || payload.refresh_token || null;
@@ -174,7 +162,7 @@ export default function AuthHandlerPage() {
     };
 
     handleLogin();
-  }, [location, navigate, loginSuccess]);
+  }, [location.search, navigate, loginSuccess]); // location.search를 직접 의존
 
   return (
     <div style={{ color: "#fff", padding: 24, textAlign: "center" }}>

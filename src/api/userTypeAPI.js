@@ -1,17 +1,13 @@
 // src/api/userTypeAPI.js
-import axios from "axios";
+import { apiClient } from "./api"; // ✅ apiClient import
 
-const API = "/api";
-axios.defaults.withCredentials = true;
+const API_PREFIX = "/api";
 
 /** 코드(HFNT 등)로 타입 조회 */
-export const getTypeByCode = async ({ code, token }) => {
-  const res = await axios.get(`${API}/types`, {
+export const getTypeByCode = async ({ code }) => {
+  // apiClient가 인증 토큰을 자동으로 추가해줍니다.
+  const res = await apiClient.get(`${API_PREFIX}/types`, {
     params: { code },
-    headers: {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
   });
 
   // 백 responses: { success, code, message, data }
@@ -19,19 +15,14 @@ export const getTypeByCode = async ({ code, token }) => {
   return Array.isArray(data) ? data[0] : data;
 };
 
-/** ✅ 최종 버전: 내 러너 유형 저장
+/**
+ * ✅ 최종 버전: 내 러너 유형 저장
  * body → { "typeCode": "HFNT" }
  */
-export const patchMyType = async ({ typeCode, token }) => {
-  const res = await axios.patch(
-    `${API}/users/me`,
-    { typeCode }, // ★ 여기가 핵심
-    {
-      headers: {
-        "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      },
-    }
+export const patchMyType = async ({ typeCode }) => {
+  const res = await apiClient.patch(
+    `${API_PREFIX}/users/me`,
+    { typeCode } // ★ 여기가 핵심
   );
 
   return res.data; // { success, code, message, data: {...user} }
