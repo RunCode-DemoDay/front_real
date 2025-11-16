@@ -2,6 +2,15 @@
 import apiClient from './index';
 
 /**
+ * ✅ 썸네일 업로드를 위한 Presigned URL을 백엔드로부터 받아옵니다.
+ * GET /archivings/presigned-url
+ */
+export const getPresignedUrl = async () => {
+  const res = await apiClient.get(`/archivings/presigned-url`);
+  return res.data; // { success, code, message, data: { presignedUrl, imageUrl } }
+};
+
+/**
  * [GET] /archivings/{archivingId} - 아카이빙 상세 정보 조회
  * @param {string|number} archivingId
  * @returns {Promise<object>} API 응답 데이터 (data.data 에 상세 정보 포함)
