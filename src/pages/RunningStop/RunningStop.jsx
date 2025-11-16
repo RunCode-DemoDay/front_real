@@ -319,6 +319,7 @@ export default function RunningStop() {
         time: new Date(elapsedSec * 1000).toISOString().substr(11, 8), // ✅ "HH:mm:ss" 형식으로 수정
         average_pace: avgPace,
         laps: laps,
+        thumbnail: "sdsdjk",
         // ✅ 백엔드 명세서에 맞게 누락된 필드들을 기본값으로 추가합니다.
         content: "", // 메모 내용 (초기값은 빈 문자열)
         calorie: 0,
