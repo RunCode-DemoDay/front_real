@@ -10,7 +10,8 @@ import {
 import "./RunningStop.css";
 import AppContainer from "../../AppContainer/AppContainer";
 import html2canvas from "html2canvas"; // html2canvas 임포트
-import { createArchiving } from "../../api/archivingAPI"; // 1. API 함수 임포트
+import { createArchiving, getPresignedUrl } from "../../api/archivingAPI"; // API 함수 임포트
+import axios from 'axios'; // S3 업로드를 위해 axios 직접 사용
 
 // 아이콘
 const ICONS = {
@@ -218,15 +219,27 @@ export default function RunningStop() {
     try {
       console.log("서버에 아카이빙 생성을 요청합니다.");
 
-      // ✅ 지도 캡처 로직 추가
-      let thumbnailImage = null;
+      let thumbnailUrl = null;
       if (mapCaptureRef.current) {
         const canvas = await html2canvas(mapCaptureRef.current, { 
           useCORS: true,
           scale: 0.5 
         });
-        // base64 데이터 URL로 변환 (JPEG, 퀄리티 80%)
-        thumbnailImage = canvas.toDataURL("image/jpeg", 0.8);
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.8));
+
+        // 1. 백엔드에 Presigned URL 요청
+        console.log("백엔드에 Presigned URL을 요청합니다...");
+        const presignedResponse = await getPresignedUrl();
+        if (!presignedResponse.success) throw new Error("Presigned URL 받기 실패");
+
+        const { presignedUrl, imageUrl } = presignedResponse.data;
+        console.log("Presigned URL 수신 완료.");
+
+        // 2. 받은 URL로 S3에 이미지 업로드 (axios 직접 사용)
+        console.log("S3에 이미지 업로드를 시작합니다...");
+        await axios.put(presignedUrl, blob, { headers: { 'Content-Type': 'image/jpeg' } });
+        console.log("S3 업로드 성공!");
+        thumbnailUrl = imageUrl; // 최종 저장될 이미지 URL
       } else {
         console.warn("지도 캡처에 실패했습니다.");
       }
@@ -293,7 +306,7 @@ export default function RunningStop() {
         title: `${new Date().toISOString().split('T')[0]} 러닝 기록`, // 임시 제목
         distance: totalDistanceKm,
         time: new Date(elapsedSec * 1000).toISOString().substr(11, 8), // ✅ "HH:mm:ss" 형식으로 수정
-        average_pace: avgPace === "-'--\"" ? "0'00\"" : avgPace, // ✅ 유효하지 않은 페이스 값 보정
+        average_pace: avgPace,
         laps: laps,
         // ✅ 백엔드 명세서에 맞게 누락된 필드들을 기본값으로 추가합니다.
         content: "", // 메모 내용 (초기값은 빈 문자열)
