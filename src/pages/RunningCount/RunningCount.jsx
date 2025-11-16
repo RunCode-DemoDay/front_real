@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "./RunningCount.css";
 
 export default function RunningCount() {
-  const { courseId } = useParams();
+  const { courseId } = useParams(); // ✅ URL에서 courseId를 가져옵니다.
   const { state } = useLocation(); // CourseDetailPage에서 전달받은 모든 state
   const navigate = useNavigate();
 
@@ -13,7 +13,7 @@ export default function RunningCount() {
     // ✅ 카운트가 0이 되면 RunningStop 페이지로 이동하고, 타이머 로직을 중단합니다.
     if (count === 0) {
       if (navigator.vibrate) navigator.vibrate(80);
-      // CourseDetailPage에서 받은 state를 그대로 전달합니다.
+      // ✅ 가져온 courseId를 URL에 포함하여 다음 페이지로 전달합니다.
       navigate(`/running/stop/${courseId}`, { state, replace: true });
       return;
     }
