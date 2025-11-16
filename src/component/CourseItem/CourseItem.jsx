@@ -13,6 +13,9 @@ const META_ICONS = {
   bookmark_off: 'https://runcode-likelion.s3.us-east-2.amazonaws.com/course/save_off.svg', 
 };
 
+// ✅ 기본 썸네일 이미지 경로. /public 폴더의 파일은 최상위 경로로 접근합니다.
+const DEFAULT_THUMBNAIL = '/course_img.jpg';
+
 // ⭐ onClick을 부모에서 주입받을 수 있게 추가
 const CourseItem = ({ course, onClick }) => {
   const navigate = useNavigate();
@@ -84,12 +87,15 @@ const CourseItem = ({ course, onClick }) => {
   const bookmarkIconSrc = isBookmarked
     ? META_ICONS.bookmark_on
     : META_ICONS.bookmark_off;
+  
+  // ✅ course.thumbnail이 없거나 비어있을 경우 기본 이미지로 대체합니다.
+  const thumbnailSrc = course.thumbnail || DEFAULT_THUMBNAIL;
 
   return (
     <div className="course-item-card" onClick={handleCourseClick}>
       <div className="thumbnail-placeholder">
         <img
-          src={course.thumbnail}
+          src={thumbnailSrc}
           alt={course.title}
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
