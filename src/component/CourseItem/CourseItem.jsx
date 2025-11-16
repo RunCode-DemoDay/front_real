@@ -87,9 +87,9 @@ const CourseItem = ({ course, onClick }) => {
   const bookmarkIconSrc = isBookmarked
     ? META_ICONS.bookmark_on
     : META_ICONS.bookmark_off;
-  
-  // ✅ course.thumbnail이 없거나 비어있을 경우 기본 이미지로 대체합니다.
-  const thumbnailSrc = course.thumbnail || DEFAULT_THUMBNAIL;
+
+  // ✅ course.thumbnail이 없거나 잘못된 경로일 경우 기본 이미지로 대체합니다.
+  const thumbnailSrc = (course.thumbnail && !course.thumbnail.includes('/public/')) ? course.thumbnail : DEFAULT_THUMBNAIL;
 
   return (
     <div className="course-item-card" onClick={handleCourseClick}>
