@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchCourseDetail, fetchCourseReviews } from '../../api/mockCourseDetailAPI'; 
+import { getCourseDetail, getCourseReviews } from '../../api/courseDetailAPI'; // ✅ 실제 API 함수로 변경
 import FixedBottomButton from '../../component/FixedBottomButton/FixedBottomButton'; 
 import ImageSwiper from '../../component/ImageSwiper/ImageSwiper';
 import AppContainer from '../../AppContainer/AppContainer';
@@ -49,12 +49,20 @@ function CourseDetailPage() {
             setError(null);
             try {
                 const [detailRes, reviewRes] = await Promise.all([
-                    fetchCourseDetail(courseId),  
-                    fetchCourseReviews(courseId, 'LATEST')
+                    getCourseDetail(courseId),  // ✅ 실제 API 호출
+                    getCourseReviews({ courseId, order: 'LATEST' }) // ✅ 실제 API 호출
                 ]);
-                setDetailData(detailRes);
-                setReviewData(reviewRes);
-                setIsBookmarked(detailRes.isBookmarked); 
+
+                // ✅ API 응답 형식에 맞춰 데이터 설정
+                if (detailRes.success && detailRes.data) {
+                    setDetailData(detailRes.data);
+                    setIsBookmarked(detailRes.data.isBookmarked); 
+                }
+
+                if (reviewRes.success && reviewRes.data) {
+                    setReviewData(reviewRes.data);
+                }
+
             } catch (err) {
                 console.error("데이터 로드 실패:", err);
                 setError("코스 정보를 불러오는 데 실패했습니다.");

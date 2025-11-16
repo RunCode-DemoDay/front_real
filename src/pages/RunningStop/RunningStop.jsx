@@ -132,6 +132,16 @@ export default function RunningStop() {
   const mapCaptureRef = useRef(null); // 캡처할 지도 영역을 위한 ref
   const lastPosRef = useRef(null);
 
+  // ✅ 페이지 진입 시 courseId 유효성 검사
+  useEffect(() => {
+    // courseId가 없거나, "null"이라는 문자열이면 유효하지 않은 접근으로 간주
+    if (!courseId || courseId === "null") {
+      alert("잘못된 접근입니다. 코스를 선택하고 러닝을 시작해주세요.");
+      // 홈 화면으로 돌려보냄
+      navigate('/home', { replace: true });
+    }
+  }, [courseId, navigate]);
+
   // 시간 증가
   useEffect(() => {
     if (!isRunning) return;
