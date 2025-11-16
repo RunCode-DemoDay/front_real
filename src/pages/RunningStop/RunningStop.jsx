@@ -221,7 +221,10 @@ export default function RunningStop() {
       // ✅ 지도 캡처 로직 추가
       let thumbnailImage = null;
       if (mapCaptureRef.current) {
-        const canvas = await html2canvas(mapCaptureRef.current, { useCORS: true });
+        const canvas = await html2canvas(mapCaptureRef.current, { 
+          useCORS: true,
+          scale: 0.5 
+        });
         // base64 데이터 URL로 변환 (JPEG, 퀄리티 80%)
         thumbnailImage = canvas.toDataURL("image/jpeg", 0.8);
       } else {
