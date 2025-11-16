@@ -230,29 +230,29 @@ export default function RunningStop() {
       console.log("서버에 아카이빙 생성을 요청합니다.");
 
       let thumbnailUrl = null;
-      if (mapCaptureRef.current) {
-        const canvas = await html2canvas(mapCaptureRef.current, { 
-          useCORS: true,
-          scale: 0.5 
-        });
-        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.8));
+      // if (mapCaptureRef.current) {
+      //   const canvas = await html2canvas(mapCaptureRef.current, { 
+      //     useCORS: true,
+      //     scale: 0.5 
+      //   });
+      //   const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.8));
 
-        // 1. 백엔드에 Presigned URL 요청
-        console.log("백엔드에 Presigned URL을 요청합니다...");
-        const presignedResponse = await getPresignedUrl();
-        if (!presignedResponse.success) throw new Error("Presigned URL 받기 실패");
+      //   // 1. 백엔드에 Presigned URL 요청
+      //   console.log("백엔드에 Presigned URL을 요청합니다...");
+      //   const presignedResponse = await getPresignedUrl();
+      //   if (!presignedResponse.success) throw new Error("Presigned URL 받기 실패");
 
-        const { presignedUrl, imageUrl } = presignedResponse.data;
-        console.log("Presigned URL 수신 완료.");
+      //   const { presignedUrl, imageUrl } = presignedResponse.data;
+      //   console.log("Presigned URL 수신 완료.");
 
-        // 2. 받은 URL로 S3에 이미지 업로드 (axios 직접 사용)
-        console.log("S3에 이미지 업로드를 시작합니다...");
-        await axios.put(presignedUrl, blob, { headers: { 'Content-Type': 'image/jpeg' } });
-        console.log("S3 업로드 성공!");
-        thumbnailUrl = imageUrl; // 최종 저장될 이미지 URL
-      } else {
-        console.warn("지도 캡처에 실패했습니다.");
-      }
+      //   // 2. 받은 URL로 S3에 이미지 업로드 (axios 직접 사용)
+      //   console.log("S3에 이미지 업로드를 시작합니다...");
+      //   await axios.put(presignedUrl, blob, { headers: { 'Content-Type': 'image/jpeg' } });
+      //   console.log("S3 업로드 성공!");
+      //   thumbnailUrl = imageUrl; // 최종 저장될 이미지 URL
+      // } else {
+      //   console.warn("지도 캡처에 실패했습니다.");
+      // }
 
       // ✅ Laps 데이터 생성 로직 추가
       const laps = [];
