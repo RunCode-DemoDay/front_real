@@ -79,10 +79,10 @@ function CourseDetailPage() {
 
     // ✅ 러닝 시작 → 카운트다운 페이지로 이동 (코스 제목 state로 전달)
     const handleStartRunning = useCallback(() => {
-        // 🚨 courseId를 URL이 아닌 state에 담아 전달합니다.
-        navigate(`/running/count`, {
+        // ✅ courseId를 URL과 state에 모두 담아 전달하여 라우팅과 데이터 전달을 모두 처리합니다.
+        navigate(`/running/count/${courseId}`, {
             state: { 
-                courseId: courseId, // ✅ courseId를 state에 추가
+                courseId: courseId,
                 courseTitle: detailData?.title || '',
                 star_average: detailData?.star_average,
                 review_count: detailData?.review_count,
