@@ -22,6 +22,9 @@ const ASSET_ICONS = {
     right_arrow: 'https://runcode-likelion.s3.us-east-2.amazonaws.com/course/detail/right_arrow.svg',
 };
 
+// ✅ 기본 썸네일 이미지 경로
+const DEFAULT_THUMBNAIL = '/course_img.jpg';
+
 // MapComponent는 메인 파일에 남겨둡니다.
 const MapComponent = ({ thumbnail }) => (
     <div className="c-detail-map-component">
@@ -99,11 +102,17 @@ function CourseDetailPage() {
         );
     }
     
-    // ⭐ 데이터 가공: ImageSwiper에 전달할 이미지 배열 통합
-    const allCourseImages = [
-        detailData.thumbnail,
-        ...detailData.detail_images.filter(url => url !== detailData.thumbnail)
-    ];
+    // ✅ 데이터 가공: 잘못된 이미지 경로를 수정하고 ImageSwiper에 전달할 배열 통합
+    const sanitizeImageUrl = (url) => {
+        // URL이 유효하고, '/public/' 문자열을 포함하지 않을 때만 해당 URL을 반환
+        if (url && !url.includes('/public/')) {
+            return url;
+        }
+        // 그 외의 경우(null, undefined, 잘못된 경로)에는 기본 이미지를 반환
+        return DEFAULT_THUMBNAIL;
+    };
+
+    const allCourseImages = [sanitizeImageUrl(detailData.thumbnail), ...detailData.detail_images.map(sanitizeImageUrl)];
 
     const distanceString = `${detailData.distance}km`; 
     const bookmarkIconSrc = isBookmarked ? ASSET_ICONS.bookmark_on : ASSET_ICONS.bookmark_off;
