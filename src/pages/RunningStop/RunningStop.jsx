@@ -220,11 +220,11 @@ export default function RunningStop() {
     setIsRunning(false);
 
     // ✅ 최소 이동 거리 체크: 10m 미만은 저장하지 않음
-    if (totalDistanceKm < 0.01) {
-      alert("이동 거리가 너무 짧아 기록을 저장할 수 없습니다.");
-      navigate('/home', { replace: true }); // 홈으로 이동
-      return;
-    }
+    // if (totalDistanceKm < 0.01) {
+    //   alert("이동 거리가 너무 짧아 기록을 저장할 수 없습니다.");
+    //   navigate('/home', { replace: true }); // 홈으로 이동
+    //   return;
+    // }
 
     try {
       console.log("서버에 아카이빙 생성을 요청합니다.");
@@ -313,7 +313,7 @@ export default function RunningStop() {
 
       const requestBody = {
         // ✅ 최종적으로 결정된 courseId를 숫자로 변환하여 사용합니다.
-        course_id: Number(courseId),
+        course_id: 1,
         title: `${new Date().toISOString().split('T')[0]} 러닝 기록`, // 임시 제목
         distance: totalDistanceKm,
         time: new Date(elapsedSec * 1000).toISOString().substr(11, 8), // ✅ "HH:mm:ss" 형식으로 수정
