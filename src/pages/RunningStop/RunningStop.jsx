@@ -110,11 +110,12 @@ function haversineKm(a, b) {
 }
 
 export default function RunningStop() {
-  const { courseId } = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  // 백에서 넘어온 정보
+  // ✅ URL 파라미터 대신 location.state에서 courseId를 가져옵니다.
+  const courseId = state?.courseId ?? null;
+  // 나머지 정보도 state에서 가져옵니다.
   const bpm = state?.bpm ?? null;
   const courseTitle = state?.courseTitle ?? "";
   const star_average = state?.star_average ?? null;
@@ -312,7 +313,8 @@ export default function RunningStop() {
       }
 
       const requestBody = {
-        course_id: courseId === "null" ? null : Number(courseId),
+        // ✅ state에서 가져온 courseId를 사용합니다.
+        course_id: Number(courseId),
         title: `${new Date().toISOString().split('T')[0]} 러닝 기록`, // 임시 제목
         distance: totalDistanceKm,
         time: new Date(elapsedSec * 1000).toISOString().substr(11, 8), // ✅ "HH:mm:ss" 형식으로 수정

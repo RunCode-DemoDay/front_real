@@ -79,15 +79,17 @@ function CourseDetailPage() {
 
     // ✅ 러닝 시작 → 카운트다운 페이지로 이동 (코스 제목 state로 전달)
     const handleStartRunning = useCallback(() => {
-        navigate(`/running/count/${courseId}`, {
+        // 🚨 courseId를 URL이 아닌 state에 담아 전달합니다.
+        navigate(`/running/count`, {
             state: { 
+                courseId: courseId, // ✅ courseId를 state에 추가
                 courseTitle: detailData?.title || '',
                 star_average: detailData?.star_average,
                 review_count: detailData?.review_count,
                 courseDistance: detailData?.distance, // 코스의 원래 거리 추가
             }
         });
-    }, [courseId, detailData, navigate]);
+    }, [courseId, detailData, navigate]); // 의존성 배열에 courseId 유지
 
     const handleReviewViewAll = useCallback(() => {
         navigate(`/course/${courseId}/reviews`);
