@@ -294,9 +294,14 @@ export default function RunningStop() {
         distance: totalDistanceKm,
         time: new Date(elapsedSec * 1000).toISOString().substr(11, 8), // ✅ "HH:mm:ss" 형식으로 수정
         average_pace: avgPace === "-'--\"" ? "0'00\"" : avgPace, // ✅ 유효하지 않은 페이스 값 보정
-        laps: laps, // ✅ 생성된 laps 데이터 추가
-        thumbnail: null, // 🚨 임시 조치: DB 오류를 피하기 위해 썸네일을 null로 보냅니다.
-        // calorie, altitude, cadence 등 추가 데이터
+        laps: laps,
+        thumbnail: null,
+        // ✅ 백엔드 명세서에 맞게 누락된 필드들을 기본값으로 추가합니다.
+        content: "", // 메모 내용 (초기값은 빈 문자열)
+        calorie: 0,
+        altitude: 0,
+        cadence: 0,
+        detailImage: null, // 상세 이미지는 나중에 추가되므로 초기값은 null
       };
 
       // 2. 분리된 API 함수 호출
