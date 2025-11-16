@@ -1,22 +1,15 @@
 // src/api/archivingAPI.js
+// src/api/archivingAPI.js
 import apiClient from './index';
-import axios from 'axios'; // axios 직접 import
 
 /**
  * ✅ 썸네일 업로드를 위한 Presigned URL을 백엔드로부터 받아옵니다.
  * POST /archivings
- * 🚨 Content-Type 오류로 인해 apiClient를 사용하지 않고 axios를 직접 호출합니다.
+ * 🚨 백엔드 요구사항에 따라 빈 JSON 객 '{}'를 body에 담아 요청합니다.
  */
 export const getPresignedUrl = async () => {
-  // apiClient의 기본 baseURL을 가져옵니다.
-  const baseURL = apiClient.defaults.baseURL;
-  const token = localStorage.getItem('accessToken');
-
-  // Content-Type 없이 직접 요청을 보냅니다.
-  const res = await axios.post(`${baseURL}/archivings`, null, {
-    headers: { Authorization: `Bearer ${token}` },
-    withCredentials: true,
-  });
+  // apiClient는 자동으로 Content-Type: application/json 헤더를 추가합니다.
+  const res = await apiClient.post(`/archivings`, {});
   return res.data;
 };
 
