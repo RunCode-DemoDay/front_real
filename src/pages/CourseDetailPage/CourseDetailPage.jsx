@@ -120,7 +120,10 @@ function CourseDetailPage() {
         return DEFAULT_THUMBNAIL;
     };
 
-    const allCourseImages = [sanitizeImageUrl(detailData.thumbnail), ...detailData.detail_images.map(sanitizeImageUrl)];
+    // ✅ 필드 이름을 detailImages로 수정하고, 해당 필드가 없을 경우를 대비하여 빈 배열로 처리합니다.
+    const detailImages = detailData.detailImages || [];
+
+    const allCourseImages = [sanitizeImageUrl(detailData.thumbnail), ...detailImages.map(sanitizeImageUrl)];
 
     const distanceString = `${detailData.distance}km`; 
     const bookmarkIconSrc = isBookmarked ? ASSET_ICONS.bookmark_on : ASSET_ICONS.bookmark_off;
