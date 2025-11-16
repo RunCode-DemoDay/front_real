@@ -4,10 +4,10 @@ import apiClient from './index';
 /**
  * ✅ 썸네일 업로드를 위한 Presigned URL을 백엔드로부터 받아옵니다.
  * GET /archivings/presigned-url
- * 🚨 백엔드 요청으로 POST로 변경
+ * 🚨 백엔드 요청으로 POST /archivings 로 변경
  */
 export const getPresignedUrl = async () => {
-  const res = await apiClient.post(`/archivings/presigned-url`);
+  const res = await apiClient.post(`/archivings`);
   return res.data; // { success, code, message, data: { presignedUrl, imageUrl } }
 };
 
