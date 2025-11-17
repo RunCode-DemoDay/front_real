@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; // ✅ useEffect 추가
+import React, { useState } from "react"; // ✅ useState 추가
 import { useNavigate } from "react-router-dom";
 
 import StarIcon from "../../assets/Star.svg";
@@ -12,7 +12,7 @@ const LeftArrow =
 import "./ReviewMy.css";
 
 // 📍 더미데이터
-import { getreviewedCourses } from "../../api/mockMyPageAPI"; // ✅ 실제 API 함수 임포트
+import { mockMyWrittenReviews as DATA } from "../../api/mockMyPageAPI";
 
 // ⭐ rating 만큼 색칠되는 별
 const Stars = ({ value }) => {
@@ -36,6 +36,22 @@ const ReviewMy = () => {
   const navigate = useNavigate();
   const handleBack = () => navigate(-1);
 
+  useEffect(() => {
+      // ✅ useEffect 내에서 async 함수를 직접 사용할 수 없으므로,
+      // 내부에 별도의 async 함수를 선언하고 호출합니다.
+      const fetchReview = async () => {
+        try {
+          const result = await getreviewedCourses();
+          if (result.success && Array.isArray(result.data)) {
+            setCourses(result.data); // ✅ API 응답의 data 배열을 상태에 저장합니다.
+          }
+        } catch (error) {
+          console.error("리뷰 미작성 코스 조회 실패:", error);
+        }
+      };
+      fetchReview();
+    }, []);
+
   // ================== ✅ 추가된 상태들 ==================
   // 어떤 카드의 점3개 메뉴가 열려 있는지
   const [openedMenuId, setOpenedMenuId] = useState(null);
@@ -44,28 +60,6 @@ const ReviewMy = () => {
   // 실제 삭제 대상 (지금은 네비용)
   const [targetReviewId, setTargetReviewId] = useState(null);
   // ====================================================
-  // ✅ API로부터 받아온 리뷰 목록 상태
-  const [reviews, setReviews] = useState([]);
-  // ✅ 로딩 상태
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchReviews = async () => {
-      setLoading(true);
-      try {
-        const result = await getreviewedCourses();
-        if (result.success && Array.isArray(result.data)) {
-          setReviews(result.data); // ✅ API 응답의 data 배열을 상태에 저장합니다.
-        } else {
-          console.error("작성한 리뷰 조회 실패:", result.message);
-        }
-      } catch (error) {
-        console.error("작성한 리뷰 조회 중 에러 발생:", error);
-      }
-      setLoading(false);
-    };
-    fetchReviews();
-  }, []);
 
   // 점 3개 버튼 클릭
   const handleMoreClick = (e, reviewId) => {
@@ -108,21 +102,15 @@ const ReviewMy = () => {
 
         <div className="reviewmy-title-row">
           <h2 className="reviewmy-title">작성한 리뷰</h2>
-          {/* ✅ 로딩이 아닐 때만 개수 표시 */}
-          {!loading && <span className="reviewmy-count">({reviews.length})</span>}
+          <span className="reviewmy-count">({DATA.length})</span>
         </div>
       </header>
 
       {/* 본문 */}
       <main className="reviewmy-content">
-        {loading ? (
-          <p className="reviewmy-loading">리뷰를 불러오는 중입니다...</p>
-        ) : reviews.length === 0 ? (
-          <p className="reviewmy-empty">작성한 리뷰가 없습니다.</p>
-        ) : (
-          <ul className="reviewmy-list">
-            {reviews.map((r) => (
-              <li key={r.review_id} className="reviewmy-item">
+        <ul className="reviewmy-list">
+          {DATA.map((r) => (
+            <li key={r.review_id} className="reviewmy-item">
               {/* 상단: 썸네일 + 코스정보 + ... */}
               <div className="reviewmy-top">
                 <div className="reviewmy-thumb">
@@ -196,10 +184,9 @@ const ReviewMy = () => {
                   리뷰 삭제
                 </button>
               )}
-              </li>
-            ))}
-          </ul>
-        )}
+            </li>
+          ))}
+        </ul>
       </main>
 
       {/* ✅ 삭제 확인 모달 */}
