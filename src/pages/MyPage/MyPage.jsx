@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./MyPage.css";
 import LeftArrow from "../../assets/Left.svg";
 import BottomNavigator from "../../component/BottomNavigator/BottomNavigator";
-import { getMyInfo } from "../../api/userAPI"; // ✅ 사용자 정보 API 임포트
+import { getMyInfo, patchInfo } from "../../api/userAPI"; // ✅ patchInfo 함수를 추가로 임포트합니다.
 
 const MyPage = () => {
   const navigate = useNavigate();
@@ -40,10 +40,15 @@ const MyPage = () => {
     navigate("/reviewmy");
   };
 
-  const handleGoToRunnerType = () => {
-    const res = patchInfo(null);
-    console.log(res);
-    navigate("/start");
+  // ✅ API를 호출하므로 async/await로 비동기 처리합니다.
+  const handleGoToRunnerType = async () => {
+    try {
+      const res = await patchInfo({ type: null }); // type을 초기화하도록 요청
+      console.log("러너 유형 초기화 결과:", res);
+      navigate("/start");
+    } catch (error) {
+      console.error("러너 유형 초기화 실패:", error);
+    }
   };
 
   const handleLogoutClick = () => {
