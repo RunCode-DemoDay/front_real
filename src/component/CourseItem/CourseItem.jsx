@@ -33,7 +33,7 @@ const CourseItem = ({ course, onClick }) => {
   const handleBookmarkToggle = async (e) => {
     e.stopPropagation(); // 카드 전체 클릭 막기
         
-    const originalBookmarkStatus = isBookmarked;
+    const originalBookmarkStatus = _bookmarked;
     const originalBookmarkId = bookmarkId;    
 
     // 1. UI를 먼저 업데이트 (낙관적 업데이트)
