@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react"; // ✅ useEffect 추가
 import { useNavigate } from "react-router-dom";
 
 import StarIcon from "../../assets/Star.svg";
-import DistanceIcon from "../../assets/Distance.svg";
-import ReviewsIcon from "../../assets/Reviews.svg";
-import SettingIcon from "../../assets/Setting.svg";
 
-const LeftArrow =
-  "https://runcode-likelion.s3.us-east-2.amazonaws.com/global/back.svg";
+// ✅ 아이콘들을 로컬에서 불러오는 대신 S3 URL을 직접 사용합니다.
+const ICONS = {
+  LeftArrow: "https://runcode-likelion.s3.us-east-2.amazonaws.com/global/back.svg",
+  Distance: "https://runcode-likelion.s3.us-east-2.amazonaws.com/course/distance.svg",
+  Reviews: "https://runcode-likelion.s3.us-east-2.amazonaws.com/course/review.svg",
+  Setting: "https://runcode-likelion.s3.us-east-2.amazonaws.com/global/setting.svg",
+};
 
 import "./ReviewMy.css";
 
@@ -103,7 +105,7 @@ const ReviewMy = () => {
           className="reviewmy-back-btn"
           onClick={handleBack}
         >
-          <img className="reviewmy-back-icon" src={LeftArrow} alt="뒤로가기" />
+          <img className="reviewmy-back-icon" src={ICONS.LeftArrow} alt="뒤로가기" />
         </button>
 
         <div className="reviewmy-title-row">
@@ -145,7 +147,7 @@ const ReviewMy = () => {
                     <span>
                       <img
                         className="reviewmy-meta-icon"
-                        src={ReviewsIcon}
+                        src={ICONS.Reviews}
                         alt=""
                         aria-hidden="true"
                       />
@@ -154,7 +156,7 @@ const ReviewMy = () => {
                     <span>
                       <img
                         className="reviewmy-meta-icon"
-                        src={DistanceIcon}
+                        src={ICONS.Distance}
                         alt=""
                         aria-hidden="true"
                       />
@@ -170,7 +172,7 @@ const ReviewMy = () => {
                   aria-label="옵션"
                   onClick={(e) => handleMoreClick(e, r.review_id)} // ✅ 메뉴 열기
                 >
-                  <img src={SettingIcon} alt="" aria-hidden="true" />
+                  <img src={ICONS.Setting} alt="" aria-hidden="true" />
                 </button>
               </div>
 
