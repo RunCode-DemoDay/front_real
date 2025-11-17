@@ -37,7 +37,7 @@ const StartPage = () => {
         }
 
         // 이미 type이 있는 프로필이면 바로 홈으로
-        if (userProfile?.type && (userProfile.type.id || userProfile.type.name)) {
+        if (userProfile?.type && (userProfile.type.id || userProfile.type.name) && userProfile.type.name != "AAAA") {
           if (!cancelled) {
             setChecking(false);
             navigate("/home", { replace: true });
