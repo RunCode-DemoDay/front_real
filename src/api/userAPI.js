@@ -10,3 +10,9 @@ export async function getMyInfo() {
   // 명세서 기준: { success, code, message, data: { ...user } }
   return res.data;
 }
+
+export async function patchInfo(params) {
+  const res = await apiClient.patch("/users/me", params);
+  return res.data;
+
+}

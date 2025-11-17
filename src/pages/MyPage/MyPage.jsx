@@ -41,6 +41,8 @@ const MyPage = () => {
   };
 
   const handleGoToRunnerType = () => {
+    const res = patchInfo(null);
+    console.log(res);
     navigate("/start");
   };
 
