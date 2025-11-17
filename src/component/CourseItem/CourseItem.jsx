@@ -62,8 +62,8 @@ const CourseItem = ({ course, onClick }) => {
         }
       } else {
         // 북마크 삭제 API 호출
-        console.log(`북마크 삭제 요청 : course_id : ${course.course_id}`)
-        await deleteBookmark(course.course_id);
+        console.log(`북마크 삭제 요청 : course_id : ${course.course_id||course.courseId}`)
+        await deleteBookmark(course.course_id||course.courseId);
         console.log("북마크 삭제 성공");
       }
     } catch (error) {
@@ -82,7 +82,7 @@ const CourseItem = ({ course, onClick }) => {
     if (onClick) {
       onClick();
     } else {
-      navigate(`/course/${course.course_id}`);
+      navigate(`/course/${course.course_id||course.courseId}`);
     }
   };
     
@@ -114,12 +114,12 @@ const CourseItem = ({ course, onClick }) => {
         <div className="course-meta">
           <span className="star-rating">
             <img src={META_ICONS.star} alt="별점" style={iconStyle} />
-            {course.star_average}
+            {course.star_average||course.starAverage}
           </span>
                     
           <span className="review-count">
             <img src={META_ICONS.comment} alt="리뷰" style={iconStyle} />
-            리뷰 {course.review_count}건
+            리뷰 {course.review_count|course.reviewCount}건
           </span>
                     
           <span className="distance">
