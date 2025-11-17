@@ -62,6 +62,7 @@ const CourseItem = ({ course, onClick }) => {
         }
       } else {
         // 북마크 삭제 API 호출
+        console.log(`북마크 삭제 요청 : course_id : ${course.course_id}`)
         await deleteBookmark(course.course_id);
         console.log("북마크 삭제 성공");
       }
