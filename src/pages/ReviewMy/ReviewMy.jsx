@@ -36,22 +36,6 @@ const ReviewMy = () => {
   const navigate = useNavigate();
   const handleBack = () => navigate(-1);
 
-  useEffect(() => {
-      // ✅ useEffect 내에서 async 함수를 직접 사용할 수 없으므로,
-      // 내부에 별도의 async 함수를 선언하고 호출합니다.
-      const fetchReview = async () => {
-        try {
-          const result = await getreviewedCourses();
-          if (result.success && Array.isArray(result.data)) {
-            setCourses(result.data); // ✅ API 응답의 data 배열을 상태에 저장합니다.
-          }
-        } catch (error) {
-          console.error("리뷰 미작성 코스 조회 실패:", error);
-        }
-      };
-      fetchReview();
-    }, []);
-
   // ================== ✅ 추가된 상태들 ==================
   // 어떤 카드의 점3개 메뉴가 열려 있는지
   const [openedMenuId, setOpenedMenuId] = useState(null);
