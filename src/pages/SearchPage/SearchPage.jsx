@@ -20,7 +20,6 @@ const ORDER_OPTIONS = [
     { label: "짧은 순", value: "DISTANCE_ASC" },
 ];
 
-// ⭐ 2. useDebounce 커스텀 훅 정의
 const useDebounce = (value, delay) => {
     const [debouncedValue, setDebouncedValue] = useState(value);
     useEffect(() => {
