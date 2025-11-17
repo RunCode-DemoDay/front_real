@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { mockUnreviewedCourses } from "../../api/mockMyPageAPI";
+import { mockUnreviewedCourses,getUnreviewedCourses } from "../../api/mockMyPageAPI";
 import CourseItem from "../../component/CourseItem/CourseItem";
 
 import "./ReviewAdd.css";
@@ -12,7 +12,9 @@ const ReviewAdd = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setCourses(mockUnreviewedCourses);
+    const res = getUnreviewedCourses();
+    console.log(res);
+    setCourses(res);
   }, []);
 
   // ✅ 뒤로가기: 항상 마이페이지로
