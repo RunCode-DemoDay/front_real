@@ -9,7 +9,7 @@ import apiClient from "./index";
  */
 export const searchCourses = async (query, order) => {
   try {
-    const response = await apiClient.get('/courses/search', {
+    const response = await apiClient.get(`/courses/search?query=${query}&order=${order}`, {
       params: {
         query,
         order,
