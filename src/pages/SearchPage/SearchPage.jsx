@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchCourses } from '../../api/mockHomeAPI'; // Mock API
+import { searchCourses } from '../../api/courseAPI'; // ✅ 실제 API 함수로 변경
 import BottomNavigator from '../../component/BottomNavigator/BottomNavigator'; 
 import CourseItem from '../../component/CourseItem/CourseItem'; 
 import './SearchPage.css'; // CSS 파일 import
@@ -12,10 +12,12 @@ import CustomSelect from '../../component/CustomSelect/CustomSelect';
 
 // =========================================================
 // ⭐ 1. HomePage에서 사용한 ORDER_OPTIONS 재정의
+// ✅ API 명세에 맞게 정렬 옵션 업데이트
 const ORDER_OPTIONS = [
     { label: "최신 순", value: "CREATED_DESC" },
-    { label: "짧은 순", value: "DISTANCE_ASC" },
+    { label: "리뷰 순", value: "REVIEW_COUNT_DESC" },
     { label: "별점 순", value: "RATING_DESC" },
+    { label: "짧은 순", value: "DISTANCE_ASC" },
 ];
 
 // ⭐ 2. useDebounce 커스텀 훅 정의
@@ -75,10 +77,13 @@ function SearchPage() {
         setLoading(true);
         setInitialSearch(false);
         try {
-            // Mock API 호출: tag는 null, order와 query를 전달
-            // fetchCourses(tag, order, query) 구조 사용
-            const courseList = await fetchCourses(null, order, query); 
-            setCourses(courseList);
+            // ✅ 실제 검색 API 호출로 변경
+            const result = await searchCourses(query, order); 
+            if (result.success) {
+                setCourses(result.data); // ✅ API 응답 구조에 맞게 데이터 설정
+            } else {
+                throw new Error(result.message || "코스 검색에 실패했습니다.");
+            }
         } catch (error) {
             console.error("검색 코스 로드 실패:", error);
             setCourses([]);
