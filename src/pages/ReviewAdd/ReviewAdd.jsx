@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUnreviewedCourses } from "../../api/mockMyPageAPI";
+import { mockUnreviewedCourses,getUnreviewedCourses } from "../../api/mockMyPageAPI";
 import CourseItem from "../../component/CourseItem/CourseItem";
 
 import "./ReviewAdd.css";
