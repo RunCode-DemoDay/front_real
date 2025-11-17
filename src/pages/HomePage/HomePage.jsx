@@ -166,7 +166,7 @@ function HomePage() {
 
       <section className="filter-section">
         <div className="mvp-type-info">
-          <span className="label-mvp">오늘의 MVP 유형</span>
+          <span className="label-mvp">나의 러너 유형</span>
           <span className="type-name">{mvpTypeName || fallbackRunType}</span>
         </div>
 
