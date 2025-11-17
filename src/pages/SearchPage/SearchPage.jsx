@@ -78,7 +78,10 @@ function SearchPage() {
         try {
             // Mock API 호출: tag는 null, order와 query를 전달
             // fetchCourses(tag, order, query) 구조 사용
+            console.log("검색어:", query);
+            console.log("정렬 기준:", order);
             const courseList = await searchCourses( query,order); 
+            console.log("검색 결과:", courseList);
             setCourses(courseList);
         } catch (error) {
             console.error("검색 코스 로드 실패:", error);
