@@ -1,5 +1,5 @@
 // src/api/courseAPI.js
-import axios from './axiosInstance';
+import apiClient from "./index";
 
 /**
  * 코스를 검색합니다. (GET /courses/search)
@@ -9,7 +9,7 @@ import axios from './axiosInstance';
  */
 export const searchCourses = async (query, order) => {
   try {
-    const response = await axios.get('/courses/search', {
+    const response = await apiClient.get('/courses/search', {
       params: {
         query,
         order,

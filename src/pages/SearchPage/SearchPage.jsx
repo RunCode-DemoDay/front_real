@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { searchCourses } from '../../api/courseAPI';
 import { fetchCourses } from '../../api/mockHomeAPI'; // Mock API
 import BottomNavigator from '../../component/BottomNavigator/BottomNavigator'; 
 import CourseItem from '../../component/CourseItem/CourseItem'; 
@@ -77,7 +78,7 @@ function SearchPage() {
         try {
             // Mock API 호출: tag는 null, order와 query를 전달
             // fetchCourses(tag, order, query) 구조 사용
-            const courseList = await fetchCourses(null, order, query); 
+            const courseList = await searchCourses( query,order); 
             setCourses(courseList);
         } catch (error) {
             console.error("검색 코스 로드 실패:", error);
