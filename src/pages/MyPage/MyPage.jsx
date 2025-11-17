@@ -43,9 +43,7 @@ const MyPage = () => {
   // ✅ API를 호출하므로 async/await로 비동기 처리합니다.
   const handleGoToRunnerType = async () => {
     try {
-      const res = await patchInfo({ "typeCode": "AAAA" }); // type을 초기화하도록 요청
-      console.log("러너 유형 초기화 결과:", res);
-      navigate("/start");
+      navigate("/start", { state: { from: "mypage-reset" } });
     } catch (error) {
       console.error("러너 유형 초기화 실패:", error);
     }
