@@ -12,9 +12,19 @@ const ReviewAdd = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const res = getUnreviewedCourses();
-    console.log(res);
-    setCourses(res);
+    // ✅ useEffect 내에서 async 함수를 직접 사용할 수 없으므로,
+    // 내부에 별도의 async 함수를 선언하고 호출합니다.
+    const fetchCourses = async () => {
+      try {
+        const result = await getUnreviewedCourses();
+        if (result.success && Array.isArray(result.data)) {
+          setCourses(result.data); // ✅ API 응답의 data 배열을 상태에 저장합니다.
+        }
+      } catch (error) {
+        console.error("리뷰 미작성 코스 조회 실패:", error);
+      }
+    };
+    fetchCourses();
   }, []);
 
   // ✅ 뒤로가기: 항상 마이페이지로
