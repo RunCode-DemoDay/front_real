@@ -14,11 +14,11 @@ import CustomSelect from '../../component/CustomSelect/CustomSelect';
 // =========================================================
 // ⭐ 1. HomePage에서 사용한 ORDER_OPTIONS 재정의
 const ORDER_OPTIONS = [
-    { label: "최신 순", value: "최신순" },
-    { label: "짧은 코스순", value: "짧은코스순" },
-    { label: "긴 코스순", value: "긴코스순" },
-    { label: "별점 순", value: "별점순" },
-    { label: "리뷰 순", value: "리뷰순" },
+    { label: "최신순", value: "최신순" },
+    { label: "짧은코스순", value: "짧은코스순" },
+    { label: "긴코스순", value: "긴코스순" },
+    { label: "별점순", value: "별점순" },
+    { label: "리뷰순", value: "리뷰순" },
 ];
 
 // ⭐ 2. useDebounce 커스텀 훅 정의
