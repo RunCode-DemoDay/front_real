@@ -80,9 +80,13 @@ function SearchPage() {
             // fetchCourses(tag, order, query) 구조 사용
             console.log("검색어:", query);
             console.log("정렬 기준:", order);
-            const courseList = await searchCourses( query,order); 
-            console.log("검색 결과:", courseList);
-            setCourses(courseList);
+            const result = await searchCourses(query, order); 
+            console.log("검색 결과:", result);
+            if (result.success && Array.isArray(result.data)) {
+                setCourses(result.data); // ✅ 응답 객체의 data 배열을 상태에 저장합니다.
+            } else {
+                setCourses([]); // 실패하거나 데이터 형식이 맞지 않으면 빈 배열로 초기화합니다.
+            }
         } catch (error) {
             console.error("검색 코스 로드 실패:", error);
             setCourses([]);
