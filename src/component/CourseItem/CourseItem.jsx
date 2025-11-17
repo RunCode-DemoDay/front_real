@@ -20,15 +20,12 @@ const DEFAULT_THUMBNAIL = '/course_img.jpg';
 const CourseItem = ({ course, onClick, onBookmarkChange }) => {
   const navigate = useNavigate();
 
-  const [isBookmarked, setIsBookmarked] = useState(course._bookmarked); 
+  // SavedCoursesPage에서는 항상 북마크된 상태로 시작하므로 true로 초기화하거나,
+  // 다양한 페이지에서의 재사용을 고려하여 prop을 확인합니다.
+  // 여기서는 useEffect를 제거하고, 초기 상태만 설정합니다.
+  const [isBookmarked, setIsBookmarked] = useState(course._bookmarked !== undefined ? course._bookmarked : true); 
   const [bookmarkId, setBookmarkId] = useState(course.bookmark_id); 
 
-  // ✅ course prop이 변경될 때 isBookmarked 상태를 동기화합니다.
-  // 부모 컴포넌트의 상태 변경으로 인해 prop이 바뀌었을 때 UI를 정확하게 반영하기 위함입니다.
-  useEffect(() => {
-    setIsBookmarked(course._bookmarked);
-  }, [course._bookmarked]);
-    
   const iconStyle = { 
     width: '16px', 
     height: '16px', 

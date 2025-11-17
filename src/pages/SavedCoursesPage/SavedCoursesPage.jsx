@@ -48,13 +48,9 @@ function SavedCoursesPage() {
             const result = await getBookmarks(order); 
             
             if (result.success) {
-                // 3. API 응답 데이터(result.data)를 상태에 맞게 가공
-                const formattedBookmarks = result.data.map(item => ({
-                    ...item,
-                    // CourseItem 호환성을 위해 is_bookmarked 필드 추가
-                    _bookmarked: true 
-                }));
-                setBookmarks(formattedBookmarks);
+                // 3. API 응답 데이터를 그대로 사용합니다.
+                // _bookmarked를 강제로 true로 설정하는 로직을 제거합니다.
+                setBookmarks(result.data);
             } else {
                 throw new Error(result.message || "북마크 목록 조회에 실패했습니다.");
             }
