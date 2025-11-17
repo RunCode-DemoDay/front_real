@@ -7,7 +7,7 @@ import apiClient from './index';
  * @returns {Promise<object>} API 응답 데이터
  */
 export const createBookmark = async (courseId) => {
-  const response = await apiClient.post('/bookmarks', { course_id: courseId });
+  const response = await apiClient.post('/bookmarks', { courseId: courseId });
   return response.data;
 };
 
