@@ -132,14 +132,14 @@ export const getUnreviewedCourses = async () => {
   }
 };
 
-export const getMyreviewedCourses = async () => {
-  try {
-    const response = await apiClient.get('/users/me/reviews');
-    // 실제 데이터는 response.data.data 에 있습니다.
-    return response.data;
-  } catch (error) {
-    console.error('코스 검색 API 오류:', error);
-    // 실패 시 success: false 와 에러 메시지를 포함하는 객체를 반환하도록 통일합니다.
-    return error.response?.data || { success: false, message: '네트워크 오류 또는 서버 응답 없음' };
-  }
-};
+// export const getMyreviewedCourses = async () => {
+//   try {
+//     const response = await apiClient.get('/users/me/reviews');
+//     // 실제 데이터는 response.data.data 에 있습니다.
+//     return response.data;
+//   } catch (error) {
+//     console.error('코스 검색 API 오류:', error);
+//     // 실패 시 success: false 와 에러 메시지를 포함하는 객체를 반환하도록 통일합니다.
+//     return error.response?.data || { success: false, message: '네트워크 오류 또는 서버 응답 없음' };
+//   }
+// };
