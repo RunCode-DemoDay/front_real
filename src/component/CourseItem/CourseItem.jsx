@@ -20,7 +20,7 @@ const DEFAULT_THUMBNAIL = '/course_img.jpg';
 const CourseItem = ({ course, onClick }) => {
   const navigate = useNavigate();
 
-  const [isBookmarked, setIsBookmarked] = useState(course.is_bookmarked); 
+  const [isBookmarked, setIsBookmarked] = useState(course._bookmarked); 
   const [bookmarkId, setBookmarkId] = useState(course.bookmark_id); 
     
   const iconStyle = { 
@@ -33,7 +33,7 @@ const CourseItem = ({ course, onClick }) => {
   const handleBookmarkToggle = async (e) => {
     e.stopPropagation(); // 카드 전체 클릭 막기
         
-    const originalBookmarkStatus = _bookmarked;
+    const originalBookmarkStatus = isBookmarked;
     const originalBookmarkId = bookmarkId;    
 
     // 1. UI를 먼저 업데이트 (낙관적 업데이트)
