@@ -26,6 +26,8 @@
     position: absolute;
     background: var(--Black, #121212);
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    z-index: 1;
+
 }
 
 .back-button {
@@ -101,6 +103,7 @@
     padding: 80px 20px;
     flex-grow: 1;
     overflow-y: auto; 
+    scrollbar-width: none;
 }
 
 .placeholder-message, .loading-message, .no-results-message {
