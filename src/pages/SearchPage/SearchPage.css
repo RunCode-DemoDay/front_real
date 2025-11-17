@@ -13,7 +13,7 @@
     
     /* 하단 네비게이터 영역을 피하기 위한 패딩 */
     padding-bottom: 70px; 
-    overflow-y: auto; 
+    
 }
 
 /* 2. 상단 검색 바 헤더 */
@@ -100,6 +100,7 @@
 .search-results-main {
     padding: 80px 20px;
     flex-grow: 1;
+    overflow-y: auto; 
 }
 
 .placeholder-message, .loading-message, .no-results-message {
