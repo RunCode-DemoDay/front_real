@@ -17,7 +17,7 @@ const META_ICONS = {
 const DEFAULT_THUMBNAIL = '/course_img.jpg';
 
 // ⭐ onClick을 부모에서 주입받을 수 있게 추가
-const CourseItem = ({ course, onClick }) => {
+const CourseItem = ({ course, onClick, onBookmarkChange }) => {
   const navigate = useNavigate();
 
   const [isBookmarked, setIsBookmarked] = useState(course._bookmarked); 
@@ -64,6 +64,11 @@ const CourseItem = ({ course, onClick }) => {
         // 북마크 삭제 API 호출
         console.log(`북마크 삭제 요청 : course_id : ${course.course_id||course.courseId}`)
         await deleteBookmark(course.course_id||course.courseId);
+        // ⭐ 북마크 변경 콜백 호출
+        if (onBookmarkChange) {
+          // 삭제된 코스의 ID를 부모에게 전달
+          onBookmarkChange(course.course_id || course.courseId);
+        }
         console.log("북마크 삭제 성공");
       }
     } catch (error) {

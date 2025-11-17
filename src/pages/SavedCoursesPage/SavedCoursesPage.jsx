@@ -52,7 +52,7 @@ function SavedCoursesPage() {
                 const formattedBookmarks = result.data.map(item => ({
                     ...item,
                     // CourseItem 호환성을 위해 is_bookmarked 필드 추가
-                    is_bookmarked: true 
+                    _bookmarked: true 
                 }));
                 setBookmarks(formattedBookmarks);
             } else {
@@ -75,6 +75,13 @@ function SavedCoursesPage() {
 
     const handleOrderChange = (newValue) => {
         setSelectedOrder(newValue);
+    };
+
+    // ⭐ 북마크 해제 시 목록에서 해당 아이템을 제거하는 함수
+    const handleBookmarkChange = (unbookmarkedCourseId) => {
+        setBookmarks(prevBookmarks => 
+            prevBookmarks.filter(bookmark => (bookmark.course_id || bookmark.courseId) !== unbookmarkedCourseId)
+        );
     };
 
 
@@ -107,7 +114,7 @@ function SavedCoursesPage() {
                             <CourseItem 
                                 key={course.course_id} 
                                 course={course} 
-                                // isBookmarked 상태는 데이터 변환 시 true로 강제 설정됨
+                                onBookmarkChange={handleBookmarkChange} // ⭐ 콜백 함수 전달
                             />
                         ))
                     ) : (
