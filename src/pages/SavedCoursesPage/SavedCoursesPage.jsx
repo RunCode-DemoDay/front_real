@@ -73,11 +73,9 @@ function SavedCoursesPage() {
         setSelectedOrder(newValue);
     };
 
-    // ⭐ 북마크 해제 시 목록에서 해당 아이템을 제거하는 함수
-    const handleBookmarkChange = (unbookmarkedCourseId) => {
-        setBookmarks(prevBookmarks => 
-            prevBookmarks.filter(bookmark => (bookmark.course_id || bookmark.courseId) !== unbookmarkedCourseId)
-        );
+    // ⭐ 북마크 해제 시 목록을 서버에서 다시 불러오는 함수
+    const handleBookmarkChange = () => {
+        loadBookmarks(selectedOrder);
     };
 
 
