@@ -62,7 +62,8 @@ const CourseItem = ({ course, onClick }) => {
         }
       } else {
         // 북마크 삭제 API 호출
-        await deleteBookmark(originalBookmarkId);
+        await deleteBookmark(course.course_id);
+        console.log("북마크 삭제 성공");
       }
     } catch (error) {
       console.error("북마크 토글 에러:", error);

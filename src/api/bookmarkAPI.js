@@ -13,11 +13,11 @@ export const createBookmark = async (courseId) => {
 
 /**
  * 북마크를 삭제하는 API
- * @param {number} bookmarkId - 삭제할 북마크의 ID
+ * @param {number} courseId - 삭제할 북마크의 ID
  * @returns {Promise<object>} API 응답 데이터
  */
-export const deleteBookmark = async (bookmarkId) => {
-  const response = await apiClient.delete(`/bookmarks/${bookmarkId}`);
+export const deleteBookmark = async (courseId) => {
+  const response = await apiClient.delete(`/bookmarks/${courseId}`);
   return response.data;
 };
 
