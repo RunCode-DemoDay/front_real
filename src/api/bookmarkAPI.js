@@ -28,5 +28,5 @@ export const deleteBookmark = async (courseId) => {
  */
 export const getBookmarks = async (order) => {
   const response = await apiClient.get('/bookmarks', { params: { order } });
-  return response;
+  return response.data;
 };
