@@ -1,6 +1,6 @@
 // src/component/CourseItem/CourseItem.jsx
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import { createBookmark, deleteBookmark } from '../../api/bookmarkAPI'; 
 import './CourseItem.css'; 
@@ -22,6 +22,12 @@ const CourseItem = ({ course, onClick, onBookmarkChange }) => {
 
   const [isBookmarked, setIsBookmarked] = useState(course._bookmarked); 
   const [bookmarkId, setBookmarkId] = useState(course.bookmark_id); 
+
+  // ✅ course prop이 변경될 때 isBookmarked 상태를 동기화합니다.
+  // 부모 컴포넌트의 상태 변경으로 인해 prop이 바뀌었을 때 UI를 정확하게 반영하기 위함입니다.
+  useEffect(() => {
+    setIsBookmarked(course._bookmarked);
+  }, [course._bookmarked]);
     
   const iconStyle = { 
     width: '16px', 
