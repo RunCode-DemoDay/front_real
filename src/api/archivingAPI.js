@@ -68,3 +68,8 @@ export const updateArchivingImage = async (archivingId, imageBase64) => {
     });
     return response.data;
 }
+
+export const getMyArchivedAll = async (order) =>{
+  const response = await apiClient.get(`/archivings?order=${order}`);
+  return response.data;
+}

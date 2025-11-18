@@ -12,6 +12,9 @@ import "./ArchivingMapPage.css";
 import BottomNavigator from "../../component/BottomNavigator/BottomNavigator";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
+import { getMyArchivedCourses } from "../../api/userAPI";
+import { getCourseDetail } from "../../api/courseDetailAPI";
+import { fetchArchivingsByCourse } from "../../api/archivingAPI";
 
 // Google Maps API 키
 const GOOGLE_MAPS_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
@@ -37,65 +40,6 @@ const ASSET_ICONS = {
   // ✅ 현재 위치 아이콘 (지금은 안 씀)
   location:
     "https://runcode-likelion.s3.us-east-2.amazonaws.com/running/location.svg",
-};
-
-// ---------------------- 가짜 API (임시) ----------------------
-
-const fetchArchivedCourses = async () => {
-  return [
-    {
-      course_id: 1,
-      title: "한강 반포 코스",
-      location: {
-        latitude: 37.5135,
-        longitude: 127.005,
-        locationType: "START",
-      },
-    },
-    {
-      course_id: 2,
-      title: "여의도 코스",
-      location: {
-        latitude: 37.525,
-        longitude: 126.934,
-        locationType: "START",
-      },
-    },
-  ];
-};
-
-const fetchCourseSummary = async (courseId) => {
-  return {
-    course_id: courseId,
-    title: "한강 반포 – 잠수교 순환",
-    thumbnail: "../../public/course_img.jpg",
-    star_average: 4.9,
-    review_count: 100,
-    distance: 5.0,
-  };
-};
-
-const fetchCourseArchivings = async (courseId) => {
-  return [
-    {
-      archiving_id: 1,
-      date: "2025.10.06",
-      title: "강한 자는 추석 연휴에도 달린다.",
-      thumbnail: "../../public/course_detail.png",
-      distance: 2.0,
-      average_pace: "5'45\"",
-      time: "11:31",
-    },
-    {
-      archiving_id: 2,
-      date: "2025.10.05",
-      title: "가볍게 뛰기 좋은 날",
-      thumbnail: "../../public/course_detail.png",
-      distance: 5.0,
-      average_pace: "6'00\"",
-      time: "20:00",
-    },
-  ];
 };
 
 // ---------------------- 하위 UI 컴포넌트 ----------------------
@@ -178,6 +122,7 @@ const ArchivingSummaryCard = ({
   style,
   onDragStart,
   onArchivingItemClick,
+  onCourseInfoClick,
 }) => {
   if (!archivingList || !courseDetail) {
     return (
@@ -191,6 +136,7 @@ const ArchivingSummaryCard = ({
   }
 
   const {
+    course_id,
     title,
     thumbnail,
     star_average,
@@ -211,10 +157,12 @@ const ArchivingSummaryCard = ({
       />
       <div
         className="archiving-course-info"
+        onClick={() => onCourseInfoClick(course_id)}
         style={{
           marginBottom: "0",
           paddingBottom: "12px",
           borderBottom: "1px solid #505050",
+          cursor: "pointer",
         }}
       >
         <div className="course-thumbnail">
@@ -320,6 +268,17 @@ function ArchivingMapPage() {
   const handleArchivingItemClick = useCallback(
     (archivingId) => {
       navigate(`/archiving/${archivingId}`);
+    },
+    [navigate]
+  );
+
+  const handleCourseInfoClick = useCallback(
+    (courseId) => {
+      console.log(courseId);
+      if (courseId) {
+        
+        navigate(`/course/${courseId}`);
+      }
     },
     [navigate]
   );
@@ -440,11 +399,18 @@ function ArchivingMapPage() {
         setArchivingList(null);
       } else {
         try {
-          const courseDetail = await fetchCourseSummary(course.course_id);
-          setSelectedCourseDetail(courseDetail);
+          console.log(course.course_id);
+          const courseDetailRes = await getCourseDetail(course.course_id);
+          if (courseDetailRes.success) {
+            // 실제 코스 정보는 API 응답의 data 필드에 있습니다.
+            setSelectedCourseDetail(courseDetailRes.data);
+          }
 
-          const list = await fetchCourseArchivings(course.course_id);
-          setArchivingList(list);
+          const archivingListRes = await fetchArchivingsByCourse(course.course_id);
+          if (archivingListRes.success) {
+            // 실제 아카이빙 목록은 .data 필드에 있습니다.
+            setArchivingList(archivingListRes.data);
+          }
 
           if (mapRef.current) {
             mapRef.current.panTo({
@@ -541,8 +507,10 @@ function ArchivingMapPage() {
     const loadData = async () => {
       setLoading(true);
       try {
-        const data = await fetchArchivedCourses();
-        setCourseList(data);
+        const response = await getMyArchivedCourses();
+        if (response.success) {
+          setCourseList(response.data);
+        }
       } catch (error) {
         console.error("코스 목록 로딩 실패:", error);
       } finally {
@@ -727,10 +695,12 @@ function ArchivingMapPage() {
           }}
           onDragStart={handleDragStart}
           onArchivingItemClick={handleArchivingItemClick}
+          onCourseInfoClick={handleCourseInfoClick}
         />
-      </div>
 
-      <BottomNavigator className="arc-map-bottom-nav" />
+        {/* BottomNavigator를 컨테이너 안으로 이동 */}
+        <BottomNavigator activeItem="runcode" />
+      </div>
     </AppContainer>
   );
 }

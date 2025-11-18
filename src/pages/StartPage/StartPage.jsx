@@ -32,6 +32,12 @@ const StartPage = () => {
     const isResetFlow = location.state?.from === "mypage-reset";
 
     const ensureProfile = async () => {
+
+      if (isResetFlow){
+        setChecking(false);
+        return;
+      }
+
       try {
         const token = getStoredAccessToken();
         if (!token) {

@@ -44,3 +44,14 @@ export const getMyreviewedCourses = async () => {
     return error.response?.data || { success: false, message: '네트워크 오류 또는 서버 응답 없음' };
   }
 };
+
+
+export const getMyArchivedCourses = async () => {
+  try {
+    const response = await apiClient.get('/users/me/courses/archived');
+    return response.data;
+  } catch (error) {
+    console.error('작성한 리뷰 조회 API 오류:', error);
+    return error.response?.data || { success: false, message: '네트워크 오류 또는 서버 응답 없음' };
+  } 
+}

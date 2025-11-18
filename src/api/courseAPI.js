@@ -9,12 +9,7 @@ import apiClient from "./index";
  */
 export const searchCourses = async (query, order) => {
   try {
-    const response = await apiClient.get(`/courses/search?query=${query}&order=${order}`, {
-      params: {
-        query,
-        order,
-      },
-    });
+    const response = await apiClient.get(`/courses/search?query=${query}&order=${order}`);
     // 실제 데이터는 response.data.data 에 있습니다.
     return response.data;
   } catch (error) {

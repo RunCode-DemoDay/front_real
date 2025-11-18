@@ -78,14 +78,6 @@
     background: var(--Main, #FF003C); /* 활성화된 목록 아이콘 색상 */
 }
 
-/* 클래스 이름 변경: .icon -> archiving-list-icon */
-.archiving-list-header-icon-button-map .archiving-list-icon,
-.archiving-list-header-icon-button-list .archiving-list-icon {
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
-}
-
 /* ------------------ 2. 정렬 바 스타일 ------------------ */
 /* 정렬 바 높이: 10(상) + 10(하) + 폰트 높이 = 약 40px */
 /* 클래스 이름 변경: sort-bar -> archiving-list-sort-bar */
@@ -94,7 +86,8 @@
     padding: 8px 20px;
     background-color: var(--Black-Info, #1E1E1E); /* 헤더와 동일 색상으로 변경 */
     border-bottom: 1px solid #4A4A4A; 
-    text-align: right;
+    display: flex;
+    justify-content: flex-end;
     
     /* fixed로 헤더 아래에 고정 */
     position: absolute;
@@ -104,6 +97,12 @@
     
     z-index: 15; 
     box-sizing: border-box;
+}
+
+.archiving-list-sort-bar .custom-select-display{
+    background-color: #1E1E1E;
+    display: flex;
+    
 }
 
 /* 클래스 이름 변경: sort-toggle -> archiving-list-sort-toggle */
@@ -129,12 +128,12 @@
 
 /* 드롭다운 에셋 아이콘 스타일 */
 /* 클래스 이름 변경: sort-arrow-icon -> archiving-list-sort-arrow-icon */
-.archiving-list-sort-arrow-icon {
+/* .archiving-list-sort-arrow-icon {
     width: 16px; 
     height: 16px;
     transition: transform 0.2s;
     vertical-align: middle;
-}
+} */
 
 /* 클래스 이름 변경: sort-arrow-icon.open -> archiving-list-sort-arrow-icon.open */
 .archiving-list-sort-arrow-icon.open {
@@ -184,7 +183,7 @@
     
     padding-bottom: 96.19px; /* 하단 네비게이터를 위한 여백 */
     box-sizing: border-box; 
-    background-color: #2C2C2C; 
+    background-color: #1E1E1E; 
     
     /* ⭐⭐ 스크롤 바 숨기기 ⭐⭐ */
     -ms-overflow-style: none; /* IE and Edge */
@@ -200,7 +199,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1px; 
-    background-color: #1A1A1A; 
+    background-color: #1E1E1E; 
 }
 
 /* 클래스 이름 변경: archiving-thumbnail-item -> archiving-list-thumbnail-item */

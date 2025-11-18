@@ -3,6 +3,8 @@ import AppContainer from '../../AppContainer/AppContainer';
 import './ArchivingListPage.css';
 import BottomNavigator from '../../component/BottomNavigator/BottomNavigator';
 import { useNavigate } from 'react-router-dom';
+import { getMyArchivedAll } from '../../api/archivingAPI';
+import CustomSelect from '../../component/CustomSelect/CustomSelect';
 
 // --- 아이콘 및 에셋 (ArchivingMapPage에서 사용된 것을 그대로 가져옴) ---
 const ASSET_ICONS = {
@@ -12,20 +14,6 @@ const ASSET_ICONS = {
     map_on : "https://runcode-likelion.s3.us-east-2.amazonaws.com/archiving/map_on.svg", 
     dropdown : "https://runcode-likelion.s3.us-east-2.amazonaws.com/global/dropdown.svg",
 };
-
-// ⭐⭐⭐ API 호출 함수 정의 (명세서 기반 가상 API) ⭐⭐⭐
-const fetchArchivingsList = async (order = 'latest') => {
-    console.log(`Fetching archivings ordered by: ${order}`);
-    
-    // 더미 데이터 생성 (그리드에 충분한 양)
-    const dummyData = Array.from({ length: 30 }).map((_, i) => ({ // 스크롤 테스트를 위해 30개로 늘림
-        archiving_id: i + 1,
-        thumbnail: `https://picsum.photos/seed/${i}/120/120`, 
-    }));
-
-    return dummyData;
-};
-// ---------------------------------------------------------------------------------------
 
 
 // --- 컴포넌트: 개별 썸네일 아이템 ---
@@ -49,7 +37,6 @@ function ArchivingListPage() {
     const [archivingList, setArchivingList] = useState([]);
     const [loading, setLoading] = useState(true);
     const [orderBy, setOrderBy] = useState('latest'); 
-    const [showSortMenu, setShowSortMenu] = useState(false);
 
     const navigate = useNavigate();
 
@@ -57,8 +44,12 @@ function ArchivingListPage() {
     const loadData = useCallback(async (order) => {
         setLoading(true);
         try {
-            const data = await fetchArchivingsList(order);
-            setArchivingList(data);
+            console.log("아카이빙 목록 로딩 시작",order);
+            const response = await getMyArchivedAll(order);
+            if (response.success) {
+                console.log("아카이빙 목록 로딩 성공:", response.data);
+                setArchivingList(response.data);
+            }
         } catch (error) {
             console.error("아카이빙 목록 로딩 실패:", error);
             setArchivingList([]);
@@ -81,20 +72,14 @@ function ArchivingListPage() {
         navigate(`/archiving/${archivingId}`);
     }, [navigate]);
 
-    // 토글 메뉴 열기/닫기
-    const toggleSortMenu = () => {
-        setShowSortMenu(prev => !prev);
-    };
-
-    // 정렬 기준 변경 및 메뉴 닫기
-    const handleSortChange = (newOrder) => {
-        setOrderBy(newOrder); 
-        setShowSortMenu(false); // 메뉴 닫기
+    // 정렬 기준 변경 핸들러
+    const handleSortChange = (newValue) => {
+        setOrderBy(newValue); 
     };
 
     const sortOptions = [
-        { key: 'latest', label: '최신순' },
-        { key: 'oldest', label: '오래된 순' }, // 임시 옵션 추가
+        { label: "최신순", value: "latest" },
+        { label: "오래된순", value: "oldest" },
     ];
 
     return (
@@ -133,37 +118,11 @@ function ArchivingListPage() {
                 {/* 2. 정렬/토글 바 */}
                 {/* 클래스 이름 변경: sort-bar -> archiving-list-sort-bar */}
                 <div className="archiving-list-sort-bar">
-                    {/* 클래스 이름 변경: sort-toggle -> archiving-list-sort-toggle */}
-                    <div className="archiving-list-sort-toggle" onClick={toggleSortMenu}>
-                        {/* 클래스 이름 변경: sort-label -> archiving-list-sort-label */}
-                        <span className="archiving-list-sort-label">
-                            {sortOptions.find(opt => opt.key === orderBy)?.label || '정렬 기준'}
-                        </span>
-                        {/* 에셋 이미지로 대체 */}
-                        <img 
-                            src={ASSET_ICONS.dropdown} 
-                            alt="정렬 토글" 
-                            // 클래스 이름 변경: sort-arrow-icon -> archiving-list-sort-arrow-icon
-                            className={`archiving-list-sort-arrow-icon ${showSortMenu ? 'open' : ''}`}
-                        />
-                    </div>
-
-                    {/* 토글 메뉴 드롭다운 */}
-                    {showSortMenu && (
-                        // 클래스 이름 변경: sort-menu -> archiving-list-sort-menu
-                        <div className="archiving-list-sort-menu">
-                            {sortOptions.map((option) => (
-                                <div 
-                                    key={option.key} 
-                                    // 클래스 이름 변경: sort-menu-item -> archiving-list-sort-menu-item
-                                    className={`archiving-list-sort-menu-item ${orderBy === option.key ? 'active' : ''}`}
-                                    onClick={() => handleSortChange(option.key)}
-                                >
-                                    {option.label}
-                                </div>
-                            ))}
-                        </div>
-                    )}
+                    <CustomSelect
+                        options={sortOptions}
+                        value={orderBy}
+                        onChange={handleSortChange}
+                    />
                 </div>
 
                 {/* 3. 썸네일 그리드 리스트 */}

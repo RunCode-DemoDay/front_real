@@ -165,12 +165,14 @@ const ResultPage = () => {
 
         {/* ✅ 이제 /types에서 내려온 description이 있으면 화면에 표시됨 */}
         {runType.description && (
-          <p
-            className="type-description"
-            dangerouslySetInnerHTML={{
-              __html: runType.description,
-            }}
-          />
+          <div className="type-description">
+            {runType.description.split("\\n").map((line, index) => (
+              <React.Fragment key={index}>
+                {line}
+                <br />
+              </React.Fragment>
+            ))}
+          </div>
         )}
       </div>
 
