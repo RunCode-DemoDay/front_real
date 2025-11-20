@@ -141,12 +141,17 @@
 .course-main-content {
     padding: 0 20px;
     flex-grow: 1; /* 남은 공간을 차지하여 코스 목록 영역 확보 */
+    overflow-y: auto;
+    scrollbar-width: none;
+    margin-bottom: 20px;
 }
 
-.filter-sort-bar {
+
+.ffilter-sort-bar {
     display: flex;
     justify-content: flex-end; /* 정렬 드롭다운을 오른쪽 끝에 배치 */
     padding: 10px 0;
+    margin-right: 20px;
 }
 
 .sort-dropdown {

@@ -74,7 +74,7 @@ function ArchivingDetailPage() {
                     // TODO: 실제 코스 상세/리뷰 API로 교체 필요
                     const courseData = await fetchCourseDetail(courseIdForFetch);
                     const reviewData = await fetchCourseReviews(courseIdForFetch);
-                    data.course = { ...courseData, ...reviewData, course_id: courseIdForFetch };
+                    // data.course = { ...data.course, ...courseData, ...reviewData, course_id: courseIdForFetch };
 
                     const archivingsResponse = await fetchArchivingsByCourse(courseIdForFetch);
                     if(archivingsResponse.success) {
@@ -148,7 +148,8 @@ function ArchivingDetailPage() {
     }
 
     // ✅ 데이터가 로드된 후에 변수를 구조 분해합니다.
-    const { date, title, content, distance, calorie, average_pace, time, altitude, cadence, detailImage, course } = detailData; 
+    const { thumbnail,date, title, content, distance,  average_pace, time, altitude, cadence, course } = detailData; 
+
 
     // ⭐ 최종 표시될 메모 내용 (100자까지만 표시)
     const currentMemo = content || '';
@@ -233,8 +234,8 @@ function ArchivingDetailPage() {
 
                     {/* 2-3. 아카이빙 사진 */}
                     <div className="detail-image-container">
-                            {detailImage ? (
-                            <img src={detailImage} alt={title} className="detail-image" />
+                            {thumbnail ? (
+                            <img src={thumbnail} alt={title} className="detail-image" />
                             ) : (
                                 <div className="no-image-placeholder" onClick={() => navigate('/archiving/picture', { state: { archivingId, fromRunning: locationState?.fromRunning }})}>
                                     <p>사진을 추가하여</p>

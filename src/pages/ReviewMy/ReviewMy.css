@@ -7,14 +7,15 @@
 .reviewmy-page {
   background-color: #0f0f0f;
   color: #fff;
-  min-height: 100vh;
+  height: 100%;
   max-width: 375px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  padding: 40px 20px 80px; /* 상/좌우/하 */
+  padding: 40px 20px 10px; /* 상/좌우/하 */
   box-sizing: border-box;
   font-family: "Pretendard", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  
 }
 
 /* 헤더 (← / 작성한 리뷰( N )) */
@@ -50,6 +51,7 @@
   line-height: 140%;
   color: rgba(255,255,255,0.88);
   font-family: "Pretendard", sans-serif;
+  
 }
 
 .reviewmy-count {
@@ -60,6 +62,10 @@
 /* 본문 컨테이너 */
 .reviewmy-content {
   display: block;
+  overflow-y: auto;
+  scrollbar-width: none;
+  flex-grow: 1;
+
 }
 
 /* 리스트 */

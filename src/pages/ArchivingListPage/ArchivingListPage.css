@@ -91,7 +91,7 @@
     
     /* fixed로 헤더 아래에 고정 */
     position: absolute;
-    top: 100px; /* 헤더 높이(84px) 바로 아래 */
+    top: 96px; /* 헤더 높이(84px) 바로 아래 */
     left: 0;
     right: 0;
     
@@ -175,7 +175,7 @@
 /* 클래스 이름 변경: archiving-grid-area -> archiving-list-grid-area */
 .archiving-list-grid-area {
     /* fixed된 헤더(84px)와 정렬 바(40px)를 피해 공간 확보 (총 124px) */
-    padding-top: 144.59px; 
+    padding-top: 133.59px; 
     height: 100%;
     
     /* 해당 영역에서만 스크롤이 발생하도록 설정 */

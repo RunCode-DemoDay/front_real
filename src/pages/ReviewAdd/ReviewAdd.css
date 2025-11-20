@@ -78,6 +78,9 @@ margin: 0;
 /* 본문 */
 .reviewadd-content {
   width: 100%;
+  overflow-y: auto;
+  scrollbar-width: none;
+  flex-grow: 1
 }
 
 .reviewadd-empty {

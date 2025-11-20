@@ -86,10 +86,7 @@ function SavedCoursesPage() {
                 <h1 className="page-title">저장된 코스</h1>
             </header>
 
-            {/* 2. 코스 목록 및 정렬 */}
-            <main className="course-main-content">
-                {/* 정렬 드롭다운 */}
-                <div className="filter-sort-bar">
+            <div className="filter-sort-bar">
                     <CustomSelect
                         options={ORDER_OPTIONS}
                         value={selectedOrder}
@@ -97,6 +94,11 @@ function SavedCoursesPage() {
                         placeholder="최신 순" // 기본값 (props에 기본값 설정되어 있지만 명시적으로 전달)
                     />
                 </div>
+
+            {/* 2. 코스 목록 및 정렬 */}
+            <main className="course-main-content">
+                {/* 정렬 드롭다운 */}
+                
 
                 <div className="course-list">
                     {loading ? (

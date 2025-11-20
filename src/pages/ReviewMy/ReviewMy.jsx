@@ -10,7 +10,7 @@ const ICONS = {
   LeftArrow: "https://runcode-likelion.s3.us-east-2.amazonaws.com/global/back.svg",
   Distance: "https://runcode-likelion.s3.us-east-2.amazonaws.com/course/distance.svg",
   Reviews: "https://runcode-likelion.s3.us-east-2.amazonaws.com/course/review.svg",
-  Setting: "https://runcode-likelion.s3.us-east-2.amazonaws.com/global/setting.svg",
+  Setting: "https://runcode-likelion.s3.us-east-2.amazonaws.com/my/setting.svg",
 };
 
 // ✅ 실제 API 함수 임포트

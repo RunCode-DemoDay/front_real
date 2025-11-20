@@ -184,15 +184,16 @@ function HomePage() {
           ))}
         </div>
       </section>
-
-      <main className="course-main-content">
-        <div className="filter-sort-bar">
+      <div className="ffilter-sort-bar">
           <CustomSelect
             options={ORDER_OPTIONS}
             value={selectedOrder}
             onChange={handleSelectChange}
           />
         </div>
+
+      <main className="course-main-content">
+        
 
         <div className="course-list">
           {loading ? (

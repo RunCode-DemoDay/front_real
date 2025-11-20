@@ -122,7 +122,7 @@ const CourseItem = ({ course, onClick, onBookmarkChange }) => {
         <div className="course-meta">
           <span className="star-rating">
             <img src={META_ICONS.star} alt="별점" style={iconStyle} />
-            {course.star_average||course.starAverage||0}
+            {(course.star_average || course.starAverage || 0).toFixed(2)}
           </span>
                     
           <span className="review-count">
