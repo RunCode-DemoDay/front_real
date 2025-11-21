@@ -1,4 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+// src/pages/RunningCount/RunningCount.jsx
+
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "./RunningCount.css";
 
@@ -9,22 +11,59 @@ export default function RunningCount() {
 
   const [count, setCount] = useState(3);
 
+  // 🔍 마운트 시점에 param/state 한 번 확인
   useEffect(() => {
-    // ✅ 카운트가 0이 되면 RunningStop 페이지로 이동하고, 타이머 로직을 중단합니다.
+    console.log("========================================");
+    console.log("%c[RunningCount] MOUNT", "color: #2196f3; font-weight: bold;");
+    console.log(
+      "%c[RunningCount] useParams().courseId:",
+      "color: #2196f3",
+      courseId
+    );
+    console.log("%c[RunningCount] location.state:", "color: #2196f3", state);
+    console.log("========================================");
+  }, []);
+
+  useEffect(() => {
+    console.log(
+      "%c[RunningCount] useEffect 실행, count = " + count,
+      "color: #3f51b5"
+    );
+
+    // ✅ 카운트가 0이 되면 RunningStop 페이지로 이동
     if (count === 0) {
+      console.log(
+        "%c[RunningCount] count === 0 → RunningStop으로 이동",
+        "color: #4caf50"
+      );
+      console.log(
+        "%c[RunningCount] navigate(/running/stop/" + courseId + ")",
+        "color: #4caf50"
+      );
+      console.log("%c[RunningCount] 전달할 state:", "color: #4caf50", state);
+
       if (navigator.vibrate) navigator.vibrate(80);
-      // ✅ 가져온 courseId를 URL에 포함하여 다음 페이지로 전달합니다.
+
       navigate(`/running/stop/${courseId}`, { state, replace: true });
       return;
     }
 
-    // ✅ 카운트가 0보다 클 때만 1초마다 카운트를 1씩 감소시키는 타이머를 설정합니다.
+    // ✅ 카운트가 0보다 클 때 1초마다 감소
     const timer = setTimeout(() => {
+      console.log(
+        "%c[RunningCount] count 감소: " + count + " → " + (count - 1),
+        "color: #ff9800"
+      );
       setCount(count - 1);
     }, 1000);
 
-    // 컴포넌트가 언마운트되거나 count가 변경되면 타이머를 정리합니다.
-    return () => clearTimeout(timer);
+    return () => {
+      console.log(
+        "%c[RunningCount] cleanup, timer clear. 현재 count = " + count,
+        "color: #f44336"
+      );
+      clearTimeout(timer);
+    };
   }, [count, courseId, state, navigate]);
 
   return (

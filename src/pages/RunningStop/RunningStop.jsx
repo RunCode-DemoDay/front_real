@@ -9,9 +9,9 @@ import {
 } from "@react-google-maps/api";
 import "./RunningStop.css";
 import AppContainer from "../../AppContainer/AppContainer";
-import html2canvas from "html2canvas"; // html2canvas 임포트
-import { createArchiving, getPresignedUrl } from "../../api/archivingAPI"; // API 함수 임포트
-import axios from 'axios'; // S3 업로드를 위해 axios 직접 사용
+import html2canvas from "html2canvas";
+import { createArchiving, getPresignedUrl } from "../../api/archivingAPI";
+import axios from "axios";
 
 // 아이콘
 const ICONS = {
@@ -110,47 +110,77 @@ function haversineKm(a, b) {
 }
 
 export default function RunningStop() {
-  const { courseId } = useParams(); // ✅ URL에서 courseId를 직접 가져옵니다.
-  const { state } = useLocation(); // 코스 제목 등 추가 정보는 state에서 가져옵니다.
+  const { courseId } = useParams();
+  const { state } = useLocation();
   const navigate = useNavigate();
 
-  // 나머지 정보도 state에서 가져옵니다.
+  // 🔍 이 페이지 진입 시점에 param/state 확인
+  console.log("========================================");
+  console.log("%c[RunningStop] MOUNT", "color: #009688; font-weight: bold;");
+  console.log(
+    "%c[RunningStop] useParams().courseId:",
+    "color: #009688",
+    courseId
+  );
+  console.log("%c[RunningStop] location.state:", "color: #009688", state);
+  console.log("========================================");
+
   const bpm = state?.bpm ?? null;
   const courseTitle = state?.courseTitle ?? "";
   const star_average = state?.star_average ?? null;
   const review_count = state?.review_count ?? null;
   const courseDistance = state?.courseDistance ?? null;
 
-  // 러닝 상태
+  console.log("%c[RunningStop] state에서 파생된 값:", "color: #00796b", {
+    bpm,
+    courseTitle,
+    star_average,
+    review_count,
+    courseDistance,
+  });
+
   const [elapsedSec, setElapsedSec] = useState(0);
   const [totalDistanceKm, setTotalDistanceKm] = useState(0);
   const [path, setPath] = useState([]);
   const [currentPos, setCurrentPos] = useState(null);
-  const [isRunning, setIsRunning] = useState(true); // 들어오자마자 "달리는 중" → pause 아이콘 보여주기
+  const [isRunning, setIsRunning] = useState(true);
 
   const mapRef = useRef(null);
-  const mapCaptureRef = useRef(null); // 캡처할 지도 영역을 위한 ref
+  const mapCaptureRef = useRef(null); // 캡처할 지도 영역
   const lastPosRef = useRef(null);
 
-  // ✅ 페이지 진입 시 courseId 유효성 검사
+  // courseId 유효성 검사
   useEffect(() => {
-    // courseId가 없거나, "null"이라는 문자열이면 유효하지 않은 접근으로 간주
+    console.log(
+      "%c[RunningStop] courseId 유효성 검사 useEffect, courseId = " + courseId,
+      "color: #e91e63"
+    );
+
     if (!courseId || courseId === "null") {
       alert("잘못된 접근입니다. 코스를 선택하고 러닝을 시작해주세요.");
-      // 홈 화면으로 돌려보냄
-      navigate('/home', { replace: true });
+      navigate("/home", { replace: true });
     }
   }, [courseId, navigate]);
 
   // 시간 증가
   useEffect(() => {
+    console.log(
+      "%c[RunningStop] 시간 타이머 useEffect, isRunning = " + isRunning,
+      "color: #3f51b5"
+    );
     if (!isRunning) return;
-    const timer = setInterval(() => setElapsedSec((t) => t + 1), 1000);
+    const timer = setInterval(() => {
+      setElapsedSec((t) => t + 1);
+    }, 1000);
     return () => clearInterval(timer);
   }, [isRunning]);
 
   // 위치 추적
   useEffect(() => {
+    console.log(
+      "%c[RunningStop] 위치 추적 useEffect, isRunning = " + isRunning,
+      "color: #9c27b0"
+    );
     if (!navigator.geolocation) return;
     const id = navigator.geolocation.watchPosition(
       (pos) => {
@@ -190,7 +220,9 @@ export default function RunningStop() {
         setCurrentPos(p);
         if (mapRef.current) mapRef.current.panTo(p);
       },
-      () => {},
+      (err) => {
+        console.error("[RunningStop] 위치 추적 에러:", err);
+      },
       { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
     );
     return () => navigator.geolocation.clearWatch(id);
@@ -210,58 +242,85 @@ export default function RunningStop() {
     return `${m}'${s}"`;
   }, [elapsedSec, totalDistanceKm]);
 
-  // ▶/⏸ 토글
   const handleToggle = () => {
+    console.log(
+      "%c[RunningStop] 재생/일시정지 토글 클릭, isRunning = " + isRunning,
+      "color: #ff9800"
+    );
     setIsRunning((prev) => !prev);
   };
 
-  // 정지 → 아카이빙
+  // 정지 → 지도 캡처 → S3 업로드 → 아카이빙 생성
   const handleStop = async () => {
-    setIsRunning(false);
+    console.log("%c[RunningStop] 정지 버튼 클릭", "color: #f44336");
+    console.log("%c[RunningStop] 현재 courseId:", "color: #f44336", courseId);
+    console.log(
+      "%c[RunningStop] 현재 경로(path) 길이:",
+      "color: #f44336",
+      path.length
+    );
 
-    // ✅ 최소 이동 거리 체크: 10m 미만은 저장하지 않음
-    // if (totalDistanceKm < 0.01) {
-    //   alert("이동 거리가 너무 짧아 기록을 저장할 수 없습니다.");
-    //   navigate('/home', { replace: true }); // 홈으로 이동
-    //   return;
-    // }
+    setIsRunning(false);
 
     try {
       console.log("서버에 아카이빙 생성을 요청합니다.");
 
-      let thumbnailUrl = null;
-      // if (mapCaptureRef.current) {
-      //   const canvas = await html2canvas(mapCaptureRef.current, { 
-      //     useCORS: true,
-      //     scale: 0.5 
-      //   });
-      //   const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.8));
+      let detailImageUrl = "";
 
-      //   // 1. 백엔드에 Presigned URL 요청
-      //   console.log("백엔드에 Presigned URL을 요청합니다...");
-      //   const presignedResponse = await getPresignedUrl();
-      //   if (!presignedResponse.success) throw new Error("Presigned URL 받기 실패");
+      // 1) 지도 캡처 → Blob
+      if (mapCaptureRef.current) {
+        console.log("[RunningStop] html2canvas로 지도 캡처 시작");
+        const canvas = await html2canvas(mapCaptureRef.current, {
+          useCORS: true,
+          backgroundColor: null,
+          scale: 2,
+        });
 
-      //   const { presignedUrl, imageUrl } = presignedResponse.data;
-      //   console.log("Presigned URL 수신 완료.");
+        const blob = await new Promise((resolve, reject) =>
+          canvas.toBlob(
+            (b) => (b ? resolve(b) : reject(new Error("지도 캡처 실패"))),
+            "image/png",
+            0.9
+          )
+        );
+        console.log("[RunningStop] 지도 캡처 blob 생성 완료:", blob);
 
-      //   // 2. 받은 URL로 S3에 이미지 업로드 (axios 직접 사용)
-      //   console.log("S3에 이미지 업로드를 시작합니다...");
-      //   await axios.put(presignedUrl, blob, { headers: { 'Content-Type': 'image/jpeg' } });
-      //   console.log("S3 업로드 성공!");
-      //   thumbnailUrl = imageUrl; // 최종 저장될 이미지 URL
-      // } else {
-      //   console.warn("지도 캡처에 실패했습니다.");
-      // }
+        // 2) Presigned URL 요청
+        const fileName = `archivings_${Date.now()}.png`;
+        const contentType = "image/png";
 
-      // ✅ Laps 데이터 생성 로직 추가
+        console.log("백엔드에 Presigned URL을 요청합니다...", {
+          fileName,
+          contentType,
+        });
+        const { presignedUrl, imageUrl } = await getPresignedUrl(
+          fileName,
+          contentType
+        );
+        console.log("[RunningStop] presignedUrl:", presignedUrl);
+        console.log("[RunningStop] imageUrl(쿼리 제거 본체):", imageUrl);
+
+        // 3) S3 업로드 (blob === request body)
+        console.log("S3에 이미지 업로드를 시작합니다...");
+        await axios.put(presignedUrl, blob, {
+          headers: { "Content-Type": contentType },
+        });
+        console.log("S3 업로드 성공!");
+
+        // 🔹 이후 아카이빙에 저장할 URL
+        detailImageUrl = imageUrl;
+      } else {
+        console.warn(
+          "지도 캡처 영역을 찾지 못했습니다. detailImage 없이 저장됩니다."
+        );
+      }
+
+      // 4) Laps 데이터 생성
       const laps = [];
       if (path.length > 1) {
-        // 전체 거리가 0보다 클 때, 최소 1개의 랩을 보장하기 위한 로직
-        // 1km 단위로 구간을 나누는 로직
         let lapDistance = 0;
-        let lapStartTime = 0; // 구간 시작 시간 (초)
-        let lastLapPaceSec = 0; // 이전 랩의 페이스(초)
+        let lapStartTime = 0;
+        let lastLapPaceSec = 0;
 
         for (let i = 1; i < path.length; i++) {
           const segmentDistance = haversineKm(path[i - 1], path[i]);
@@ -271,16 +330,17 @@ export default function RunningStop() {
             const currentTotalTime = elapsedSec;
             const lapTime = currentTotalTime - lapStartTime;
 
-            const lapPaceSec = lapDistance > 0 ? Math.round(lapTime / lapDistance) : 0;
+            const lapPaceSec =
+              lapDistance > 0 ? Math.round(lapTime / lapDistance) : 0;
             const paceMin = Math.floor(lapPaceSec / 60);
-            const paceSec = String(lapPaceSec % 60).padStart(2, '0');
+            const paceSec = String(lapPaceSec % 60).padStart(2, "0");
 
             let paceVariation = "-";
             if (laps.length > 0 && lastLapPaceSec > 0) {
               const diff = lapPaceSec - lastLapPaceSec;
               const sign = diff >= 0 ? "+" : "-";
               const diffMin = Math.floor(Math.abs(diff) / 60);
-              const diffSec = String(Math.abs(diff) % 60).padStart(2, '0');
+              const diffSec = String(Math.abs(diff) % 60).padStart(2, "0");
               paceVariation = `${sign}${diffMin}'${diffSec}"`;
             }
 
@@ -291,18 +351,17 @@ export default function RunningStop() {
               altitude: path[i].alt,
             });
 
-            lapDistance = 0; 
+            lapDistance = 0;
             lapStartTime = currentTotalTime;
             lastLapPaceSec = lapPaceSec;
           }
         }
       }
 
-      // ✅ Laps 배열이 비어있을 경우, 전체 기록을 하나의 Lap으로 만들어 최소 1개를 보장
       if (laps.length === 0 && totalDistanceKm > 0) {
         const avgPaceSec = Math.round(elapsedSec / totalDistanceKm);
         const paceMin = Math.floor(avgPaceSec / 60);
-        const paceSec = String(avgPaceSec % 60).padStart(2, '0');
+        const paceSec = String(avgPaceSec % 60).padStart(2, "0");
         laps.push({
           lap_number: 1,
           average_pace: `${paceMin}'${paceSec}"`,
@@ -311,42 +370,63 @@ export default function RunningStop() {
         });
       }
 
+      console.log("[RunningStop] 최종 laps 데이터:", laps);
+
+      // 5) 시간 포맷 (HH:mm:ss)
+      const timeStr = new Date(elapsedSec * 1000).toISOString().substr(11, 8);
+
+      // 6) 아카이빙 생성 Request Body
       const requestBody = {
-        // ✅ 최종적으로 결정된 courseId를 숫자로 변환하여 사용합니다.
-        course_id: 1,
-        title: `${new Date().toISOString().split('T')[0]} 러닝 기록`, // 임시 제목
-        distance: totalDistanceKm,
-        time: new Date(elapsedSec * 1000).toISOString().substr(11, 8), // ✅ "HH:mm:ss" 형식으로 수정
-        average_pace: avgPace,
-        laps: laps,
-        thumbnail: "sdsdjk",
-        // ✅ 백엔드 명세서에 맞게 누락된 필드들을 기본값으로 추가합니다.
-        content: "", // 메모 내용 (초기값은 빈 문자열)
+        content: "",
+        course_id: Number(courseId),
+        title: `${new Date().toISOString().split("T")[0]} 러닝 기록`,
+        thumbnail: detailImageUrl || "",
+        detailImage: detailImageUrl || "",
+        distance: totalDistanceKm || 0,
         calorie: 0,
+        average_pace: avgPace,
+        time: timeStr,
         altitude: 0,
         cadence: 0,
-        detailImage: null, // 상세 이미지는 나중에 추가되므로 초기값은 null
+        laps,
       };
 
-      // 2. 분리된 API 함수 호출
+      console.log(
+        "%c[RunningStop] /archivings 요청 body:",
+        "color: #ff9800",
+        requestBody
+      );
+
       const responseData = await createArchiving(requestBody);
+
+      console.log(
+        "%c[RunningStop] /archivings 응답:",
+        "color: #ff9800",
+        responseData
+      );
 
       if (!responseData.success || !responseData.data?.archiving_id) {
         throw new Error(responseData.message || "아카이빙 생성 실패");
       }
-      
-      const newArchivingId = responseData.data.archiving_id;
 
-      // 3. 응답받은 ID를 가지고 사진 촬영 페이지로 이동
+      const newArchivingId = responseData.data.archiving_id;
+      console.log(
+        "%c[RunningStop] 생성된 archiving_id:",
+        "color: #4caf50",
+        newArchivingId
+      );
+
+      // 7) 사진 촬영 페이지로 이동
       navigate(`/archiving/picture`, {
         replace: true,
-        state: { 
+        state: {
           archivingId: newArchivingId,
-          fromRunning: true, // 홈으로 가기 버튼 로직을 위해 유지
+          fromRunning: true,
         },
       });
     } catch (error) {
       console.error("아카이빙 생성에 실패했습니다.", error);
+      console.log("서버 응답:", error.response?.data);
       alert("기록 저장에 실패했습니다. 다시 시도해주세요.");
     }
   };
