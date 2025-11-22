@@ -10,7 +10,7 @@ import {
 import "./RunningStop.css";
 import AppContainer from "../../AppContainer/AppContainer";
 import html2canvas from "html2canvas";
-import { createArchiving, getPresignedUrl } from "../../api/archivingAPI";
+import { getPresignedUrl } from "../../api/archivingAPI";
 import axios from "axios";
 
 // 아이콘
@@ -250,7 +250,7 @@ export default function RunningStop() {
     setIsRunning((prev) => !prev);
   };
 
-  // 정지 → 지도 캡처 → S3 업로드 → 아카이빙 생성
+  // 정지 → 지도 캡처 → S3 업로드 → draftArchiving 생성 → 사진촬영 페이지로 이동
   const handleStop = async () => {
     console.log("%c[RunningStop] 정지 버튼 클릭", "color: #f44336");
     console.log("%c[RunningStop] 현재 courseId:", "color: #f44336", courseId);
@@ -263,8 +263,6 @@ export default function RunningStop() {
     setIsRunning(false);
 
     try {
-      console.log("서버에 아카이빙 생성을 요청합니다.");
-
       let detailImageUrl = "";
 
       // 1) 지도 캡처 → Blob
@@ -307,7 +305,7 @@ export default function RunningStop() {
         });
         console.log("S3 업로드 성공!");
 
-        // 🔹 이후 아카이빙에 저장할 URL
+        // 🔹 이후 아카이빙에 저장할 detailImage URL
         detailImageUrl = imageUrl;
       } else {
         console.warn(
@@ -375,13 +373,13 @@ export default function RunningStop() {
       // 5) 시간 포맷 (HH:mm:ss)
       const timeStr = new Date(elapsedSec * 1000).toISOString().substr(11, 8);
 
-      // 6) 아카이빙 생성 Request Body
-      const requestBody = {
+      // 6) 아카이빙 초안(draft) 데이터만 생성해서 Picture 페이지로 넘김
+      const draftArchiving = {
         content: "",
         course_id: Number(courseId),
         title: `${new Date().toISOString().split("T")[0]} 러닝 기록`,
-        thumbnail: detailImageUrl || "",
         detailImage: detailImageUrl || "",
+        // thumbnail은 아직 없음 (카메라 사진 찍고 결정)
         distance: totalDistanceKm || 0,
         calorie: 0,
         average_pace: avgPace,
@@ -391,41 +389,18 @@ export default function RunningStop() {
         laps,
       };
 
-      console.log(
-        "%c[RunningStop] /archivings 요청 body:",
-        "color: #ff9800",
-        requestBody
-      );
+      console.log("[RunningStop] draftArchiving:", draftArchiving);
 
-      const responseData = await createArchiving(requestBody);
-
-      console.log(
-        "%c[RunningStop] /archivings 응답:",
-        "color: #ff9800",
-        responseData
-      );
-
-      if (!responseData.success || !responseData.data?.archiving_id) {
-        throw new Error(responseData.message || "아카이빙 생성 실패");
-      }
-
-      const newArchivingId = responseData.data.archiving_id;
-      console.log(
-        "%c[RunningStop] 생성된 archiving_id:",
-        "color: #4caf50",
-        newArchivingId
-      );
-
-      // 7) 사진 촬영 페이지로 이동
-      navigate(`/archiving/picture`, {
+      // 7) 사진 촬영 페이지로 이동 (POST는 거기서 한 번만)
+      navigate("/archiving/picture", {
         replace: true,
         state: {
-          archivingId: newArchivingId,
           fromRunning: true,
+          draftArchiving,
         },
       });
     } catch (error) {
-      console.error("아카이빙 생성에 실패했습니다.", error);
+      console.error("draft 아카이빙 생성 준비에 실패했습니다.", error);
       console.log("서버 응답:", error.response?.data);
       alert("기록 저장에 실패했습니다. 다시 시도해주세요.");
     }

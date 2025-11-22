@@ -55,9 +55,6 @@ function ArchivingDetailPage() {
         if (!response.success) throw new Error(response.message);
         let data = response.data;
 
-        // ✅ 이제는 사진 촬영 페이지에서 넘어온 newImage로 PATCH 하지 않음
-        //    detailImage는 RunningStop에서 생성한 지도 캡처를 그대로 사용
-
         // 2. 코스 정보 및 해당 코스의 다른 아카이빙 목록
         if (data.course?.course_id) {
           const courseIdForFetch = data.course.course_id;
@@ -246,27 +243,26 @@ function ArchivingDetailPage() {
             </div> */}
           </div>
 
-          {/* 아카이빙 사진 (상세 이미지 - 지도 캡처) */}
+          {/* 🔹 1) 썸네일 이미지 (카메라 사진) */}
           <div className="detail-image-container">
-            {detailImage ? (
-              <img src={detailImage} alt={title} className="detail-image" />
+            {thumbnail ? (
+              <img src={thumbnail} alt="thumbnail" className="detail-image" />
             ) : (
-              <div
-                className="no-image-placeholder"
-                onClick={() =>
-                  navigate("/archiving/picture", {
-                    state: {
-                      archivingId,
-                      fromRunning: locationState?.fromRunning,
-                    },
-                  })
-                }
-              >
-                <p>사진을 추가하여</p>
-                <p>러닝을 기록해보세요!</p>
+              <div className="no-image-placeholder">
+                <p>러닝 사진이 없습니다.</p>
               </div>
             )}
           </div>
+
+          {/* 🔹 2) 지도 캡처(detailImage) */}
+          {detailImage && (
+            <div
+              className="detail-image-container"
+              style={{ marginTop: "20px" }}
+            >
+              <img src={detailImage} alt="지도 캡처" className="detail-image" />
+            </div>
+          )}
 
           {/* 코스 정보 */}
           <div className="course-info-section">
