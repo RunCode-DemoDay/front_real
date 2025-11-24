@@ -11,14 +11,22 @@ export const getCourseDetail = async (courseId) => {
   return response.data;
 };
 
+export const getCourseInfo = async (courseId) => {
+  const response = await apiClient.get(`/courses/${courseId}/summary`);
+  return response.data;
+};
+
+export const getCourseArchiving = async (courseId) => {
+  const response = await apiClient.get(`/courses/${courseId}/archivings`);
+  return response.data;
+};
+
 /**
  * [GET] /courses/{courseId}/reviews - 특정 코스의 리뷰 목록 조회
  * @param {object} params - { courseId, order }
  * @returns {Promise<object>} API 응답 데이터
  */
 export const getCourseReviews = async ({ courseId, order }) => {
-  const response = await apiClient.get(`/courses/${courseId}/reviews`, {
-    params: { order },
-  });
+  const response = await apiClient.get(`/courses/${courseId}/reviews?order=${order}`);
   return response.data;
 };

@@ -13,7 +13,7 @@ import BottomNavigator from "../../component/BottomNavigator/BottomNavigator";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
 import { getMyArchivedCourses } from "../../api/userAPI";
-import { getCourseDetail } from "../../api/courseDetailAPI";
+import { getCourseDetail,getCourseInfo } from "../../api/courseDetailAPI";
 import { fetchArchivingsByCourse } from "../../api/archivingAPI";
 
 // Google Maps API 키
@@ -184,7 +184,7 @@ const ArchivingSummaryCard = ({
           <div className="course-meta">
             <span className="star-rating">
               <img src={ASSET_ICONS.star} alt="star" className="icon1" />{" "}
-              {star_average || "0.0"}
+              {(star_average || "0.0").toFixed(2)}
             </span>
             <span className="review-count">
               <img
@@ -400,7 +400,7 @@ function ArchivingMapPage() {
       } else {
         try {
           console.log(course.course_id);
-          const courseDetailRes = await getCourseDetail(course.course_id);
+          const courseDetailRes = await getCourseInfo(course.course_id);
           if (courseDetailRes.success) {
             // 실제 코스 정보는 API 응답의 data 필드에 있습니다.
             setSelectedCourseDetail(courseDetailRes.data);

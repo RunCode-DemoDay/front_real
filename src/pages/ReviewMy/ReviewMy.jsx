@@ -143,7 +143,8 @@ const ReviewMy = () => {
                           alt=""
                           aria-hidden="true"
                         />
-                        {r.course_star_average}
+                        {(r.course_star_average).toFixed(2)}
+                      
                       </span>
                       <span>
                         <img

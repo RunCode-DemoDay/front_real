@@ -49,6 +49,7 @@
     flex-grow: 1;
     overflow-y: auto; 
     -webkit-overflow-scrolling: touch;
+    width: 100%;
     
     /* 스크롤바 숨기기 (CourseDetailPage.css의 스타일 재사용) */
     scrollbar-width: none;

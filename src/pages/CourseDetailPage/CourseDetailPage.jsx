@@ -67,7 +67,7 @@ function CourseDetailPage() {
       try {
         const [detailRes, reviewRes] = await Promise.all([
           getCourseDetail(courseId), // ✅ 실제 API 호출
-          getCourseReviews({ courseId, order: "LATEST" }), // ✅ 실제 API 호출
+          getCourseReviews({ courseId, order: "latest" }), // ✅ 실제 API 호출
         ]);
 
         console.log(

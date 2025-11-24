@@ -23,11 +23,11 @@ const ReviewItem = ({ review, ASSET_ICONS }) => {
             
             {/* 2. 프로필, 닉네임, 별점 영역 */}
             <div className="c-detail-review-profile-line">
-                <img src={review.profile_image} alt={review.nickname} className="c-detail-user-profile-img" />
+                <img src={review.profileImage} alt={review.name} className="c-detail-user-profile-img" />
                 
                 {/* 닉네임과 별점 묶음 */}
                 <div className="c-detail-user-text">
-                    <span className="c-detail-user-nickname">{review.nickname}</span>
+                    <span className="c-detail-user-nickname">{review.name}</span>
                     {renderStars(review.star)}
                 </div>
             </div>
@@ -54,15 +54,15 @@ const CourseReviewSection = ({ reviewData, onReviewViewAll, ASSET_ICONS, maxItem
             {/* 2. 평점 요약 */}
             <p className="c-detail-review-summary">
                 <img src={ASSET_ICONS.avg_star} alt="평점별" className="c-detail-avg-star-icon" />
-                <span className="c-detail-review-score-text">{reviewData.star_average}</span>
-                <span className="c-detail-review-count-text">({reviewData.review_count})</span>
+                <span className="c-detail-review-score-text">{(reviewData.starAverage || 0).toFixed(2)}</span>
+                <span className="c-detail-review-count-text">({reviewData.reviewCount})</span>
             </p>
 
             {/* 3. 리뷰 목록 */}
             <div className="c-detail-reviews-list">
                 {reviewsToShow.map(review => (
                     // ASSET_ICONS를 ReviewItem에 전달
-                    <ReviewItem key={review.review_id} review={review} ASSET_ICONS={ASSET_ICONS} />
+                    <ReviewItem key={review.reviewid} review={review} ASSET_ICONS={ASSET_ICONS} />
                 ))}
             </div>
         </div>

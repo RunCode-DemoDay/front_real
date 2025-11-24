@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchCourseReviews } from '../../api/mockCourseDetailAPI'; 
+import { getCourseReviews } from '../../api/courseDetailAPI';
 import AppContainer from '../../AppContainer/AppContainer';
 import CourseReviewSection from '../../component/CourseReviewSection/CourseReviewSection';
 import './CourseAllReviewsPage.css'; // ⭐ 이 페이지 전용 CSS import
@@ -31,8 +32,9 @@ function CourseAllReviewsPage() {
             setLoading(true);
             setError(null);
             try {
-                const reviewRes = await fetchCourseReviews(courseId, 'LATEST');
+                const reviewRes = await getCourseReviews({courseId, order : 'latest'});
                 setReviewData(reviewRes);
+                console.log("리뷰 로드 완료:", reviewRes);
             } catch (err) {
                 console.error("리뷰 로드 실패:", err);
                 setError("리뷰 정보를 불러오는 데 실패했습니다.");
@@ -60,7 +62,8 @@ function CourseAllReviewsPage() {
         );
     }
 
-    const totalReviews = reviewData.reviews.length; 
+    const totalReviews = reviewData.data.reviewCount; 
+    console.log("전체 리뷰 수:", totalReviews);
 
     // 3. JSX 렌더링
     return (
@@ -79,7 +82,7 @@ function CourseAllReviewsPage() {
                     
                     {/* CourseReviewSection 컴포넌트 재사용 */}
                     <CourseReviewSection 
-                        reviewData={reviewData} 
+                        reviewData={reviewData.data} 
                         // 전체보기 페이지에서는 이 버튼을 숨겨야 하므로 null을 전달
                         onReviewViewAll={null} 
                         ASSET_ICONS={ASSET_ICONS}

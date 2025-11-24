@@ -5,12 +5,12 @@ import AppContainer from "../../AppContainer/AppContainer";
 import BottomNavigator from "../../component/BottomNavigator/BottomNavigator";
 import CourseItem from "../../component/CourseItem/CourseItem";
 import {
-  fetchCourseDetail,
-  fetchCourseReviews,
-} from "../../api/mockCourseDetailAPI";
+  getCourseInfo,
+  getCourseReviews,
+  getCourseArchiving
+} from "../../api/courseDetailAPI";
 import {
   fetchArchivingDetail,
-  fetchArchivingsByCourse,
   updateArchiving,
   // ❌ updateArchivingImage 제거
 } from "../../api/archivingAPI";
@@ -59,18 +59,23 @@ function ArchivingDetailPage() {
         if (data.course?.course_id) {
           const courseIdForFetch = data.course.course_id;
 
-          const courseData = await fetchCourseDetail(courseIdForFetch);
-          const reviewData = await fetchCourseReviews(courseIdForFetch);
+          // ✅ API 응답에서 실제 데이터가 담긴 .data 속성을 추출합니다.
+          const courseRes = await getCourseInfo(courseIdForFetch);
+          const reviewRes = await getCourseReviews({ courseId: courseIdForFetch });
+
+          const courseData = courseRes.success ? courseRes.data : {};
+          const reviewData = reviewRes.success ? reviewRes.data : {};
+
           data.course = {
             ...courseData,
-            ...reviewData,
+            ...reviewData, // reviewData에는 starAverage, reviewCount 등이 포함됩니다.
             course_id: courseIdForFetch,
           };
 
-          const archivingsResponse = await fetchArchivingsByCourse(
-            courseIdForFetch
-          );
+          // ✅ getCourseArchiving API를 사용하여 코스 아카이빙 목록을 가져옵니다.
+          const archivingsResponse = await getCourseArchiving(courseIdForFetch);
           if (archivingsResponse.success) {
+            // 현재 보고 있는 아카이빙은 목록에서 제외합니다.
             const filteredArchivings = archivingsResponse.data.filter(
               (a) => String(a.archiving_id) !== String(archivingId)
             );

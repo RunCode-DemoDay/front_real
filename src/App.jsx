@@ -75,7 +75,7 @@ function App() {
               />
               <Route path="/archiving/picture" element={<ArchivingPicture />} />
               {/* 팀원이 추가한 카메라 캡처 페이지도 살림 */}
-             ㄴ
+             
 
               {/* 러닝 관련 */}
               <Route
