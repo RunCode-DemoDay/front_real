@@ -8,6 +8,29 @@ import { patchMyType } from "../../api/userTypeAPI";
 import { getTypesWithTags } from "../../api/homeAPI"; 
 import "./ResultPage.css";
 
+const TYPE_IMAGES = {
+  GPSM: "https://runcode-likelion.s3.us-east-2.amazonaws.com/asset/1.svg",
+  GPST: "https://runcode-likelion.s3.us-east-2.amazonaws.com/asset/2.svg",
+  GPNM: "https://runcode-likelion.s3.us-east-2.amazonaws.com/asset/3.svg",
+  GPNT: "https://runcode-likelion.s3.us-east-2.amazonaws.com/asset/4.svg",
+
+  GFSM: "https://runcode-likelion.s3.us-east-2.amazonaws.com/asset/5.svg",
+  GFST: "https://runcode-likelion.s3.us-east-2.amazonaws.com/asset/6.svg",
+  GFNM: "https://runcode-likelion.s3.us-east-2.amazonaws.com/asset/7.svg",
+  GFNT: "https://runcode-likelion.s3.us-east-2.amazonaws.com/asset/8.svg",
+
+  HPSM: "https://runcode-likelion.s3.us-east-2.amazonaws.com/asset/9.svg",
+  HPST: "https://runcode-likelion.s3.us-east-2.amazonaws.com/asset/10.svg",
+  HPNM: "https://runcode-likelion.s3.us-east-2.amazonaws.com/asset/11.svg",
+  HPNT: "https://runcode-likelion.s3.us-east-2.amazonaws.com/asset/12.svg",
+
+  HFSM: "https://runcode-likelion.s3.us-east-2.amazonaws.com/asset/13.svg",
+  HFST: "https://runcode-likelion.s3.us-east-2.amazonaws.com/asset/14.svg",
+  HFNM: "https://runcode-likelion.s3.us-east-2.amazonaws.com/asset/15.svg",
+  HFNT: "https://runcode-likelion.s3.us-east-2.amazonaws.com/asset/16.svg",
+};
+
+
 
 const calculateScores = (answers) => {
   let code = "";
@@ -157,12 +180,14 @@ const ResultPage = () => {
       <div className="content-area">
         <span className="my-type-label">나의 러너 유형</span>
 
-       
-        <div className="type-image-placeholder" />
+        <img
+          src={TYPE_IMAGES[runType.name]}
+          alt={runType.name}
+          className="type-thumbnail"
+        />
 
         <h1 className="r-type-name">{runType.name}</h1>
 
-        
         {runType.description && (
           <div className="type-description">
             {runType.description.split("\\n").map((line, index) => (
