@@ -105,7 +105,7 @@ const MyPage = () => {
         <BottomNavigator active="mypage" />
       </div>
 
-      
+      {/* 로그아웃 모달 */}
       {showLogoutModal && (
         <div className="logout-modal-overlay">
           <div className="logout-modal-card">
