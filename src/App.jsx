@@ -29,6 +29,7 @@ import ArchivingPicture from "./pages/ArchivingPicture/ArchivingPicture";
 // Context Provider
 import { RunBTIProvider } from "./pages/QuizPage/RunBTIContext";
 import { AuthProvider } from "./contexts/AuthContext";
+import RealStartPage from "./pages/RealStartPage/RealStartPage";
 
 function App() {
   return (
@@ -38,7 +39,7 @@ function App() {
           <AppContainer>
             <Routes>
               {/* 기본 경로 */}
-              <Route path="/" element={<LoginPage />} />
+              <Route path="/" element={<RealStartPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/result" element={<ResultPage />} />
 

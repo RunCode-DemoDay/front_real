@@ -8,7 +8,6 @@ import { patchMyType } from "../../api/userTypeAPI";
 import { getTypesWithTags } from "../../api/homeAPI";
 import "./ResultPage.css";
 
-// 🔥 코드별 썸네일 매핑
 const TYPE_IMAGES = {
   GPSM: "https://runcode-likelion.s3.us-east-2.amazonaws.com/asset/1.svg",
   GPST: "https://runcode-likelion.s3.us-east-2.amazonaws.com/asset/2.svg",
@@ -31,7 +30,7 @@ const TYPE_IMAGES = {
   HFNT: "https://runcode-likelion.s3.us-east-2.amazonaws.com/asset/16.svg",
 };
 
-// 점수 → 코드
+
 const calculateScores = (answers) => {
   let code = "";
 
@@ -68,7 +67,7 @@ const ResultPage = () => {
   const [runType, setRunType] = useState(null);
   const [error, setError] = useState("");
 
-  // 액세스 토큰 가져오기
+  
   const tokenFromStorage =
     typeof window !== "undefined"
       ? localStorage.getItem("accessToken") ||
@@ -100,7 +99,7 @@ const ResultPage = () => {
         const { runBtiCode } = calculateScores(state);
         console.log("계산된 RunBTI 코드:", runBtiCode);
 
-        // 내 타입 PATCH
+        
         const patchRes = await patchMyType({ typeCode: runBtiCode, token });
         const rawUser = patchRes?.data ?? patchRes?.user ?? patchRes ?? {};
         const typeField = rawUser.type;
@@ -115,7 +114,7 @@ const ResultPage = () => {
         let typeThumbnail = null;
         let typeTags = [];
 
-        // /types에서 이름·설명·태그 보충
+      
         try {
           const typesRes = await getTypesWithTags();
           console.log("/types 응답:", typesRes);
@@ -144,7 +143,7 @@ const ResultPage = () => {
           console.error("/types 호출 에러 (ResultPage):", err);
         }
 
-        // 상태에 code까지 저장
+        
         setRunType({
           code: runBtiCode,
           name: finalTypeName,
@@ -153,7 +152,7 @@ const ResultPage = () => {
           tags: typeTags,
         });
 
-        // AuthContext 업데이트
+        
         if (userProfile) {
           loginSuccess({
             ...userProfile,
@@ -183,7 +182,7 @@ const ResultPage = () => {
       <div className="result-page error-message">결과 데이터가 없습니다.</div>
     );
 
-  // 최종 이미지 src (코드 → 에셋, 없으면 백엔드 썸네일)
+  
   const imageSrc = TYPE_IMAGES[runType.code] || runType.thumbnail || undefined;
 
   console.log("최종 runType:", runType);
