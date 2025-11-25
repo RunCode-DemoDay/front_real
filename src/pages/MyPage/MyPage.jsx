@@ -1,14 +1,17 @@
+// src/pages/MyPage/MyPage.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MyPage.css";
 import LeftArrow from "../../assets/Left.svg";
 import BottomNavigator from "../../component/BottomNavigator/BottomNavigator";
-import { getMyInfo, patchInfo } from "../../api/userAPI"; 
+import { getMyInfo } from "../../api/userAPI";
+import AppContainer from "../../AppContainer/AppContainer";
+
 const MyPage = () => {
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const [userProfile, setUserProfile] = useState(null); 
-  const [loading, setLoading] = useState(true); 
+  const [userProfile, setUserProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -19,7 +22,6 @@ const MyPage = () => {
           setUserProfile(res.data);
         } else {
           console.warn("사용자 정보 조회 실패:", res.message);
-          
         }
       } catch (error) {
         console.error("사용자 정보 조회 중 에러 발생:", error);
@@ -31,56 +33,39 @@ const MyPage = () => {
     fetchUserProfile();
   }, []);
 
-  const handleGoToReviewAdd = () => {
-    navigate("/reviewadd");
+  const handleGoToReviewAdd = () => navigate("/reviewadd");
+  const handleGoToReviewMy = () => navigate("/reviewmy");
+
+  const handleGoToRunnerType = () => {
+    navigate("/start", { state: { from: "mypage-reset" } });
   };
 
-  const handleGoToReviewMy = () => {
-    navigate("/reviewmy");
-  };
-
-  
-  const handleGoToRunnerType = async () => {
-    try {
-      navigate("/start", { state: { from: "mypage-reset" } });
-    } catch (error) {
-      console.error("러너 유형 초기화 실패:", error);
-    }
-  };
-
-  const handleLogoutClick = () => {
-    setShowLogoutModal(true);
-  };
+  const handleLogoutClick = () => setShowLogoutModal(true);
+  const handleLogoutCancel = () => setShowLogoutModal(false);
 
   const handleLogoutConfirm = () => {
     setShowLogoutModal(false);
-    navigate("/login"); 
-  };
-
-  const handleLogoutCancel = () => {
-    setShowLogoutModal(false);
+    navigate("/login");
   };
 
   if (loading) {
     return (
-      <div className="mypage-loading">
-        <p>사용자 정보를 불러오는 중입니다...</p>
-      </div>
+      <AppContainer>
+        <div className="mypage-loading">
+          <p>사용자 정보를 불러오는 중입니다...</p>
+        </div>
+      </AppContainer>
     );
   }
 
   return (
-    <>
+    <AppContainer>
       <div className="mypage">
-       
         <h2 className="mypage-title">마이페이지</h2>
 
-       
         <section className="mypage-profile">
           <img
-            src={
-              userProfile?.profileImage || "/images/profile-default.png"
-            }
+            src={userProfile?.profileImage || "/images/profile-default.png"}
             alt="프로필"
             className="mypage-avatar"
           />
@@ -89,7 +74,6 @@ const MyPage = () => {
           </p>
         </section>
 
-        
         <section className="mypage-runner" onClick={handleGoToRunnerType}>
           <div className="runner-info">
             <p className="runner-label">러너 유형</p>
@@ -100,7 +84,6 @@ const MyPage = () => {
 
         <div className="mid-divider" />
 
-        
         <section className="mypage-section">
           <p className="section-title">리뷰 관리</p>
 
@@ -113,6 +96,7 @@ const MyPage = () => {
           </button>
 
           <div className="divider" />
+
           <button className="section-row logout" onClick={handleLogoutClick}>
             로그아웃
           </button>
@@ -121,7 +105,7 @@ const MyPage = () => {
         <BottomNavigator active="mypage" />
       </div>
 
-     
+      
       {showLogoutModal && (
         <div className="logout-modal-overlay">
           <div className="logout-modal-card">
@@ -139,7 +123,7 @@ const MyPage = () => {
           </div>
         </div>
       )}
-    </>
+    </AppContainer>
   );
 };
 
