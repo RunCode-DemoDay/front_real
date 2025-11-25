@@ -8,7 +8,7 @@ import CustomSelect from "../../component/CustomSelect/CustomSelect";
 import "./HomePage.css";
 
 import { getTypesWithTags, getCoursesByTag } from "../../api/homeAPI";
-import { getMyInfo } from "../../api/userAPI"; // ✅ 추가: /users/me 호출
+import { getMyInfo } from "../../api/userAPI"; 
 
 const SEARCH_ICON_SRC =
   "https://runcode-likelion.s3.us-east-2.amazonaws.com/global/search.svg";
@@ -21,7 +21,7 @@ const ORDER_OPTIONS = [
   { label: "긴코스순", value: "긴코스순" },
 ];
 
-/** 서버 /types 응답 → 프론트에서 쓰기 좋은 형태로 정규화 */
+
 const normalizeTypesResponse = (raw) => {
   if (!raw) return null;
   return {
@@ -39,43 +39,40 @@ function HomePage() {
   const navigate = useNavigate();
   const { userProfile } = useAuth();
 
-  const [tags, setTags] = useState([]); // [{id, name}]
+  const [tags, setTags] = useState([]); 
   const [courses, setCourses] = useState([]);
   const [selectedTag, setSelectedTag] = useState(null);
   const [selectedOrder, setSelectedOrder] = useState(ORDER_OPTIONS[0].value);
   const [loading, setLoading] = useState(true);
-  const [mvpTypeName, setMvpTypeName] = useState(null); // 상단 “오늘의 MVP 유형” 표시용
+  const [mvpTypeName, setMvpTypeName] = useState(null); 
 
-  // ✅ /users/me에서 가져온 이름(닉네임 우선) 로컬 상태
+  
   const [myName, setMyName] = useState(null);
 
-  // 🔧 AuthContext에 이미 올라가 있는 이름 (있으면 사용)
+ 
   const baseNameFromAuth = userProfile?.name || userProfile?.nickname || null;
 
-  // 🔧 최종적으로 화면에 보여줄 이름:
-  // 1순위: /users/me에서 가져온 myName
-  // 2순위: AuthContext에 있는 이름
-  // 3순위: "러너"
+ 
   const userName = myName || baseNameFromAuth || "러너";
 
-  // 🔧 백에서 type을 "문자열"로 줄 수도 있고, { name } 객체로 줄 수도 있으니 둘 다 처리
+ 
   const fallbackRunType =
     typeof userProfile?.type === "string"
       ? userProfile.type
       : userProfile?.type?.name || "유형 미등록";
 
-  /** 0) 새로고침 시 /users/me로 내 정보 가져오기 (닉네임 포함) */
+  
   useEffect(() => {
     const loadMyInfo = async () => {
       try {
-        const res = await getMyInfo(); // { success, code, message, data }
+        const res = await getMyInfo(); 
         if (!res || !res.success || !res.data) {
           console.warn("/users/me 응답 이상:", res);
           return;
         }
 
         const raw = res.data;
-        // ✅ 닉네임이 있으면 닉네임 우선, 없으면 카카오 name 사용
+       
         const displayName = raw.nickname || raw.name || raw.username || "러너";
 
         setMyName(displayName);
@@ -87,12 +84,12 @@ function HomePage() {
     loadMyInfo();
   }, []);
 
-  /** 1) /types 호출해서 태그/유형 로딩 */
+ 
   useEffect(() => {
     const loadTypes = async () => {
       try {
         const res = await getTypesWithTags();
-        // 예상 형식: { success, code, message, data }
+        
         if (!res || !res.success || !res.data) {
           console.warn("/types 응답 이상:", res);
           return;
@@ -104,11 +101,11 @@ function HomePage() {
           return;
         }
 
-        // 상단 유형명 & 태그 세팅
+       
         setMvpTypeName(normalized.name || null);
         setTags(normalized.tags);
 
-        // 첫 태그 자동 선택
+        
         if (normalized.tags.length > 0) {
           setSelectedTag(normalized.tags[0].name); // 우리는 이름으로 /courses 조회
         }
@@ -119,7 +116,7 @@ function HomePage() {
     loadTypes();
   }, []);
 
-  /** 2) 태그/정렬 변경 시 코스 조회 */
+
   const loadCourses = useCallback(async (tag, order) => {
     if (!tag) return;
     setLoading(true);

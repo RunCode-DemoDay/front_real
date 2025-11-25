@@ -13,7 +13,7 @@ import html2canvas from "html2canvas";
 import { getPresignedUrl } from "../../api/archivingAPI";
 import axios from "axios";
 
-// 아이콘
+
 const ICONS = {
   play: "https://runcode-likelion.s3.us-east-2.amazonaws.com/running/play.svg",
   pause:
@@ -26,7 +26,7 @@ const ICONS = {
 const LOCATION_ICON_SIZE = 18;
 const LOCATION_ICON_ANCHOR = Math.floor(LOCATION_ICON_SIZE / 2);
 
-// Google Maps API
+
 const GOOGLE_MAPS_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
 const libraries = ["places"];
 
@@ -88,14 +88,14 @@ const mapOptions = {
   ],
 };
 
-// 시간 포맷
+
 function mmss(sec = 0) {
   const m = String(Math.floor(sec / 60)).padStart(2, "0");
   const s = String(Math.floor(sec % 60)).padStart(2, "0");
   return `${m}:${s}`;
 }
 
-// 구면거리
+
 function haversineKm(a, b) {
   const R = 6371;
   const toRad = (d) => (d * Math.PI) / 180;
@@ -114,7 +114,7 @@ export default function RunningStop() {
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  // 🔍 이 페이지 진입 시점에 param/state 확인
+
   console.log("========================================");
   console.log("%c[RunningStop] MOUNT", "color: #009688; font-weight: bold;");
   console.log(
@@ -162,7 +162,7 @@ export default function RunningStop() {
     }
   }, [courseId, navigate]);
 
-  // 시간 증가
+ 
   useEffect(() => {
     console.log(
       "%c[RunningStop] 시간 타이머 useEffect, isRunning = " + isRunning,
@@ -265,7 +265,7 @@ export default function RunningStop() {
     try {
       let detailImageUrl = "";
 
-      // 1) 지도 캡처 → Blob
+      
       if (mapCaptureRef.current) {
         console.log("[RunningStop] html2canvas로 지도 캡처 시작");
         const canvas = await html2canvas(mapCaptureRef.current, {
@@ -283,7 +283,7 @@ export default function RunningStop() {
         );
         console.log("[RunningStop] 지도 캡처 blob 생성 완료:", blob);
 
-        // 2) Presigned URL 요청
+        
         const fileName = `archivings_${Date.now()}.png`;
         const contentType = "image/png";
 
@@ -298,14 +298,14 @@ export default function RunningStop() {
         console.log("[RunningStop] presignedUrl:", presignedUrl);
         console.log("[RunningStop] imageUrl(쿼리 제거 본체):", imageUrl);
 
-        // 3) S3 업로드 (blob === request body)
+       
         console.log("S3에 이미지 업로드를 시작합니다...");
         await axios.put(presignedUrl, blob, {
           headers: { "Content-Type": contentType },
         });
         console.log("S3 업로드 성공!");
 
-        // 🔹 이후 아카이빙에 저장할 detailImage URL
+       
         detailImageUrl = imageUrl;
       } else {
         console.warn(
@@ -313,7 +313,7 @@ export default function RunningStop() {
         );
       }
 
-      // 4) Laps 데이터 생성
+     
       const laps = [];
       if (path.length > 1) {
         let lapDistance = 0;
@@ -422,7 +422,7 @@ export default function RunningStop() {
   return (
     <AppContainer>
       <div className="runningstop-page">
-        {/* 지도 영역 */}
+       
         <div className="stop-map-wrap" ref={mapCaptureRef}>
           {isLoaded ? (
             <GoogleMap
@@ -465,7 +465,6 @@ export default function RunningStop() {
           )}
         </div>
 
-        {/* 하단 패널 */}
         <div className="stop-panel">
           <div className="stop-stats">
             <div className="stat">
@@ -483,7 +482,7 @@ export default function RunningStop() {
           </div>
 
           <div className="stop-controls">
-            {/* 정지 버튼 */}
+            
             <button
               className="ctrl-btn black"
               onClick={handleStop}
@@ -492,7 +491,6 @@ export default function RunningStop() {
               <img src={ICONS.stop} alt="종료" />
             </button>
 
-            {/* 플레이/일시정지 토글 버튼 */}
             <button
               className="ctrl-btn red"
               onClick={handleToggle}

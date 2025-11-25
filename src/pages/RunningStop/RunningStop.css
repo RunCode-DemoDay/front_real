@@ -1,4 +1,4 @@
-/* 전체 페이지 */
+
 .runningstop-page {
   background: #000;
   color: #fff;
@@ -7,7 +7,7 @@
   position: flex;
 }
 
-/* 지도는 그냥 꽉 차게 */
+
 .stop-map-wrap {
   width: 100%;
   height: 529px;
@@ -17,7 +17,7 @@
   height: 100%;
 }
 
-/* 하단 패널: 지도 밖에 있는 형제라 이제 안 가려짐 */
+
 .stop-panel {
   position: absolute;
   bottom: 0;
@@ -32,40 +32,40 @@
   gap: 40px;
   padding: 32px 0 0 0;
   box-sizing: border-box;
-  z-index: 999; /* 혹시 몰라서 */
+  z-index: 999; 
 }
 
 .stop-stats {
   display: flex;
-  justify-content: space-between; /* ✅ 각 칸 사이 여백 자동 정렬 */
+  justify-content: space-between; 
   align-items: center;
   width: 100%;
   max-width: 375px;
-  padding: 0px 40px; /* ✅ 위 32, 좌우 40, 아래 0 */
+  padding: 0px 40px; 
   box-sizing: border-box;
-  gap: 40px; /* ✅ 피그마 기준 칸 사이 40px */
+  gap: 40px; 
 }
 
 .stat .v {
   color: var(--White-High, rgba(255, 255, 255, 0.88));
 
-/* 타이틀/32/Semibold */
+
 font-family: Pretendard;
 font-size: 32px;
 font-style: normal;
 font-weight: 500;
-line-height: 140%; /* 44.8px */
+line-height: 140%;
 margin-bottom: 12px;
 }
 .stat .k {
   color: var(--White-Medium, rgba(255, 255, 255, 0.60));
 
-/* 본문/16/Regular */
+
 font-family: Pretendard;
 font-size: 16px;
 font-style: normal;
 font-weight: 400;
-line-height: 140%; /* 22.4px */
+line-height: 140%;
 display: flex;
 flex-direction: column;
 align-items: center;
@@ -105,7 +105,7 @@ height: 32px;
 flex-shrink: 0;
 }
 
-/* 구글맵 워터마크 제거 */
+
 .gm-style-cc,
 a[href^="https://maps.google.com/maps"],
 a[href^="https://www.google.com/maps"] {

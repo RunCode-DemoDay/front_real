@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 import "./StartPage.css";
 import AppContainer from "../../AppContainer/AppContainer";
 import FixedBottomButton from "../../component/FixedBottomButton/FixedBottomButton";
-import { useNavigate, useLocation } from "react-router-dom"; // ✅ useLocation 임포트
+import { useNavigate, useLocation } from "react-router-dom";
 import { useRunBTI } from "../QuizPage/RunBTIContext";
 import { useAuth } from "../../contexts/AuthContext";
 import axios from "axios";
 
-// 프록시(/api) 경유
+
 const ME_API = "/api/users/me";
 
 const getStoredAccessToken = () =>
@@ -18,17 +18,17 @@ const getStoredAccessToken = () =>
 
 const StartPage = () => {
   const navigate = useNavigate();
-  const location = useLocation(); // ✅ location 객체를 가져옵니다.
+  const location = useLocation(); 
   const { dispatch } = useRunBTI();
   const { userProfile, loginSuccess } = useAuth();
 
   const [checking, setChecking] = useState(true);
 
-  // ✅ 1) 진입 시: 토큰이 있으면 /users/me 조회해서 Context 채우기
+  
   useEffect(() => {
     let cancelled = false;
 
-    // ✅ 마이페이지에서 재설정을 위해 넘어온 경우, 리디렉션 로직을 건너뜁니다.
+    
     const isResetFlow = location.state?.from === "mypage-reset";
 
     const ensureProfile = async () => {
@@ -41,12 +41,12 @@ const StartPage = () => {
       try {
         const token = getStoredAccessToken();
         if (!token) {
-          // 토큰 없으면 온보딩 유지
+          
           if (!cancelled) setChecking(false);
           return;
         }
 
-        // ✅ 재설정 플로우가 아니고, 이미 type이 있는 프로필이면 바로 홈으로
+        
         if (!isResetFlow && userProfile?.type && (userProfile.type.id || userProfile.type.name)) {
           if (!cancelled) {
             setChecking(false);
@@ -55,7 +55,7 @@ const StartPage = () => {
           return;
         }
 
-        // 프로필이 비어있거나 type이 없는 경우 → /users/me 로 채움
+        
         const res = await axios.get(ME_API, {
           headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
@@ -73,7 +73,7 @@ const StartPage = () => {
 
         loginSuccess(filled);
 
-        // ✅ 재설정 플로우가 아니고, type이 생겼으면 홈으로
+       
         if (!isResetFlow && filled.type && (filled.type.id || filled.type.name)) {
           if (!cancelled) navigate("/home", { replace: true });
         } else {
@@ -91,9 +91,9 @@ const StartPage = () => {
     };
   }, [navigate, userProfile, loginSuccess, location.state]);
 
-  // ✅ 2) 이미 메모리에 올라온 프로필에 type이 생기면 즉시 홈으로
+  
   useEffect(() => {
-    // ✅ 마이페이지에서 재설정을 위해 넘어온 경우, 리디렉션 로직을 건너뜁니다.
+    
     const isResetFlow = location.state?.from === "mypage-reset";
     if (isResetFlow) return;
 
@@ -106,7 +106,7 @@ const StartPage = () => {
     navigate("/quiz/1");
   };
 
-  // 로딩/확인 중이면 깔끔한 상태 표시
+  
   if (checking) {
     return (
       <AppContainer>

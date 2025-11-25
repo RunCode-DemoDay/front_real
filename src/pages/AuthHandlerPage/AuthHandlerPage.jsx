@@ -3,14 +3,14 @@
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import apiClient from "../../api"; // ✅ apiClient import
-import { getMyInfo } from "../../api/userAPI"; // userAPI에서 직접 함수 import
+import apiClient from "../../api"; 
+import { getMyInfo } from "../../api/userAPI"; 
 
-// ✅ API 경로는 apiClient가 기본 URL을 관리하므로, 상대 경로만 정의합니다.
+
 const KAKAO_CALLBACK_API = "/login/oauth2/code/kakao";
 const ME_API = "/users/me";
 
-// 공통: 로컬스토리지에 토큰 저장(스네이크/카멜 키 모두)
+
 function storeTokens({ accessToken, refreshToken }) {
   if (accessToken) {
     localStorage.setItem("accessToken", accessToken);
@@ -22,7 +22,7 @@ function storeTokens({ accessToken, refreshToken }) {
   }
 }
 
-// 공통: Bearer 토큰 꺼내기
+
 function getStoredAccessToken() {
   return (
     localStorage.getItem("accessToken") ||
@@ -31,25 +31,24 @@ function getStoredAccessToken() {
   );
 }
 
-// ✅ 러너 유형이 있는지 여부 판단 (문자열/객체 모두 처리)
+
 function hasRunType(type) {
   if (!type) return false;
 
-  // 백엔드가 type을 "새벽 솔로 도전자" 같은 문자열로 줄 수도 있음
+ 
   if (typeof type === "string") {
     return type.trim().length > 0;
   }
 
-  // { id, name } 형태일 때
+ 
   return !!(type.id || type.name);
 }
 
-// 공통: /users/me 로 프로필 가져와서 AuthContext에 반영
 async function fetchAndLoginUser(loginSuccess) {
   try {
-    // userAPI의 getMyInfo 함수를 재사용합니다.
+    
     const response = await getMyInfo();
-    const raw = response.data; // getMyInfo는 이미 data 객체를 반환한다고 가정
+    const raw = response.data;
 
     const userProfile = {
       id: raw.id ?? raw.userId ?? null,
@@ -73,7 +72,7 @@ export default function AuthHandlerPage() {
   const navigate = useNavigate();
   const { loginSuccess } = useAuth();
 
-  // 시나리오 A: URL 쿼리에 토큰이 직접 포함된 경우 처리
+  
   const handleTokenFromQuery = async (params) => {
     const tokenFromQuery =
       params.get("token") ||
@@ -99,7 +98,7 @@ export default function AuthHandlerPage() {
     return true;
   };
 
-  // 시나리오 B: 카카오 인증 후 받은 code로 토큰을 교환하는 경우 처리
+ 
   const handleCodeFromQuery = async (params) => {
     const code = params.get("code");
     const state = params.get("state");
@@ -107,7 +106,7 @@ export default function AuthHandlerPage() {
     if (!code) return false;
 
     try {
-      const res = await apiClient.get(KAKAO_CALLBACK_API, { params: { code, state } }); // ✅ apiClient 사용
+      const res = await apiClient.get(KAKAO_CALLBACK_API, { params: { code, state } }); 
       const payload = res?.data?.data ?? res?.data ?? {};
       const accessToken = payload.accessToken || payload.access_token || null;
       const refreshToken = payload.refreshToken || payload.refresh_token || null;
@@ -146,19 +145,19 @@ export default function AuthHandlerPage() {
     const handleLogin = async () => {
       const params = new URLSearchParams(location.search);
 
-      // ✅ (A) 백엔드가 query로 accessToken(및 refresh)을 바로 내려주는 경우
+      
       if (await handleTokenFromQuery(params)) return;
 
-      // ✅ (B) code/state만 온 경우 → 백엔드에 교환 요청
+      
       if (await handleCodeFromQuery(params)) return;
 
-      // ✅ (C) token도 code도 없음 → 잘못 진입
+      
       console.error("❌ token/code 없음 → /login 이동");
       navigate("/login", { replace: true });
     };
 
     handleLogin();
-  }, [location.search, navigate, loginSuccess]); // location.search를 직접 의존
+  }, [location.search, navigate, loginSuccess]); 
 
   return (
     <div style={{ color: "#fff", padding: 24, textAlign: "center" }}>

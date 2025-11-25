@@ -1,8 +1,6 @@
 // src/api/mockHomeAPI.js
 
-// =======================================================
-// 1. RUN TYPE (ResultPage에서 사용)
-// =======================================================
+
 
 const MOCK_TYPE_DATA = {
     "type_id": 1,
@@ -32,9 +30,7 @@ export const registerRunType = (typeId) => {
 };
 
 
-// =======================================================
-// 2. HOME & COURSE (HomePage, CourseItem에서 사용)
-// =======================================================
+
 
 const TAGS_FROM_TYPE_API = MOCK_TYPE_DATA.tags;
 
@@ -70,7 +66,7 @@ export const fetchTypeTags = () => {
 export const fetchCourses = (tag, order, query) => {
     console.log(`[Mock API] 코스 조회 요청됨: Query=${query}`);
     
-    // ⭐ 검색 로직 시뮬레이션: 제목이나 내용에 검색어가 포함된 코스만 필터링
+    
     const filteredCourses = query 
         ? MOCK_COURSE_DATA.filter(course => 
             course.title.includes(query) || course.content.includes(query)
@@ -85,9 +81,7 @@ export const fetchCourses = (tag, order, query) => {
 };
 
 
-// =======================================================
-// 3. BOOKMARK (CourseItem에서 사용)
-// =======================================================
+
 
 export const MOCK_BOOKMARKS = { 2: 102 };
 

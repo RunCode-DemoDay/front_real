@@ -1,19 +1,19 @@
-/* 래퍼: 375px 폭으로 화면 중앙에 정렬 */
+
 .runningcount-wrapper {
   position: absolute;
   width: 100%;
-  max-width: 375px;             /* ✅ 모바일 기준 폭 제한 */
+  max-width: 375px;             
   height: 852px;
-  margin: 0 auto;               /* ✅ 가운데 정렬 */
+  margin: 0 auto;             
   display: flex;
-  justify-content: center;      /* 가로 중앙 */
-  align-items: center;          /* 세로 중앙 */
+  justify-content: center;      
+  align-items: center;          
   background-color: #000;
   overflow: hidden;
   box-sizing: border-box;
 }
 
-/* 숫자 중앙 고정 */
+
 .runningcount-number {
   font-family: "Pretendard", sans-serif;
   font-weight: 900;

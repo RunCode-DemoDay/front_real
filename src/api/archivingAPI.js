@@ -2,7 +2,7 @@
 import apiClient from "./index";
 
 /**
- * ✅ Presigned URL 발급 API
+ * Presigned URL 발급 API
  * POST /s3/upload-url
  * Query Params: fileName, contentType
  */
@@ -31,16 +31,14 @@ export const getPresignedUrl = async (fileName, contentType) => {
     throw new Error(message || "Presigned URL 발급 실패");
   }
 
-  // 🔹 data = "https://...archivings/yuyi-test.png?쿼리들..."
+  
   const presignedUrl = data; // PUT 할 때 쓸 URL (쿼리 포함)
   const imageUrl = data.split("?")[0]; // DB에 저장할 URL (쿼리 제거)
 
   return { presignedUrl, imageUrl };
 };
 
-/**
- * [GET] /archivings/{archivingId} - 아카이빙 상세 조회
- */
+
 export const fetchArchivingDetail = async (archivingId) => {
   const response = await apiClient.get(`/archivings/${archivingId}`);
   return response.data;
@@ -60,9 +58,7 @@ export const createArchiving = async (archivingData) => {
   return response.data;
 };
 
-/**
- * [PATCH] /archivings/{archivingId} - 제목/내용 수정
- */
+
 export const updateArchiving = async (archivingId, updateData) => {
   const response = await apiClient.patch(
     `/archivings/${archivingId}`,
@@ -71,9 +67,7 @@ export const updateArchiving = async (archivingId, updateData) => {
   return response.data;
 };
 
-/**
- * [GET] /courses/{courseId}/archivings - 동일 코스 아카이빙 목록
- */
+
 export const fetchArchivingsByCourse = async (courseId) => {
   const response = await apiClient.get(`/courses/${courseId}/archivings`);
   return response.data;

@@ -2,14 +2,14 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getCourseDetail, getCourseReviews } from "../../api/courseDetailAPI"; // ✅ 실제 API 함수로 변경
+import { getCourseDetail, getCourseReviews } from "../../api/courseDetailAPI";  
 import FixedBottomButton from "../../component/FixedBottomButton/FixedBottomButton";
 import ImageSwiper from "../../component/ImageSwiper/ImageSwiper";
 import AppContainer from "../../AppContainer/AppContainer";
 import CourseReviewSection from "../../component/CourseReviewSection/CourseReviewSection";
 import "./CourseDetailPage.css";
 
-// 1. 모든 아이콘 에셋 링크 정의 (유지)
+
 const ASSET_ICONS = {
   back: "https://runcode-likelion.s3.us-east-2.amazonaws.com/global/back.svg",
   bookmark_on:
@@ -30,10 +30,10 @@ const ASSET_ICONS = {
     "https://runcode-likelion.s3.us-east-2.amazonaws.com/course/detail/right_arrow.svg",
 };
 
-// ✅ 기본 썸네일 이미지 경로
+
 const DEFAULT_THUMBNAIL = "/course_img.jpg";
 
-// MapComponent는 메인 파일에 남겨둡니다.
+
 const MapComponent = ({ thumbnail }) => (
   <div className="c-detail-map-component">
     <img src={thumbnail} alt="코스 지도" className="c-detail-map-image" />
@@ -45,7 +45,7 @@ function CourseDetailPage() {
   const navigate = useNavigate();
   const courseId = urlParams.courseId || "1";
 
-  // 🔍 이 페이지에서 courseId 확인
+
   console.log("%c[CourseDetail] useParams:", "color: #00bcd4", urlParams);
   console.log("%c[CourseDetail] courseId 최종값:", "color: #00bcd4", courseId);
 
@@ -66,8 +66,8 @@ function CourseDetailPage() {
       setError(null);
       try {
         const [detailRes, reviewRes] = await Promise.all([
-          getCourseDetail(courseId), // ✅ 실제 API 호출
-          getCourseReviews({ courseId, order: "latest" }), // ✅ 실제 API 호출
+          getCourseDetail(courseId), 
+          getCourseReviews({ courseId, order: "latest" }), 
         ]);
 
         console.log(
@@ -118,7 +118,7 @@ function CourseDetailPage() {
     setIsBookmarked((prev) => !prev);
   }, [isBookmarked]);
 
-  // ✅ 러닝 시작 → 카운트다운 페이지로 이동 (코스 제목 state로 전달)
+  
   const handleStartRunning = useCallback(() => {
     console.log('%c[CourseDetail] "러닝 시작" 클릭', "color: #4caf50");
     console.log("%c[CourseDetail] RunningCount로 넘길 값:", "color: #4caf50", {
@@ -166,7 +166,7 @@ function CourseDetailPage() {
     );
   }
 
-  // ✅ 데이터 가공: 잘못된 이미지 경로를 수정하고 ImageSwiper에 전달할 배열 통합
+  
   const sanitizeImageUrl = (url) => {
     if (url && !url.includes("/public/")) {
       return url;
@@ -189,7 +189,7 @@ function CourseDetailPage() {
   return (
     <AppContainer>
       <div className="c-detail-container">
-        {/* 1. 상단 버튼 오버레이 (Absolute positioned) */}
+       
         <div className="c-detail-top-buttons-overlay">
           <button
             className="c-detail-back-button-overlay"
@@ -203,13 +203,13 @@ function CourseDetailPage() {
           </button>
         </div>
 
-        {/* ⭐ 2. 스크롤 가능한 콘텐츠 묶음 (모든 콘텐츠 포함) */}
+        
         <div className="c-detail-scroll-content-wrapper">
-          {/* 메인 정보 섹션 */}
+          
           <div className="c-detail-main-info-section">
             <div className="c-detail-header-row">
               <h1 className="c-detail-course-title">{detailData.title}</h1>
-              {/* 북마크 버튼을 제목 옆에 배치 */}
+              
               <button
                 className="c-detail-bookmark-button-overlay"
                 onClick={handleBookmarkToggle}
@@ -224,7 +224,7 @@ function CourseDetailPage() {
 
             <p className="c-detail-course-content">{detailData.content}</p>
 
-            {/* 메타 정보 (위치, 거리 아이콘 적용) */}
+            
             <div className="c-detail-course-meta-info">
               <p className="c-detail-address-text">
                 <img
@@ -245,7 +245,7 @@ function CourseDetailPage() {
             </div>
           </div>
 
-          {/* ⭐ 3. ImageSwiper 영역 (지도/이미지 위치) */}
+          
           <div className="c-detail-map-section">
             <ImageSwiper
               images={allCourseImages}
@@ -253,7 +253,7 @@ function CourseDetailPage() {
             />
           </div>
 
-          {/* 4. 리뷰 섹션 */}
+          
           <CourseReviewSection
             reviewData={reviewData}
             onReviewViewAll={null}
@@ -261,7 +261,7 @@ function CourseDetailPage() {
             maxItems={2}
           />
 
-          {/* ⭐ 5. 전체보기 버튼을 리뷰 섹션 하단에 배치 */}
+          
           <span
             className="c-detail-review-view-all-bottom"
             onClick={handleReviewViewAll}
@@ -275,7 +275,7 @@ function CourseDetailPage() {
           </span>
         </div>
 
-        {/* 6. 하단 고정 버튼 (FixedBottomButton) */}
+        
         <FixedBottomButton
           label="러닝 시작"
           onClick={handleStartRunning}

@@ -32,7 +32,7 @@ function paceFromAvg(distanceKm, elapsedSec) {
 export default function RunningActive() {
   const navigate = useNavigate();
   const { courseId } = useParams();
-  const { state } = useLocation(); // courseTitle 등 받음
+  const { state } = useLocation(); 
   const courseTitle = state?.courseTitle || "";
 
   const [elapsedSec, setElapsedSec] = useState(0);
@@ -44,7 +44,7 @@ export default function RunningActive() {
 
   const timerRef = useRef(null);
 
-  // 타이머 (달리기 시간)
+ 
   useEffect(() => {
     timerRef.current = setInterval(() => {
       setElapsedSec((s) => s + 1);
@@ -52,7 +52,7 @@ export default function RunningActive() {
     return () => clearInterval(timerRef.current);
   }, []);
 
-  // 외부 이벤트 수신 (지도 쪽에서 dispatchEvent)
+
   useEffect(() => {
     const onSpeed = (e) => {
       const v = Number(e?.detail?.kmh ?? 0);
@@ -77,14 +77,14 @@ export default function RunningActive() {
     };
   }, []);
 
-  // 표시용
+ 
   const realtimePace = useMemo(() => paceFromKmh(instantKmh), [instantKmh]);
   const avgPace = useMemo(
     () => paceFromAvg(distanceKm, elapsedSec),
     [distanceKm, elapsedSec]
   );
 
-  // ▶ 일시정지 버튼 클릭 시 RunningStop 페이지로 이동
+  
   const handlePauseClick = () => {
     clearInterval(timerRef.current);
     navigate(`/running/stop/${courseId}`, {

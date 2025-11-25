@@ -1,6 +1,6 @@
 /* src/pages/CourseAllReviewsPage/CourseAllReviewsPage.css */
 
-/* 1. 기본 컨테이너 */
+
 .all-reviews-container {
    width: 100%;
     height: 100%;
@@ -8,11 +8,11 @@
     flex-direction: column;
     align-items: center;
     padding: 100px 20px 40px 20px;
-    flex-grow: 1; /* AppContainer의 남은 공간을 모두 차지 */
+    flex-grow: 1; 
     position: relative;
 }
 
-/* 2. 상단 바 (Sticky Header - 뒤로가기 버튼 포함) */
+
 .all-reviews-top-bar {
     position: absolute; 
     top: 0;
@@ -22,7 +22,7 @@
     padding: 50px 16px 30px 16px;
     display: flex;
     justify-content: space-between;
-    /* 배경은 투명하게 유지하여 아래 콘텐츠가 보이도록 */
+   
     background: transparent;
 }
 
@@ -34,31 +34,31 @@
     margin-right: 15px;
 }
 
-/* 아이콘 스타일 재사용을 위해 c-detail-back-icon 사용 */
+
 
 .all-reviews-title {
-    /* 텍스트 스타일: CourseDetailPage의 제목 스타일과 비슷하게 맞춤 */
+   
     font-size: 16px;
-    font-weight: 600; /* Semibold */
+    font-weight: 600; 
     color: var(--White-High, rgba(255, 255, 255, 0.88));
     margin: 0;
 }
 
-/* 3. 스크롤 가능한 리뷰 영역 */
+
 .all-reviews-scroll-wrapper {
     flex-grow: 1;
     overflow-y: auto; 
     -webkit-overflow-scrolling: touch;
     width: 100%;
     
-    /* 스크롤바 숨기기 (CourseDetailPage.css의 스타일 재사용) */
+   
     scrollbar-width: none;
 }
 .all-reviews-scroll-wrapper::-webkit-scrollbar {
     display: none;
 }
 
-/* 4. 로딩/에러 화면 */
+
 .all-reviews-loading-screen, .all-reviews-error-screen {
     flex-grow: 1;
     display: flex;

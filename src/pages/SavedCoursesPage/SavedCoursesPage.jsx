@@ -7,20 +7,20 @@ import './SavedCoursesPage.css';
 import { useNavigate } from 'react-router-dom';
 import CustomSelect from '../../component/CustomSelect/CustomSelect';
 
-// 1. API import 경로 변경
+
 import { getBookmarks } from '../../api/bookmarkAPI'; 
 
-// 드롭다운 아이콘 (HomePage/SearchPage에서 사용된 아이콘 재사용)
+
 const DROPDOWN_ARROW_SRC = 'https://runcode-likelion.s3.us-east-2.amazonaws.com/global/dropdown.svg'; 
 
-// 정렬 옵션 정의
+
 const ORDER_OPTIONS = [
-    { label: "최신 순", value: "latest" }, // API 명세에 따라 소문자로 변경
+    { label: "최신 순", value: "latest" }, 
     { label: "짧은 순", value: "DISTANCE_ASC" },
     { label: "별점 순", value: "RATING_DESC" },
 ];
 
-// ⭐ 스켈레톤 컴포넌트 (CourseItem과 유사한 형태로 정의)
+
 const SkeletonCourseItem = () => (
     <div className="skeleton-item-card">
         <div className="skeleton-thumbnail"></div>
@@ -31,7 +31,7 @@ const SkeletonCourseItem = () => (
         </div>
     </div>
 );
-// =========================================================
+
 
 
 function SavedCoursesPage() {
@@ -40,16 +40,15 @@ function SavedCoursesPage() {
     const [loading, setLoading] = useState(true);
     const [selectedOrder, setSelectedOrder] = useState(ORDER_OPTIONS[0].value); 
 
-    // 북마크 목록 조회 함수 (정렬 조건 변경 시 재호출)
+    
     const loadBookmarks = useCallback(async (order) => {
         setLoading(true);
         try {
-            // 2. 실제 API 호출로 변경
+          
             const result = await getBookmarks(order); 
             
             if (result.success) {
-                // 3. API 응답 데이터를 그대로 사용합니다.
-                // _bookmarked를 강제로 true로 설정하는 로직을 제거합니다.
+              
                 setBookmarks(result.data);
             } else {
                 throw new Error(result.message || "북마크 목록 조회에 실패했습니다.");
@@ -64,7 +63,7 @@ function SavedCoursesPage() {
         }
     }, []);
 
-    // Effect: 정렬 조건 변경 시 북마크 목록 재조회
+
     useEffect(() => {
         loadBookmarks(selectedOrder);
     }, [selectedOrder, loadBookmarks]); 
@@ -73,7 +72,7 @@ function SavedCoursesPage() {
         setSelectedOrder(newValue);
     };
 
-    // ⭐ 북마크 해제 시 목록을 서버에서 다시 불러오는 함수
+    
     const handleBookmarkChange = () => {
         loadBookmarks(selectedOrder);
     };
@@ -81,7 +80,7 @@ function SavedCoursesPage() {
 
     return (
         <div className="saved-courses-page-container">
-            {/* 1. 상단 타이틀 */}
+            
             <header className="saved-courses-header">
                 <h1 className="page-title">저장된 코스</h1>
             </header>
@@ -91,36 +90,36 @@ function SavedCoursesPage() {
                         options={ORDER_OPTIONS}
                         value={selectedOrder}
                         onChange={handleOrderChange}
-                        placeholder="최신 순" // 기본값 (props에 기본값 설정되어 있지만 명시적으로 전달)
+                        placeholder="최신 순" 
                     />
                 </div>
 
-            {/* 2. 코스 목록 및 정렬 */}
+           
             <main className="course-main-content">
-                {/* 정렬 드롭다운 */}
+                
                 
 
                 <div className="course-list">
                     {loading ? (
-                        // 로딩 중 스켈레톤 UI 표시
+                       
                         [1, 2, 3].map(i => <SkeletonCourseItem key={i} />)
                     ) : bookmarks.length > 0 ? (
-                        // 북마크 코스 목록 표시
+                        
                         bookmarks.map(course => (
                             <CourseItem 
                                 key={course.course_id} 
                                 course={course} 
-                                onBookmarkChange={handleBookmarkChange} // ⭐ 콜백 함수 전달
+                                onBookmarkChange={handleBookmarkChange}
                             />
                         ))
                     ) : (
-                        // 결과가 없을 때
+                       
                         <p className="no-course-message">저장된 코스가 없습니다.</p>
                     )}
                 </div>
             </main>
             
-            {/* 3. 하단 네비게이터 */}
+            
             <BottomNavigator initialActiveTab="saved" />
         </div>
     );

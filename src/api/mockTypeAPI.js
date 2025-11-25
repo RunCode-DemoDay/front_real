@@ -1,10 +1,6 @@
 // src/api/mockHomeAPI.js
 
-// =======================================================
-// 1. RUN TYPE (ResultPage에서 사용)
-// =======================================================
 
-// ⭐ [복구된 데이터] API 명세서에 따른 Mock 데이터 (유형 ID: 1 가정)
 const MOCK_TYPE_DATA = {
     "type_id": 1,
     "name": "새벽 솔로 도전자",
@@ -18,9 +14,7 @@ const MOCK_TYPE_DATA = {
     ]
 };
 
-/**
- * [Mock API] 퀴즈 계산 후 런비티아이 결과를 조회합니다. (GET /types)
- */
+
 export const fetchRunTypeResult = (calculatedTypeId) => {
     console.log(`[Mock API] 유형 결과 조회 요청됨. 코드: ${calculatedTypeId}`);
     return new Promise(resolve => {
@@ -28,9 +22,7 @@ export const fetchRunTypeResult = (calculatedTypeId) => {
     });
 };
 
-/**
- * [Mock API] 사용자 정보에 최종 런비티아이 유형을 등록합니다. (PUT/POST)
- */
+
 export const registerRunType = (typeId) => {
     console.log(`[Mock API] 유형 등록 요청됨. Type ID: ${typeId}`);
     return new Promise(resolve => {
@@ -39,11 +31,8 @@ export const registerRunType = (typeId) => {
 };
 
 
-// =======================================================
-// 2. HOME & COURSE (HomePage, CourseItem에서 사용)
-// =======================================================
 
-const TAGS_FROM_TYPE_API = MOCK_TYPE_DATA.tags; // 위에 정의된 데이터를 재활용
+const TAGS_FROM_TYPE_API = MOCK_TYPE_DATA.tags; 
 
 const MOCK_COURSE_DATA = [
     {
@@ -68,18 +57,14 @@ const MOCK_COURSE_DATA = [
     }
 ];
 
-/**
- * [Mock API] 런비티아이 상세 태그 4종을 조회합니다. (GET /types)
- */
+
 export const fetchTypeTags = () => {
     return new Promise(resolve => {
         setTimeout(() => resolve(TAGS_FROM_TYPE_API), 300);
     });
 };
 
-/**
- * [Mock API] 코스 목록을 조회합니다. (GET /courses)
- */
+
 export const fetchCourses = (tag, order) => {
     console.log(`[Mock API] 코스 조회 요청됨: Tag=${tag}, Order=${order}`);
     return new Promise(resolve => {
@@ -88,16 +73,11 @@ export const fetchCourses = (tag, order) => {
 };
 
 
-// =======================================================
-// 3. BOOKMARK (CourseItem에서 사용)
-// =======================================================
 
-// ⭐ Mock 저장소: 내보내기 (export)하여 CourseItem에서 초기 상태 설정에 사용
+
 export const MOCK_BOOKMARKS = { 2: 102 }; // course_id 2는 북마크 ID 102로 저장됨 가정
 
-/**
- * [Mock API] 북마크를 생성합니다. (POST /bookmarks)
- */
+
 export const createBookmark = (courseId) => {
     return new Promise(resolve => {
         setTimeout(() => {
@@ -112,9 +92,7 @@ export const createBookmark = (courseId) => {
     });
 };
 
-/**
- * [Mock API] 북마크를 삭제합니다. (DELETE /bookmarks/{bookmarkId})
- */
+
 export const deleteBookmark = (bookmarkId) => {
     return new Promise(resolve => {
         setTimeout(() => {

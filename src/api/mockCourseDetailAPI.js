@@ -1,6 +1,6 @@
 // src/api/mockCourseDetailAPI.js
 
-// 코스 상세 Mock 데이터
+
 const MOCK_COURSE_DETAIL = {
     "title": "한강 반포 러닝 코스",
     "content": "노을과 야경을 즐기며 달릴 수 있는 대표 한강 코스",
@@ -15,7 +15,7 @@ const MOCK_COURSE_DETAIL = {
     "isBookmarked": true
 };
 
-// 리뷰 목록 Mock 데이터
+
 const MOCK_REVIEWS_DATA = {
     "course_id": 1,
     "star_average": 4.9,
@@ -40,18 +40,14 @@ const MOCK_REVIEWS_DATA = {
     ]
 };
 
-/**
- * [Mock API] 코스 상세 정보를 조회합니다. (GET /courses/{courseId})
- */
+
 export const fetchCourseDetail = (courseId) => {
     return new Promise(resolve => {
         setTimeout(() => resolve(MOCK_COURSE_DETAIL), 400);
     });
 };
 
-/**
- * [Mock API] 리뷰 목록을 조회합니다. (GET /courses/{courseId}/reviews)
- */
+
 export const fetchCourseReviews = (courseId, order = 'LATEST') => {
     return new Promise(resolve => {
         setTimeout(() => resolve(MOCK_REVIEWS_DATA), 400);

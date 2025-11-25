@@ -1,8 +1,8 @@
 // src/components/CourseReviewSection/CourseReviewSection.jsx
 import React from 'react';
-import './CourseReviewSection.css'; // ⭐ 새로 만든 CSS import
+import './CourseReviewSection.css'; 
 
-// 컴포넌트: 리뷰 아이템
+
 const ReviewItem = ({ review, ASSET_ICONS }) => {
     const renderStars = (rating) => {
         const stars = [];
@@ -61,7 +61,7 @@ const CourseReviewSection = ({ reviewData, onReviewViewAll, ASSET_ICONS, maxItem
             {/* 3. 리뷰 목록 */}
             <div className="c-detail-reviews-list">
                 {reviewsToShow.map(review => (
-                    // ASSET_ICONS를 ReviewItem에 전달
+                   
                     <ReviewItem key={review.reviewid} review={review} ASSET_ICONS={ASSET_ICONS} />
                 ))}
             </div>

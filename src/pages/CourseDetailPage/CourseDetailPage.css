@@ -1,6 +1,6 @@
 /* src/pages/CourseDetailPage/CourseDetailPage.css */
 
-/* 1. 기본 레이아웃 및 스크롤 설정 */
+
 .c-detail-container {
     width: 100%;
     height: 100%;
@@ -8,11 +8,11 @@
     flex-direction: column;
     align-items: center;
     padding: 100px 20px 40px 20px;
-    flex-grow: 1; /* AppContainer의 남은 공간을 모두 차지 */
-    position: relative; /* FixedBottomButton의 absolute 기준 */
+    flex-grow: 1; 
+    position: relative; 
 }
 
-/* 로딩/에러 화면 (유지) */
+
 .loading-screen, .error-screen {
     display: flex;
     justify-content: center;
@@ -22,7 +22,7 @@
     color: #666;
 }
 
-/* 2. 상단 버튼 오버레이 (Absolute positioned) */
+
 .c-detail-top-buttons-overlay {
     position: absolute; 
     top: 0;
@@ -32,7 +32,7 @@
     padding: 50px 16px 30px 16px;
     display: flex;
     justify-content: space-between;
-    /* 배경은 투명하게 유지하여 아래 콘텐츠가 보이도록 */
+    
     background: transparent; 
 }
 
@@ -62,26 +62,26 @@
 }
 
 
-/* ⭐ 3. 스크롤 가능한 콘텐츠 묶음 (여기서 스크롤 발생) */
+
 .c-detail-scroll-content-wrapper {
     width: 335px;
     flex-grow: 1;
     overflow-y: auto; 
     
-    /* ⭐⭐ 겹침 해결: 오버레이 버튼 높이만큼 패딩 추가 (약 60px) ⭐⭐ */
+   
     
     
     margin-bottom: 70px;
 }
 
-/* 웹킷 기반 브라우저 (Chrome, Safari, Edge) */
+
 .c-detail-scroll-content-wrapper::-webkit-scrollbar {
     width: 0;
-    height: 0; /* 가로 스크롤바도 숨기려면 추가 */
-    display: none; /* 이전 버전 브라우저 대비 */
+    height: 0; 
+    display: none; 
 }
 
-/* 메인 정보 섹션 */
+
 .c-detail-main-info-section {
     
     margin-top: 0; 
@@ -98,29 +98,29 @@
     flex: 1 0 0;
     color: var(--White-High, rgba(255, 255, 255, 0.88));
 
-    /* 타이틀/24/Semibold */
+    
     margin: 0;
     font-family: Pretendard;
     font-size: 24px;
     font-style: normal;
     font-weight: 500;
-    line-height: 140%; /* 33.6px */
+    line-height: 140%; 
 }
 
 .c-detail-course-content {
     color: var(--Gray, #9E9E9E);
 
-    /* 본문/14/Regular */
+  
     margin-top: 0;
     margin-bottom: 16px;
     font-family: Pretendard;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
-    line-height: 140%; /* 19.6px */
+    line-height: 140%; 
 }
 
-/* 메타 정보 (위치, 거리) */
+
 .c-detail-course-meta-info {
     margin-bottom: 20px;
 }
@@ -133,29 +133,29 @@
 .c-detail-address-text{
     color: var(--White-Medium, rgba(255, 255, 255, 0.60));
 
-    /* 본문/14/Regular */
+    
     margin: 0;
     margin-bottom: 4px;
     font-family: Pretendard;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
-    line-height: 140%; /* 19.6px */
+    line-height: 140%; 
 }
 
 .c-detail-distance-text{
     color: var(--White-Medium, rgba(255, 255, 255, 0.60));
 
-    /* 본문/14/Regular */
+    
     margin: 0;
     font-family: Pretendard;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
-    line-height: 140%; /* 19.6px */
+    line-height: 140%; 
 }
 
-/* ⭐ 4. ImageSwiper/지도 섹션 (스크롤 콘텐츠 내의 이미지 영역) */
+
 .c-detail-map-section {
 
     margin-bottom: 30px;
@@ -171,7 +171,7 @@
     z-index: 1;
 }
 
-/* 5. 리뷰 섹션 */
+
 .c-detail-review-section {
     padding-bottom: 8px;
 }
@@ -180,19 +180,19 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 4px; /* 평점과의 간격 좁힘 */
+    margin-bottom: 4px;
 }
 
 .c-detail-review-title {
     color: var(--White-High, rgba(255, 255, 255, 0.88));
 
-    /* 타이틀/16/Semibold */
+    
     margin: 0;
     font-family: Pretendard;
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
-    line-height: 140%; /* 22.4px */
+    line-height: 140%; 
 }
 
 .c-detail-review-view-all {
@@ -212,11 +212,11 @@
     align-self: stretch;
     color: var(--White-Medium, rgba(255, 255, 255, 0.60));
 
-    /* 본문/12/Regular */
+   
     font-family: Pretendard;
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
-    line-height: 140%; /* 16.8px */
+    line-height: 140%; 
     cursor: pointer;
 }

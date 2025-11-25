@@ -1,4 +1,4 @@
-/* 전체 페이지 */
+
 .reviewstar-page {
   background-color: #0f0f0f;
   color: #fff;
@@ -7,24 +7,23 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  padding: 40px 20px 60px 20px; /* top 40 / side 20 / bottom 80 */
+  padding: 40px 20px 60px 20px; 
   box-sizing: border-box;
   font-family: "Pretendard", sans-serif;
 }
 
-/* 헤더 (← / 리뷰 작성) */
+
 .reviewstar-header {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 28px; /* 화살표 줄과 타이틀 줄 사이 */
+  gap: 28px;
   margin-bottom: 16px;
 
-  /* reviewadd처럼 왼쪽 시각 오프셋 16px 맞추려고 -4px 트릭 */
+ 
   margin-left: -4px;
 }
 
-/* 첫 줄: 뒤로가기 아이콘 */
 .reviewstar-back-btn {
   background: none;
   border: none;
@@ -42,18 +41,18 @@
   color: #9E9E9E;
 }
 
-/* 두 번째 줄: "리뷰 작성" */
+
 .reviewstar-title {
   color: rgba(255, 255, 255, 0.88);
   font-family: Pretendard;
   font-size: 24px;
   font-weight: 500;
-  line-height: 140%; /* 33.6px */
+  line-height: 140%; 
   padding-left: 4px;
   margin: 0;
 }
 
-/* 코스 정보 카드 */
+
 .reviewstar-coursebox {
   display: flex;
   flex-direction: row;
@@ -83,7 +82,7 @@
   object-fit: cover;
 }
 
-/* 썸네일 fallback */
+
 .reviewstar-thumb-fallback {
   width: 100%;
   height: 100%;
@@ -102,7 +101,7 @@
   font-family: Pretendard;
   font-size: 16px;
   font-weight: 500;
-  line-height: 140%; /* 22.4px */
+  line-height: 140%; 
   margin: 0;
 }
 
@@ -116,7 +115,7 @@
   font-family: Pretendard;
   font-size: 12px;
   font-weight: 350;
-  line-height: 140%; /* 16.8px */
+  line-height: 140%; 
 }
 
 .reviewstar-meta span {
@@ -131,12 +130,12 @@ gap: 4px;
   width: 16px;
   height: 16px;
   flex-shrink: 0;
-  filter: brightness(0) invert(1); /* 흰색 느낌 */
+  filter: brightness(0) invert(1); 
   opacity: 0.88;
   
 }
 
-/* ✅ 코스와 별점 사이 가는 구분선 */
+
 .reviewstar-separator {
   width: 100%;
   height: 1px;
@@ -146,7 +145,7 @@ gap: 4px;
   margin-bottom: 16px;
 }
 
-/* 별점 선택 블럭 */
+
 .reviewstar-rating-block {
   
   display: flex;
@@ -164,7 +163,7 @@ margin-bottom: 16px;
   gap: 8px;
 }
 
-/* 큰 별 버튼 */
+
 .reviewstar-star-btn {
   background: none;
   border: none;
@@ -179,17 +178,16 @@ margin-bottom: 16px;
   display: block;
 }
 
-/* 선택 안 된 별은 연하게 */
+
 .reviewstar-bigstar.off {
   opacity: 0.4;
 }
 
-/* 선택된 별은 진하게 */
+
 .reviewstar-bigstar.on {
   opacity: 1;
 }
 
-/* 텍스트 입력 영역 */
 .reviewstar-input-block {
  border-radius: 12px;
 background: var(--Black-Interact, #2C2C2C);
@@ -199,19 +197,19 @@ background: var(--Black-Interact, #2C2C2C);
   display: flex;
   flex-direction: column;
 
-  /* gap 지워도 됨. absolute 쓸 거라 사실상 필요 없음 */
+ 
   gap: 10px;
 
   height: 200px;
 
-  /* ✅ 카운트를 카드 오른쪽 아래에 고정시키기 위해 필요 */
+ 
   position: relative;
 
 }
 
 .reviewstar-textarea {
   width: 100%;
-  height: 100%;            /* ✅ box 안을 꽉 채우게 */
+  height: 100%;            
   background: transparent;
   border: none;
   outline: none;
@@ -222,7 +220,7 @@ background: var(--Black-Interact, #2C2C2C);
   line-height: 140%;
   color: rgba(255, 255, 255, 0.6);
 
-  /* ✅ 아래쪽 카운트랑 겹치지 않도록 여유 */
+  
   padding-bottom: 32px;
 
 font-style: normal;
@@ -238,24 +236,24 @@ font-weight: 350;
 .reviewstar-count {
   color: var(--White-Medium, rgba(255, 255, 255, 0.60));
 
-/* 본문/12/Regular */
+
 font-family: Pretendard;
 font-size: 12px;
 font-style: normal;
 font-weight: 350;
-line-height: 140%; /* 16.8px */
+line-height: 140%; 
   text-align: right;
   margin-top: 4px;
 }
 
-/* 하단 등록 버튼 */
+
 .reviewstar-submit {
   width: 335px;
   border: none;
   border-radius: 12px;
 
   padding: 12px 0;
-  margin-top: auto; /* 화면 아래로 밀기 */
+  margin-top: auto; 
 
   
 
@@ -274,7 +272,7 @@ background: var(--Black-Interact, #2C2C2C);
 
 }
 
-/* 별점이 선택되면 활성화 (피그마 오른쪽 상태처럼) */
+
 .reviewstar-submit.active {
   
 background: var(--Main, #FF003C);
@@ -283,10 +281,7 @@ background: var(--Main, #FF003C);
 }
 
 
-/* ===== 모달 (등록 완료 Alert) ===== */
 
-/* 배경 딤 */
-/* 모달 전체 오버레이 */
 .reviewstar-modal-overlay {
   position: fixed;
   top: 0;
@@ -298,37 +293,37 @@ background: var(--Main, #FF003C);
   justify-content: center;
   align-items: center;
 
-  /* ✅ 배경 흐림 + 어두운 반투명 레이어 */
+  
   background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(2px); /* <- 핵심 */
-  -webkit-backdrop-filter: blur(8px); /* Safari 대응 */
+  backdrop-filter: blur(2px); 
+  -webkit-backdrop-filter: blur(8px);  
 
   z-index: 9999;
 }
 
 
-/* 모달 카드 */
+
 .reviewstar-modal-card {
   width: 270px;             /* 너무 넓어지지 않게 안전용 */
-  background: var(--Black, #121212);          /* Black-Interact */
+  background: var(--Black, #121212);        
   border-radius: 12px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;                      /* ✅ 피그마 gap: 2px */
+  gap: 2px;                    
 
-  /* ✅ 피그마 padding: 16px */
+ 
   box-sizing: border-box;
 
   color: rgba(255, 255, 255, 0.88);
   font-family: Pretendard, system-ui, sans-serif;
   text-align: center;
 
-  box-shadow: 0 12px 28px rgba(0,0,0,0.6); /* 살짝 떠보이게 */
+  box-shadow: 0 12px 28px rgba(0,0,0,0.6); 
 }
 
-/* "리뷰 작성이 완료되었습니다." */
+
 .reviewstar-modal-text {
   font-size: 16px;
   font-weight: 500;
@@ -340,10 +335,10 @@ background: var(--Main, #FF003C);
   color: rgba(255, 255, 255, 0.88); /* White/High */
 }
 
-/* 구분선 (피그마에서 텍스트와 버튼을 시각적으로 나누는 얇은 1px 라인 느낌) */
 
 
-/* 확인 버튼 */
+
+
 .reviewstar-modal-confirm {
   width: 100%;
   background: transparent;
@@ -353,7 +348,7 @@ background: var(--Main, #FF003C);
   font-size: 14px;
   font-weight: 500;
   line-height: 140%;
-  color: #ff003c;                /* 피그마 빨간 텍스트 */
+  color: #ff003c;               
   text-align: center;
 
   padding: 11px 41px;
@@ -370,14 +365,14 @@ flex: 1 0 0;
 align-self: stretch;
 }
 
-/* ✅ 모달 내부 구분선 */
+
 .reviewstar-modal-separator {
   width: 100%;
   height: 1px;
   border-radius: 12px;
 background: rgba(30, 30, 30, 0.75);
 backdrop-filter: blur(11px);
- /* 위 8px, 아래 12px 정도 여백으로 살짝 띄우기 */
+
 }
 
 .reviewstar-modal-confirm:hover {

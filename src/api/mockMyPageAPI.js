@@ -1,6 +1,5 @@
 // src/api/mockMyPageAPI.js
 
-// 📍 리뷰 미작성 코스 (ReviewAdd.jsx용)
 export const mockUnreviewedCourses = [
   {
     course_id: 1,
@@ -48,7 +47,6 @@ export const mockUnreviewedCourses = [
   },
 ];
 
-// 📍 작성한 리뷰 목록 (ReviewMy.jsx용)
 export const mockMyReviews = [
   {
     review_id: 12,
@@ -77,8 +75,7 @@ export const mockMyReviews = [
 ];
 
 
-// 이미 파일이 있다면, 아래 export만 추가하세요.
-// 없다면 새로 만들어도 됩니다.
+
 
 export const mockMyWrittenReviews = [
   {

@@ -3,13 +3,12 @@ import { useNavigate } from "react-router-dom";
 import "./MyPage.css";
 import LeftArrow from "../../assets/Left.svg";
 import BottomNavigator from "../../component/BottomNavigator/BottomNavigator";
-import { getMyInfo, patchInfo } from "../../api/userAPI"; // ✅ patchInfo 함수를 추가로 임포트합니다.
-
+import { getMyInfo, patchInfo } from "../../api/userAPI"; 
 const MyPage = () => {
   const navigate = useNavigate();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const [userProfile, setUserProfile] = useState(null); // ✅ 사용자 프로필 상태
-  const [loading, setLoading] = useState(true); // ✅ 로딩 상태
+  const [userProfile, setUserProfile] = useState(null); 
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -20,7 +19,7 @@ const MyPage = () => {
           setUserProfile(res.data);
         } else {
           console.warn("사용자 정보 조회 실패:", res.message);
-          // TODO: 사용자 정보 조회 실패 시 에러 처리 (예: 로그인 페이지로 리디렉션)
+          
         }
       } catch (error) {
         console.error("사용자 정보 조회 중 에러 발생:", error);
@@ -40,7 +39,7 @@ const MyPage = () => {
     navigate("/reviewmy");
   };
 
-  // ✅ API를 호출하므로 async/await로 비동기 처리합니다.
+  
   const handleGoToRunnerType = async () => {
     try {
       navigate("/start", { state: { from: "mypage-reset" } });
@@ -55,7 +54,7 @@ const MyPage = () => {
 
   const handleLogoutConfirm = () => {
     setShowLogoutModal(false);
-    navigate("/login"); // ✅ 예 클릭 시 LoginPage로 이동
+    navigate("/login"); 
   };
 
   const handleLogoutCancel = () => {
@@ -73,10 +72,10 @@ const MyPage = () => {
   return (
     <>
       <div className="mypage">
-        {/* 상단 타이틀 */}
+       
         <h2 className="mypage-title">마이페이지</h2>
 
-        {/* 프로필 */}
+       
         <section className="mypage-profile">
           <img
             src={
@@ -90,7 +89,7 @@ const MyPage = () => {
           </p>
         </section>
 
-        {/* 러너 유형 */}
+        
         <section className="mypage-runner" onClick={handleGoToRunnerType}>
           <div className="runner-info">
             <p className="runner-label">러너 유형</p>
@@ -101,7 +100,7 @@ const MyPage = () => {
 
         <div className="mid-divider" />
 
-        {/* 리뷰 관리 */}
+        
         <section className="mypage-section">
           <p className="section-title">리뷰 관리</p>
 
@@ -122,7 +121,7 @@ const MyPage = () => {
         <BottomNavigator active="mypage" />
       </div>
 
-      {/* 로그아웃 모달 */}
+     
       {showLogoutModal && (
         <div className="logout-modal-overlay">
           <div className="logout-modal-card">

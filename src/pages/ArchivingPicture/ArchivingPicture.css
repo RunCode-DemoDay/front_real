@@ -18,23 +18,23 @@
 .archpic-title {
   color: var(--White-High, rgba(255, 255, 255, 0.88));
 
-  /* 타이틀/32/Semibold */
+  
   font-family: Pretendard;
   font-size: 32px;
   font-style: normal;
   font-weight: 500;
-  line-height: 140%; /* 44.8px */
+  line-height: 140%; 
   margin: 0 20px 86px 20px;
 }
 
-/* 공통 변수 */
+
 :root {
   --item-size: 120px;
   --gap: 20px;
   --dur-slow: 40s;
 }
 
-/* 레인 공통 */
+
 .archpic-lane {
   position: relative;
   height: var(--item-size);
@@ -42,7 +42,7 @@
   overflow: hidden;
 }
 
-/* 트랙 공통 */
+
 .archpic-track {
   display: inline-flex;
   align-items: center;
@@ -50,9 +50,7 @@
   will-change: transform;
 }
 
-/* ========================= */
-/* 1) 윗줄: 왼쪽 60px 두고 왼쪽으로 */
-/* ========================= */
+
 .lane-top .archpic-track {
   animation: top-scroll var(--dur-slow) linear infinite;
 }
@@ -66,21 +64,19 @@
   }
 }
 
-/* ========================= */
-/* 2) 아랫줄: 오른쪽에 진짜 100px짜리 공백을 붙여서 보여주고 오른쪽으로 */
-/* ========================= */
+
 .lane-bottom .archpic-track {
   animation: bottom-scroll var(--dur-slow) linear infinite;
   position: relative;
 }
 
-/* ✅ 여기서 진짜 빈칸을 하나 만들어서 끝에 붙인다 */
+
 .lane-bottom .archpic-track::after {
   content: "";
-  flex: 0 0 100px;   /* 이게 “오른쪽 여백 100px” 역할 */
+  flex: 0 0 100px;  
 }
 
-/* 애니메이션: 공백이 보이는 위치에서 시작해서 오른쪽으로 흐르게 */
+
 @keyframes bottom-scroll {
   
   from {
@@ -94,20 +90,20 @@
 .lane-bottom{
   transform: scaleX(-1);
   
-  /* 참고: 브라우저 호환성을 위해 접두사를 사용할 수 있습니다. */
-  -webkit-transform: scaleX(-1); /* 크롬, 사파리 등 */
-  -ms-transform: scaleX(-1);     /* IE */
+  
+  -webkit-transform: scaleX(-1); 
+  -ms-transform: scaleX(-1);     
 }
 
 .lane-bottom img{
   transform: scaleX(-1);
   
-  /* 참고: 브라우저 호환성을 위해 접두사를 사용할 수 있습니다. */
-  -webkit-transform: scaleX(-1); /* 크롬, 사파리 등 */
-  -ms-transform: scaleX(-1);     /* IE */
+  
+  -webkit-transform: scaleX(-1); 
+  -ms-transform: scaleX(-1);    
 }
 
-/* 이미지 공통 */
+
 .archpic-img {
   width: var(--item-size);
   height: var(--item-size);
@@ -115,7 +111,7 @@
   object-fit: cover;
 }
 
-/* 접근성 */
+
 @media (prefers-reduced-motion: reduce) {
   .archpic-track {
     animation: none;

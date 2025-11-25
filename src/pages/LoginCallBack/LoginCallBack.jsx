@@ -7,14 +7,14 @@ export default function LoginCallBack() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 예: /oauth/kakao/callback?access=...&refresh=...
-    const search = window.location.search; // "?access=...&refresh=..."
+   
+    const search = window.location.search; 
     const params = new URLSearchParams(search);
 
     const access = params.get("access");
     const refresh = params.get("refresh");
 
-    // 토큰 저장
+    
     if (access) {
       localStorage.setItem("access_token", access);
     }
@@ -22,7 +22,7 @@ export default function LoginCallBack() {
       localStorage.setItem("refresh_token", refresh);
     }
 
-    // 다 했으니 홈으로 보내기 (원하면 /home 말고 다른 곳으로)
+   
     navigate("/home", { replace: true });
   }, [navigate]);
 

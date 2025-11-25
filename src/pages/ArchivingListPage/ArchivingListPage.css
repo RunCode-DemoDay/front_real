@@ -1,30 +1,23 @@
-/* ------------------------------------------------ */
-/* ArchivingListPage.css */
-/* ------------------------------------------------ */
 
-/* AppContainer에 클래스를 추가하여 100vh를 확보하도록 가정 */
-/* 클래스 이름 변경: full-height-container -> archiving-list-full-height-container */
 .archiving-list-full-height-container {
     width: 100%;
     min-height: 100vh;
     position: relative; 
 }
 
-/* 클래스 이름 변경: archiving-list-page-container -> archiving-list-page-container */
+
 .archiving-list-page-container {
     width: 100%;
-    /* 스크롤이 grid-area에서 발생하도록, 페이지 컨테이너는 100% 높이를 채웁니다. */
+    
     height: 100%; 
-    display: block; /* Flexbox 제거 */
+    display: block; 
     background-color: #2C2C2C; 
-    position: relative; /* 자식 absolute/fixed 요소 기준점 */
+    position: relative; 
 }
 
-/* ------------------ 1. 헤더 스타일 ------------------ */
-/* 헤더 총 높이: 40(상) + 20(하) + 24(아이콘) = 84px */
-/* 클래스 이름 변경: list-page-header -> archiving-list-header */
+
 .archiving-list-header {
-    /* fixed로 변경하여 스크롤 시에도 고정 */
+    
     position: absolute; 
     top: 0;
     left: 0;
@@ -39,7 +32,7 @@
     box-sizing: border-box;
 }
 
-/* 클래스 이름 변경: header-title -> archiving-list-header-title */
+
 .archiving-list-header-title {
     color: var(--White-High, rgba(255, 255, 255, 0.88));
     margin: 0;
@@ -50,15 +43,15 @@
     line-height: 140%; 
 }
 
-/* 클래스 이름 변경: header-icons -> archiving-list-header-icons */
+
 .archiving-list-header-icons {
     display: flex;
     gap: 16px;
 }
 
-/* 클래스 이름 변경: header-icon-button-map -> archiving-list-header-icon-button-map */
+
 .archiving-list-header-icon-button-map,
-/* 클래스 이름 변경: header-icon-button-list -> archiving-list-header-icon-button-list */
+
 .archiving-list-header-icon-button-list {
     display: flex;
     padding: 8px;
@@ -73,25 +66,23 @@
     cursor: pointer;
 }
 
-/* 클래스 이름 변경: header-icon-button-list.active -> archiving-list-header-icon-button-list.active */
+
 .archiving-list-header-icon-button-list.active {
-    background: var(--Main, #FF003C); /* 활성화된 목록 아이콘 색상 */
+    background: var(--Main, #FF003C); 
 }
 
-/* ------------------ 2. 정렬 바 스타일 ------------------ */
-/* 정렬 바 높이: 10(상) + 10(하) + 폰트 높이 = 약 40px */
-/* 클래스 이름 변경: sort-bar -> archiving-list-sort-bar */
+
 .archiving-list-sort-bar {
     width: 100%;
     padding: 8px 20px;
-    background-color: var(--Black-Info, #1E1E1E); /* 헤더와 동일 색상으로 변경 */
+    background-color: var(--Black-Info, #1E1E1E); 
     border-bottom: 1px solid #4A4A4A; 
     display: flex;
     justify-content: flex-end;
     
-    /* fixed로 헤더 아래에 고정 */
+   
     position: absolute;
-    top: 96px; /* 헤더 높이(84px) 바로 아래 */
+    top: 96px; 
     left: 0;
     right: 0;
     
@@ -105,7 +96,7 @@
     
 }
 
-/* 클래스 이름 변경: sort-toggle -> archiving-list-sort-toggle */
+
 .archiving-list-sort-toggle {
     display: inline-flex;
     align-items: center;
@@ -121,31 +112,21 @@
     padding: 4px 0; 
 }
 
-/* 클래스 이름 변경: sort-label -> archiving-list-sort-label */
+
 .archiving-list-sort-label {
     margin-right: 6px;
 }
 
-/* 드롭다운 에셋 아이콘 스타일 */
-/* 클래스 이름 변경: sort-arrow-icon -> archiving-list-sort-arrow-icon */
-/* .archiving-list-sort-arrow-icon {
-    width: 16px; 
-    height: 16px;
-    transition: transform 0.2s;
-    vertical-align: middle;
-} */
 
-/* 클래스 이름 변경: sort-arrow-icon.open -> archiving-list-sort-arrow-icon.open */
 .archiving-list-sort-arrow-icon.open {
-    /* 메뉴가 열릴 때 회전 */
+   
     transform: rotate(180deg);
 }
 
-/* 토글 메뉴 드롭다운 스타일 */
-/* 클래스 이름 변경: sort-menu -> archiving-list-sort-menu */
+
 .archiving-list-sort-menu {
     position: absolute;
-    right: 16px; /* sort-bar의 패딩(16px)을 기준으로 오른쪽 정렬 */
+    right: 16px; 
     top: calc(100% + 5px); 
     width: 150px;
     background-color: #3C3C3C;
@@ -155,7 +136,7 @@
     z-index: 20; 
 }
 
-/* 클래스 이름 변경: sort-menu-item -> archiving-list-sort-menu-item */
+
 .archiving-list-sort-menu-item {
     padding: 10px 15px;
     color: #fff;
@@ -164,37 +145,36 @@
     transition: background-color 0.1s;
 }
 
-/* 클래스 이름 변경: sort-menu-item:hover, sort-menu-item.active -> archiving-list-sort-menu-item:hover, archiving-list-sort-menu-item.active */
+
 .archiving-list-sort-menu-item:hover,
 .archiving-list-sort-menu-item.active {
     background-color: #4A4A4A; 
 }
 
 
-/* ------------------ 3. 썸네일 그리드 (스크롤 영역) ------------------ */
-/* 클래스 이름 변경: archiving-grid-area -> archiving-list-grid-area */
+
 .archiving-list-grid-area {
-    /* fixed된 헤더(84px)와 정렬 바(40px)를 피해 공간 확보 (총 124px) */
+    
     padding-top: 133.59px; 
     height: 100%;
     
-    /* 해당 영역에서만 스크롤이 발생하도록 설정 */
+   
     overflow-y: scroll; 
     
-    padding-bottom: 96.19px; /* 하단 네비게이터를 위한 여백 */
+    padding-bottom: 96.19px; 
     box-sizing: border-box; 
     background-color: #1E1E1E; 
     
-    /* ⭐⭐ 스크롤 바 숨기기 ⭐⭐ */
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-}
-/* 클래스 이름 변경: archiving-grid-area::-webkit-scrollbar -> archiving-list-grid-area::-webkit-scrollbar */
-.archiving-list-grid-area::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+   
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
 }
 
-/* 클래스 이름 변경: archiving-grid -> archiving-list-grid */
+.archiving-list-grid-area::-webkit-scrollbar {
+    display: none; 
+}
+
+
 .archiving-list-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -202,7 +182,7 @@
     background-color: #1E1E1E; 
 }
 
-/* 클래스 이름 변경: archiving-thumbnail-item -> archiving-list-thumbnail-item */
+
 .archiving-list-thumbnail-item {
     width: 100%;
     aspect-ratio: 1 / 1; 
@@ -211,7 +191,7 @@
     cursor: pointer;
 }
 
-/* 클래스 이름 변경: thumbnail-image -> archiving-list-thumbnail-image */
+
 .archiving-list-thumbnail-image {
     height: 122.333px;
     flex: 1 0 0;
@@ -220,7 +200,7 @@
     display: block;
 }
 
-/* 클래스 이름 변경: thumbnail-placeholder -> archiving-list-thumbnail-placeholder */
+
 .archiving-list-thumbnail-placeholder {
     display: flex;
     align-items: center;
@@ -231,9 +211,9 @@
     font-size: 12px;
 }
 
-/* 클래스 이름 변경: loading-message -> archiving-list-loading-message */
+
 .archiving-list-loading-message,
-/* 클래스 이름 변경: no-data-message -> archiving-list-no-data-message */
+
 .archiving-list-no-data-message {
     padding: 40px 16px;
     text-align: center;
@@ -241,9 +221,7 @@
     font-size: 16px;
 }
 
-/* ------------------ 4. 하단 네비게이터 (참고용 - 유니크 접두사 추가) ------------------ */
-/* 이 부분은 실제 컴포넌트에는 사용되지 않지만, 충돌 방지를 위해 변경 */
-/* 클래스 이름 변경: arc-map-bottom-nav -> archiving-list-bottom-nav-placeholder */
+
 .archiving-list-bottom-nav-placeholder {
     position: fixed;
     bottom: 0;

@@ -16,7 +16,7 @@ const ReviewStar = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  // 혹시 state 안 넘어온 경우 대비용 fallback
+
   const course = state?.course || {
     title: "한강 반포 러닝 코스",
     thumbnail: "",
@@ -25,36 +25,36 @@ const ReviewStar = () => {
     distance: 5.2,
   };
 
-  const [rating, setRating] = useState(0); // 별점 (1~5)
-  const [content, setContent] = useState(""); // 리뷰 텍스트
-  const [showModal, setShowModal] = useState(false); // 등록완료 모달
+  const [rating, setRating] = useState(0); 
+  const [content, setContent] = useState(""); 
+  const [showModal, setShowModal] = useState(false); 
 
-  // ← 버튼
+  
   const handleGoBack = () => {
     navigate("/reviewadd");
   };
 
-  // 별점 클릭
+
   const handleRating = (value) => {
     setRating(value);
   };
 
   // 등록하기 클릭
   const handleSubmit = () => {
-    if (rating === 0) return; // 별 안 골랐으면 비활성
+    if (rating === 0) return; 
 
-    // TODO: 실제 서버 POST 로직 자리
+   
     console.log("리뷰 등록", {
       courseId,
       rating,
       content,
     });
 
-    // 성공 가정 -> 모달 오픈
+    
     setShowModal(true);
   };
 
-  // 모달 "확인" 클릭 시 마이페이지로
+  
   const handleConfirmModal = () => {
     setShowModal(false);
     navigate("/mypage");
@@ -63,7 +63,7 @@ const ReviewStar = () => {
   return (
     <>
       <div className="reviewstar-page">
-        {/* 헤더 영역 */}
+        
         <header className="reviewstar-header">
           <button className="reviewstar-back-btn" onClick={handleGoBack}>
             <img
@@ -76,9 +76,9 @@ const ReviewStar = () => {
           <h2 className="reviewstar-title">리뷰 작성</h2>
         </header>
 
-        {/* 코스 정보 카드 */}
+     
         <section className="reviewstar-coursebox">
-          {/* 썸네일 */}
+        
           <div className="reviewstar-course-thumb">
             {course.thumbnail ? (
               <img src={course.thumbnail} alt={course.title} />
@@ -87,7 +87,7 @@ const ReviewStar = () => {
             )}
           </div>
 
-          {/* 텍스트들 */}
+       
           <div className="reviewstar-course-info">
             <p className="reviewstar-course-title">{course.title}</p>
 
@@ -122,10 +122,10 @@ const ReviewStar = () => {
           </div>
         </section>
 
-        {/* 얇은 구분선 */}
+        
         <div className="reviewstar-separator" />
 
-        {/* 별점 선택 영역 */}
+        
         <section className="reviewstar-rating-block">
           <div className="reviewstar-stars">
             {[1, 2, 3, 4, 5].map((num) => (
@@ -149,7 +149,7 @@ const ReviewStar = () => {
           </div>
         </section>
 
-        {/* 리뷰 입력 + 글자수 영역 */}
+        
         <section className="reviewstar-input-wrapper">
           <div className="reviewstar-input-block">
             <textarea
@@ -164,7 +164,7 @@ const ReviewStar = () => {
           <div className="reviewstar-count">{content.length} / 500자</div>
         </section>
 
-        {/* 등록 버튼 (별점 선택 전엔 비활성, 선택 후 활성) */}
+        
         <button
           className={`reviewstar-submit ${rating > 0 ? "active" : ""}`}
           onClick={handleSubmit}
@@ -174,7 +174,7 @@ const ReviewStar = () => {
         </button>
       </div>
 
-      {/* 등록 완료 모달 */}
+      
       {showModal && (
         <div className="reviewstar-modal-overlay">
           <div className="reviewstar-modal-card">
@@ -182,7 +182,7 @@ const ReviewStar = () => {
               리뷰 작성이 완료되었습니다.
             </p>
 
-            {/* 얇은 구분선 */}
+            
             <div className="reviewstar-modal-separator" />
 
             <button

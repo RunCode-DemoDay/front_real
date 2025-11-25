@@ -1,26 +1,26 @@
 /* src/component/BottomNavigator/BottomNavigator.css */
 
-/* 1. 래퍼: 화면 하단 고정 */
+
 .nav-wrapper {
-    position: absolute; /* 뷰포트 하단에 고정 */
+    position: absolute; 
     bottom: 0; 
-    left: 50%; /* 가로 중앙 정렬을 위한 설정 시작 */
-    transform: translateX(-50%); /* 정확한 중앙 정렬 */
+    left: 50%; 
+    transform: translateX(-50%); 
     
-    /* 앱 컨테이너의 최대 너비와 일치 */
+   
     width: 100%;
     max-width: 375px; 
     
     z-index: 1000; 
-    background-color: #181818; /* 배경색: 어두운 테마 */
+    background-color: #181818; 
     
     
-    /* iPhone Safe Area 고려 (필요시) */
+    
     padding-bottom: constant(safe-area-inset-bottom);
     padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* 2. 컨테이너: 아이템 배치 */
+
 .nav-container {
     display: flex;
     width: 375px;
@@ -33,7 +33,7 @@
     background: var(--Black-Info, #1E1E1E);
 }
 
-/* 3. 개별 아이템 스타일 */
+
 .nav-item {
     display: flex;
     padding: 20px 8px 0 8px;
@@ -44,16 +44,16 @@
     color: var(--White-Low, rgba(255, 255, 255, 0.20));
     text-align: center;
 
-    /* 14/SemiBold */
+    
     font-family: Pretendard;
     font-size: 14px;
     font-style: normal;
     font-weight: 600;
-    line-height: 140%; /* 19.6px */
+    line-height: 140%; 
     cursor: pointer;
 }
 
-/* 활성화된 아이템 스타일 */
+
 .nav-item.active {
     color: var(--White-High, rgba(255, 255, 255, 0.88));
     font-weight: 600;

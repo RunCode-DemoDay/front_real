@@ -12,11 +12,11 @@ import {
 import {
   fetchArchivingDetail,
   updateArchiving,
-  // ❌ updateArchivingImage 제거
+  
 } from "../../api/archivingAPI";
 import "./ArchivingDetailPage.css";
 
-// 에셋
+
 const ASSET_ICONS = {
   edit: "https://runcode-likelion.s3.us-east-2.amazonaws.com/archiving/edit_icon.svg",
   back: "https://runcode-likelion.s3.us-east-2.amazonaws.com/global/back.svg",
@@ -27,7 +27,7 @@ const ASSET_ICONS = {
     "https://runcode-likelion.s3.us-east-2.amazonaws.com/course/detail/distance.svg",
 };
 
-// 메모 글자수 제한
+
 const MAX_MEMO_LENGTH = 100;
 
 function ArchivingDetailPage() {
@@ -45,21 +45,21 @@ function ArchivingDetailPage() {
   const [isEditingMemo, setIsEditingMemo] = useState(false);
   const [newContent, setNewContent] = useState("");
 
-  // 데이터 로드
+  
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
       try {
-        // 1. 아카이빙 상세 정보
+        
         const response = await fetchArchivingDetail(archivingId);
         if (!response.success) throw new Error(response.message);
         let data = response.data;
 
-        // 2. 코스 정보 및 해당 코스의 다른 아카이빙 목록
+        
         if (data.course?.course_id) {
           const courseIdForFetch = data.course.course_id;
 
-          // ✅ API 응답에서 실제 데이터가 담긴 .data 속성을 추출합니다.
+          
           const courseRes = await getCourseInfo(courseIdForFetch);
           const reviewRes = await getCourseReviews({ courseId: courseIdForFetch });
 
@@ -68,14 +68,14 @@ function ArchivingDetailPage() {
 
           data.course = {
             ...courseData,
-            ...reviewData, // reviewData에는 starAverage, reviewCount 등이 포함됩니다.
+            ...reviewData, 
             course_id: courseIdForFetch,
           };
 
-          // ✅ getCourseArchiving API를 사용하여 코스 아카이빙 목록을 가져옵니다.
+          
           const archivingsResponse = await getCourseArchiving(courseIdForFetch);
           if (archivingsResponse.success) {
-            // 현재 보고 있는 아카이빙은 목록에서 제외합니다.
+            
             const filteredArchivings = archivingsResponse.data.filter(
               (a) => String(a.archiving_id) !== String(archivingId)
             );
@@ -102,7 +102,7 @@ function ArchivingDetailPage() {
     loadData();
   }, [archivingId, location.pathname, locationState, navigate]);
 
-  // 뒤로가기: 러닝 플로우에서 왔으면 홈으로, 아니면 history back
+
   const handleBack = useCallback(() => {
     if (locationState?.fromRunning) {
       navigate("/home", { replace: true });
@@ -111,7 +111,7 @@ function ArchivingDetailPage() {
     }
   }, [navigate, locationState]);
 
-  // 제목 수정
+ 
   const handleTitleUpdate = async () => {
     if (newTitle.trim() === "" || newTitle === detailData.title) {
       setIsEditingTitle(false);
@@ -129,7 +129,7 @@ function ArchivingDetailPage() {
     setIsEditingTitle(false);
   };
 
-  // 메모 수정
+  
   const handleMemoUpdate = async () => {
     const contentToSave = newContent.substring(0, MAX_MEMO_LENGTH);
     try {
@@ -182,16 +182,16 @@ function ArchivingDetailPage() {
   return (
     <AppContainer>
       <div className="archiving-detail-container">
-        {/* 헤더 */}
+      
         <header className="detail-header">
           <button onClick={handleBack} className="back-button">
             <img src={ASSET_ICONS.back} alt="뒤로가기" className="icon" />
           </button>
         </header>
 
-        {/* 스크롤 영역 */}
+       
         <div className="detail-scroll-area">
-          {/* 날짜 + 제목 */}
+        
           <div className="title-section">
             <p className="detail-date">{date}</p>
             <div className="title-edit-area">
@@ -219,7 +219,7 @@ function ArchivingDetailPage() {
             </div>
           </div>
 
-          {/* 기록 정보 (거리/페이스/시간 등) */}
+          
           <div className="run-stats-grid">
             <div className="stat-item">
               <span className="value">{formattedDistance}</span>
@@ -248,7 +248,7 @@ function ArchivingDetailPage() {
             </div> */}
           </div>
 
-          {/* 🔹 1) 썸네일 이미지 (카메라 사진) */}
+         
           <div className="detail-image-container">
             {thumbnail ? (
               <img src={thumbnail} alt="thumbnail" className="detail-image" />
@@ -259,7 +259,7 @@ function ArchivingDetailPage() {
             )}
           </div>
 
-          {/* 🔹 2) 지도 캡처(detailImage) */}
+          
           {detailImage && (
             <div
               className="detail-image-container"
@@ -269,7 +269,7 @@ function ArchivingDetailPage() {
             </div>
           )}
 
-          {/* 코스 정보 */}
+        
           <div className="course-info-section">
             <h3 className="ssection-title">러닝 코스</h3>
             <div className="archiving-detail-course-wrapper">
@@ -281,7 +281,7 @@ function ArchivingDetailPage() {
             </div>
           </div>
 
-          {/* 구간(이 코스의 다른 아카이빙들) */}
+          
           <div className="laps-section">
             <h3 className="ssection-title">구간</h3>
             <table className="laps-table">
@@ -325,7 +325,7 @@ function ArchivingDetailPage() {
             </table>
           </div>
 
-          {/* 메모 */}
+         
           <div className="memo-section">
             <h3 className="ssection-title">메모</h3>
             {isEditingMemo ? (

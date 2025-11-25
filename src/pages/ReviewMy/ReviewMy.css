@@ -1,9 +1,4 @@
-/* ===========================
-   ReviewMy (작성한 리뷰) — 전체 CSS
-   파일 위치 예시: src/pages/ReviewMy/ReviewMy.css
-   =========================== */
 
-/* 페이지 래퍼 */
 .reviewmy-page {
   background-color: #0f0f0f;
   color: #fff;
@@ -12,20 +7,20 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  padding: 40px 20px 10px; /* 상/좌우/하 */
+  padding: 40px 20px 10px;
   box-sizing: border-box;
   font-family: "Pretendard", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   
 }
 
-/* 헤더 (← / 작성한 리뷰( N )) */
+
 .reviewmy-header {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 28px;        /* 화살표 줄과 타이틀 줄 간격 */
+  gap: 28px;       
   margin-bottom: 16px;
-  margin-left: -4px; /* 시각 오프셋(왼쪽 정렬) */
+  margin-left: -4px; 
 }
 
 .reviewmy-back-btn {
@@ -59,7 +54,7 @@
   color: rgba(255,255,255,0.6);
 }
 
-/* 본문 컨테이너 */
+
 .reviewmy-content {
   display: block;
   overflow-y: auto;
@@ -68,36 +63,36 @@
 
 }
 
-/* 리스트 */
+
 .reviewmy-list {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 16px; /* 카드 간격 */
+  gap: 16px; 
 }
 
-/* 리스트 아이템(카드) */
+
 .reviewmy-item {
-  background-color: #1a1a1a;          /* 회색 카드 */
+  background-color: #1a1a1a;         
   border-radius: 12px;
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 12px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-  position: relative;  /* ✅ 수정: 삭제 버튼 absolute 기준 */
+  position: relative;  
 }
 
-/* 카드 상단: 썸네일 + 코스정보 + (선택)더보기 버튼 */
+
 .reviewmy-top {
   display: flex;
   align-items: flex-start;
   gap: 12px;
 }
 
-/* 썸네일 */
+
 .reviewmy-thumb {
   width: 44px;
   height: 44px;
@@ -113,7 +108,6 @@
   object-fit: cover;
 }
 
-/* 코스 텍스트 영역 */
 .reviewmy-info {
   flex: 1;
   display: flex;
@@ -121,18 +115,18 @@
   gap: 4px;
 }
 
-/* 코스 제목 */
+
 .reviewmy-course-title {
   color: var(--White-Medium, rgba(255, 255, 255, 0.60));
   font-family: Pretendard;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
-  line-height: 140%; /* 22.4px */
+  line-height: 140%; 
   margin: 0;
 }
 
-/* 메타: 평점/리뷰수/거리 */
+
 .reviewmy-meta {
   display: flex;
   align-items: center;
@@ -157,7 +151,7 @@
   opacity: 0.88;
 }
 
-/* (선택) 더보기 버튼 자리 */
+
 .reviewmy-more-btn {
   width: 16px;
   height: 16px;
@@ -182,7 +176,7 @@
 }
 
 
-/* ===================== ⭐ 내 별점 표시 ===================== */
+
 .reviewmy-stars {
   display: flex;
   align-items: center;
@@ -194,19 +188,19 @@
   aspect-ratio: 10.02/9.60;
 }
 
-/* 이 아이가 <img src={StarIcon} />에 들어가는 클래스 */
+
 .reviewmy-star-icon {
   width: 16px;
   height: 16px;
   display: block;
 }
 
-/* 채워진 별 (활성) */
+
 .reviewmy-star-icon.filled {
   opacity: 0.88;
 }
 
-/* 빈 별 (비활성) */
+
 .reviewmy-star-icon.empty {
   opacity: 0.22;
 }
@@ -218,12 +212,12 @@
   font-size: 14px;
   font-style: normal;
   font-weight: 350;
-  line-height: 140%; /* 19.6px */
+  line-height: 140%; 
   padding-left: 4px;
   margin: 0;
 }
 
-/* 카드 내부/카드 사이 구분선 */
+
 .reviewmy-card-sep {
   width: 100%;
   height: 1px;
@@ -233,7 +227,7 @@
   margin: 6px 0;
 }
 
-/* 페이지 빈 상태 */
+
 .reviewmy-empty {
   margin-top: 48px;
   text-align: center;
@@ -241,7 +235,7 @@
   color: rgba(255,255,255,0.6);
 }
 
-/* ... 버튼 */
+
 .reviewmy-more-btn {
   background: none;
   border: none;
@@ -261,7 +255,7 @@
 
 .reviewmy-more-btn:hover { opacity: 1; }
 
-/* 썸네일 영역과 날짜 사이 구분선 */
+
 .reviewmy-item-sep {
   width: 100%;
   height: 1px;
@@ -270,15 +264,15 @@
   opacity: 0.6;
 }
 
-/* ===================== 인라인 "리뷰 삭제" 메뉴 ===================== */
+
 .reviewmy-delete-inline {
   position: absolute;
-  top: 48px;          /* 점 3개 바로 아래. 필요하면 36~44px 사이로 조절 */
+  top: 48px;         
   right: 0px;
 
   display: flex;
-  align-items: center;        /* ✅ 텍스트 수직 가운데 */
-  justify-content: center;    /* ✅ 텍스트 가로 가운데 */
+  align-items: center;       
+  justify-content: center;   
 
   width: 131px;
   height: 36px;
@@ -303,9 +297,7 @@ flex-direction: column;
   border: 1px solid #2C2C2C;
 
 
-  /* ❌ 요 두 줄은 빼야 돼 */
-  /* gap: 10px; */
-  /* align-self: stretch; */
+
 }
 
 
@@ -316,9 +308,9 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.40);
 border: 1px solid #545454;
 }
 
-/* 모달 배경 */
+
 .reviewmy-modal-backdrop {
-  position: absolute;        /* reviewmy-page 기준 중앙 고정 */
+  position: absolute;       
   inset: 0;
   background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(6px);
@@ -328,7 +320,7 @@ border: 1px solid #545454;
   z-index: 999;
 }
 
-/* 모달 박스 */
+
 .reviewmy-modal {
  display: flex;
 width: 270px;
@@ -344,21 +336,20 @@ overflow: hidden;
   
 }
 
-/* 상단 텍스트 영역 */
+
 .reviewmy-modal-text {
 align-self: stretch;
 color: var(--White-High, rgba(255, 255, 255, 0.88));
 text-align: center;
 
-/* 타이틀/16/Semibold */
 font-family: Pretendard;
 font-size: 16px;
 font-style: normal;
 font-weight: 500;
-line-height: 140%; /* 22.4px */
+line-height: 140%; 
 }
 
-/* 버튼 영역 전체 (가로 구분선 포함) */
+
 .reviewmy-modal-actions {
   display: flex;
   align-self: stretch;
@@ -367,7 +358,7 @@ line-height: 140%; /* 22.4px */
   width: 270px;
 }
 
-/* 공통 버튼 스타일 */
+
 .reviewmy-modal-btn {
  display: flex;
 padding: 11px 43px;
@@ -380,29 +371,27 @@ color: var(--Main, #FF003C);
 text-align: center;
 
 
-/* 본문/14/Regular */
 font-family: Pretendard;
 font-size: 14px;
 font-style: normal;
 font-weight: 350;
-line-height: 140%; /* 19.6px */
+line-height: 140%; 
 background: transparent;
 border: none;
 }
 
-/* "예" (왼쪽) */
+
 .reviewmy-modal-btn-confirm {
-  color: var(--Main, #FF003C);   /* 피그마 느낌 나는 핑크 레드 톤 */
+  color: var(--Main, #FF003C);   
 }
 
-/* "아니요" (오른쪽) */
 .reviewmy-modal-btn-cancel {
  color: var(--Main, #FF003C);
 }
 
-/* 버튼 사이 세로 구분선 */
+
 .reviewmy-modal-actions .reviewmy-modal-btn + .reviewmy-modal-btn {
-  border-left: 0.5px solid rgba(255, 255, 255, 0.14);  /* ✅ 세로 선 얇게 */
+  border-left: 0.5px solid rgba(255, 255, 255, 0.14); 
 }
 
 .reviewmy-modal-btn:hover {

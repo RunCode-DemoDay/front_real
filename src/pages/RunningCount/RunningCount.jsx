@@ -5,13 +5,12 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "./RunningCount.css";
 
 export default function RunningCount() {
-  const { courseId } = useParams(); // ✅ URL에서 courseId를 가져옵니다.
-  const { state } = useLocation(); // CourseDetailPage에서 전달받은 모든 state
+  const { courseId } = useParams(); 
+  const { state } = useLocation(); 
   const navigate = useNavigate();
 
   const [count, setCount] = useState(3);
 
-  // 🔍 마운트 시점에 param/state 한 번 확인
   useEffect(() => {
     console.log("========================================");
     console.log("%c[RunningCount] MOUNT", "color: #2196f3; font-weight: bold;");
@@ -30,7 +29,7 @@ export default function RunningCount() {
       "color: #3f51b5"
     );
 
-    // ✅ 카운트가 0이 되면 RunningStop 페이지로 이동
+    
     if (count === 0) {
       console.log(
         "%c[RunningCount] count === 0 → RunningStop으로 이동",
@@ -48,7 +47,7 @@ export default function RunningCount() {
       return;
     }
 
-    // ✅ 카운트가 0보다 클 때 1초마다 감소
+    
     const timer = setTimeout(() => {
       console.log(
         "%c[RunningCount] count 감소: " + count + " → " + (count - 1),

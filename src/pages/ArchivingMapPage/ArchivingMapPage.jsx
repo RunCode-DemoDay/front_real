@@ -20,7 +20,7 @@ import { fetchArchivingsByCourse } from "../../api/archivingAPI";
 const GOOGLE_MAPS_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
 const libraries = ["places"];
 
-// --- 아이콘 및 에셋 ---
+
 const ASSET_ICONS = {
   marker:
     "https://runcode-likelion.s3.us-east-2.amazonaws.com/archiving/marker.svg",
@@ -37,12 +37,12 @@ const ASSET_ICONS = {
   star: 'https://runcode-likelion.s3.us-east-2.amazonaws.com/course/star.svg',
   distance:
     "https://runcode-likelion.s3.us-east-2.amazonaws.com/course/detail/distance.svg",
-  // ✅ 현재 위치 아이콘 (지금은 안 씀)
+ 
   location:
     "https://runcode-likelion.s3.us-east-2.amazonaws.com/running/location.svg",
 };
 
-// ---------------------- 하위 UI 컴포넌트 ----------------------
+
 
 const ArchivingListItem = ({ archiving, onClick }) => {
   const {
@@ -214,7 +214,7 @@ const ArchivingSummaryCard = ({
   );
 };
 
-// ---------------------- 메인 페이지 컴포넌트 ----------------------
+
 
 function ArchivingMapPage() {
   const [courseList, setCourseList] = useState([]);
@@ -222,7 +222,7 @@ function ArchivingMapPage() {
   const [archivingList, setArchivingList] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 현재 위치는 계속 관리하긴 함 (센터 맞추려고)
+  
   const [currentPos, setCurrentPos] = useState(null);
   const [geoError, setGeoError] = useState(null);
 
@@ -402,13 +402,13 @@ function ArchivingMapPage() {
           console.log(course.course_id);
           const courseDetailRes = await getCourseInfo(course.course_id);
           if (courseDetailRes.success) {
-            // 실제 코스 정보는 API 응답의 data 필드에 있습니다.
+           
             setSelectedCourseDetail(courseDetailRes.data);
           }
 
           const archivingListRes = await fetchArchivingsByCourse(course.course_id);
           if (archivingListRes.success) {
-            // 실제 아카이빙 목록은 .data 필드에 있습니다.
+            
             setArchivingList(archivingListRes.data);
           }
 
@@ -681,7 +681,7 @@ function ArchivingMapPage() {
                 }}
               />
             ))}
-            {/* ✅ 현재 위치는 추적만 하고, 지도에는 표시하지 않음 */}
+          
           </GoogleMap>
         </div>
 
@@ -698,7 +698,7 @@ function ArchivingMapPage() {
           onCourseInfoClick={handleCourseInfoClick}
         />
 
-        {/* BottomNavigator를 컨테이너 안으로 이동 */}
+       
         <BottomNavigator activeItem="runcode" />
       </div>
     </AppContainer>

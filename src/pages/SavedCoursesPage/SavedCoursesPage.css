@@ -4,12 +4,12 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    background-color: #121212; /* 다크 모드 배경 */
+    background-color: #121212;
     color: #FFFFFF;
-    padding-bottom: 70px; /* BottomNavigator 높이 고려 */
+    padding-bottom: 70px; 
 }
 
-/* 1. 헤더 (상단 타이틀) */
+
 .saved-courses-header {
     padding: 72px 20px 0px 20px;
     position: sticky;
@@ -21,16 +21,16 @@
 .page-title {
     color: var(--White-High, rgba(255, 255, 255, 0.88));
 
-    /* 타이틀/24/Semibold */
+    
     margin: 0;
     font-family: Pretendard;
     font-size: 24px;
     font-style: normal;
     font-weight: 600;
-    line-height: 140%; /* 33.6px */
+    line-height: 140%;
 }
 
-/* 2. 메인 콘텐츠 및 정렬 바 */
+
 .course-main-content {
     padding: 0 20px;
     flex-grow: 1;
@@ -41,7 +41,7 @@
 
 .filter-sort-bar {
     display: flex;
-    justify-content: flex-end; /* 오른쪽 정렬 */
+    justify-content: flex-end; 
     padding: 4px 0;
     margin-right: 20px;
 }
@@ -61,10 +61,10 @@
     line-height: 140%;
     cursor: pointer;
     
-    /* 커스텀 아이콘 공간 확보 */
+    
     padding: 0px 19px 0px 0px; 
     
-    /* SVG 링크를 배경 이미지로 설정 */
+    
     background-image: url('https://runcode-likelion.s3.us-east-2.amazonaws.com/global/dropdown.svg');
     background-repeat: no-repeat;
     background-position: right center; 
@@ -72,7 +72,7 @@
     
 }
 
-/* 3. 코스 목록 */
+
 .course-list {
     display: flex;
     flex-direction: column;
@@ -86,7 +86,7 @@
     font-size: 16px;
 }
 
-/* 4. 스켈레톤 스타일 */
+
 .skeleton-item-card {
     display: flex;
     padding: 16px 12px;

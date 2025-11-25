@@ -1,5 +1,4 @@
 *, *::before, *::after {
-  /* 패딩과 테두리를 요소 크기 안에 포함하도록 설정 */
   box-sizing: border-box; 
 }
 
@@ -21,10 +20,10 @@ body, #root {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* padding: 200px 0; */
     
     
-    background-color: #000000; /* 배경색: 검은색 */
+    
+    background-color: #000000; 
     color: #FFFFFF;
     position: relative;
     overflow-y: hidden;

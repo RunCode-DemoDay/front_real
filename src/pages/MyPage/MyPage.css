@@ -12,17 +12,17 @@
   font-family: "Pretendard", sans-serif;
 }
 
-/* 상단 타이틀 */
+
 .mypage-title {
   color: var(--White-Medium, rgba(255, 255, 255, 0.60));
 text-align: center;
 
-/* 타이틀/16/Semibold */
+
 font-family: Pretendard;
 font-size: 16px;
 font-style: normal;
 font-weight: 600;
-line-height: 140%; /* 22.4px */
+line-height: 140%; 
 display: flex;
 width: 375px;
  margin: 40px 0 32px 0; 
@@ -31,7 +31,7 @@ align-items: center;
 gap: 32px;
 }
 
-/* 프로필 */
+
 .mypage-profile {
   display: flex;
   flex-direction: column;
@@ -50,17 +50,17 @@ background: url(<path-to-image>) lightgray 50% / cover no-repeat;
   color: var(--White-High, rgba(255, 255, 255, 0.88));
   text-align: center;
 
-  /* 타이틀/20/Semibold */
+ 
   font-family: Pretendard;
   font-size: 20px;
   font-style: normal;
   font-weight: 500;
-  line-height: 120%; /* 24px */
+  line-height: 120%;
   margin: 16px 0 40px 0;
 }
 
 
-/* 러너 카드 */
+
 .mypage-runner {
   display: flex;
 padding: 16px 20px;
@@ -76,14 +76,14 @@ margin-bottom: 24px;
   color: var(--White-High, rgba(255, 255, 255, 0.88));
 
 
-/* 본문/12/Regular */
+
 margin: 0; 
 margin-bottom: 4px;
 font-family: Pretendard;
 font-size: 12px;
 font-style: normal;
 font-weight: 350;
-line-height: 140%; /* 16.8px */
+line-height: 140%; 
   padding: 0; 
 }
 
@@ -91,13 +91,13 @@ line-height: 140%; /* 16.8px */
   color: var(--Main, #FF003C);
 text-align: center;
 
-/* 타이틀/16/Semibold */
+
 font-family: Pretendard;
 font-size: 16px;
 font-style: normal;
 font-weight: 500;
-line-height: 140%; /* 22.4px */
- margin: 0;          /* ← 추가 */
+line-height: 140%; 
+ margin: 0;         
   padding: 0; 
 }
 .runner-arrow {
@@ -106,7 +106,7 @@ line-height: 140%; /* 22.4px */
   color: var(--White-High, rgba(255, 255, 255, 0.88));
 }
 
-/* 예: 오른쪽 화살표로 회전 (Left.svg이 왼쪽 화살표일 때) */
+
 .rotated {
   transform: rotate(180deg);
   color: var(--White-High, rgba(255, 255, 255, 0.88));
@@ -119,7 +119,7 @@ line-height: 140%; /* 22.4px */
 }
 
 
-/* 섹션 */
+
 .mypage-section {
   display: flex;
 padding: 20px 0px;
@@ -133,13 +133,13 @@ align-self: stretch;
   color: var(--White-Medium, rgba(255, 255, 255, 0.60));
 text-align: center;
 
-/* 본문/14/Regular */
+
 font-family: Pretendard;
 font-size: 14px;
 font-style: normal;
 font-weight: 350;
-line-height: 140%; /* 19.6px */
-   margin: 0;          /* ← 이거 추가 */
+line-height: 140%; 
+   margin: 0;          
   padding: 0; 
   
 }
@@ -152,14 +152,14 @@ line-height: 140%; /* 19.6px */
   font-size: 16px;
   padding: 16px 0;
   font-weight: 500;
-line-height: 140%; /* 22.4px */
+line-height: 140%;
   cursor: pointer;
 
 
   color: var(--White-High, rgba(255, 255, 255, 0.88));
 
 
-/* 타이틀/16/Semibold */
+
 font-family: Pretendard;
 font-style: normal;
 
@@ -174,7 +174,7 @@ font-style: normal;
   font-size: 16px;
   padding: 0 0 20px 0;
   font-weight: 600;
-line-height: 140%; /* 22.4px */
+line-height: 140%; 
   cursor: pointer;
   font-family: Pretendard;
 font-style: normal;
@@ -202,15 +202,15 @@ font-style: normal;
 
 
 .mypage-runner {
-  cursor: pointer; /* 마우스 오버 시 손가락 모양 */
+  cursor: pointer; 
   transition: background-color 0.2s ease;
 }
 
 .mypage-runner:hover {
-  background-color: rgba(255, 255, 255, 0.08); /* 살짝 밝아지는 효과 */
+  background-color: rgba(255, 255, 255, 0.08); 
 }
 
-/* ===== 로그아웃 모달 ===== */
+
 .logout-modal-overlay {
   position: fixed;
   top: 0;
