@@ -1,16 +1,12 @@
-
 .runningcount-wrapper {
-  position: absolute;
   width: 100%;
-  max-width: 375px;             
-  height: 852px;
-  margin: 0 auto;             
+  height: 100%;
+  
   display: flex;
-  justify-content: center;      
-  align-items: center;          
+  justify-content: center;
+  align-items: center;
+
   background-color: #000;
-  overflow: hidden;
-  box-sizing: border-box;
 }
 
 
@@ -20,11 +16,6 @@
   font-size: 120px;
   color: var(--Main, #FF003C);
   line-height: 1;
-  text-align: center;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
   animation: count-zoom 0.7s ease-out both;
 }
