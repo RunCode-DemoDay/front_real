@@ -5,9 +5,10 @@ import FixedBottomButton from "../../component/FixedBottomButton/FixedBottomButt
 import { useRunBTI } from "../QuizPage/RunBTIContext";
 import { useAuth } from "../../contexts/AuthContext";
 import { patchMyType } from "../../api/userTypeAPI";
-import { getTypesWithTags } from "../../api/homeAPI"; 
+import { getTypesWithTags } from "../../api/homeAPI";
 import "./ResultPage.css";
 
+// 🔥 코드별 썸네일 매핑
 const TYPE_IMAGES = {
   GPSM: "https://runcode-likelion.s3.us-east-2.amazonaws.com/asset/1.svg",
   GPST: "https://runcode-likelion.s3.us-east-2.amazonaws.com/asset/2.svg",
@@ -30,8 +31,7 @@ const TYPE_IMAGES = {
   HFNT: "https://runcode-likelion.s3.us-east-2.amazonaws.com/asset/16.svg",
 };
 
-
-
+// 점수 → 코드
 const calculateScores = (answers) => {
   let code = "";
 
@@ -65,10 +65,10 @@ const ResultPage = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
-  const [runType, setRunType] = useState(null); 
+  const [runType, setRunType] = useState(null);
   const [error, setError] = useState("");
 
-  // 액세스 토큰이 로컬/컨텍스트 어디에 있든 우선순위로 가져오기
+  // 액세스 토큰 가져오기
   const tokenFromStorage =
     typeof window !== "undefined"
       ? localStorage.getItem("accessToken") ||
@@ -97,14 +97,11 @@ const ResultPage = () => {
       setLoading(true);
       setError("");
       try {
-        
         const { runBtiCode } = calculateScores(state);
         console.log("계산된 RunBTI 코드:", runBtiCode);
 
-
+        // 내 타입 PATCH
         const patchRes = await patchMyType({ typeCode: runBtiCode, token });
-
-        
         const rawUser = patchRes?.data ?? patchRes?.user ?? patchRes ?? {};
         const typeField = rawUser.type;
 
@@ -113,30 +110,41 @@ const ResultPage = () => {
             ? typeField
             : typeField?.name || runBtiCode;
 
-       
         let finalTypeName = typeNameFromUser;
         let typeDescription = "";
         let typeThumbnail = null;
         let typeTags = [];
 
+        // /types에서 이름·설명·태그 보충
         try {
           const typesRes = await getTypesWithTags();
-         
+          console.log("/types 응답:", typesRes);
+
           if (typesRes && typesRes.success && typesRes.data) {
-            const t = typesRes.data;
-            finalTypeName = t.name || finalTypeName;
-            typeDescription = t.description || "";
-            typeThumbnail = t.thumbnail || null;
-            typeTags = Array.isArray(t.tags) ? t.tags : [];
+            const list = Array.isArray(typesRes.data)
+              ? typesRes.data
+              : [typesRes.data];
+
+            const matched =
+              list.find(
+                (t) =>
+                  t.code === runBtiCode ||
+                  t.typeCode === runBtiCode ||
+                  t.name === typeNameFromUser
+              ) || {};
+
+            finalTypeName = matched.name || finalTypeName;
+            typeDescription = matched.description || "";
+            typeThumbnail = matched.thumbnail || null;
+            typeTags = Array.isArray(matched.tags) ? matched.tags : [];
           } else {
             console.warn("/types 응답 이상:", typesRes);
           }
         } catch (err) {
           console.error("/types 호출 에러 (ResultPage):", err);
-          
         }
 
-       
+        // 상태에 code까지 저장
         setRunType({
           code: runBtiCode,
           name: finalTypeName,
@@ -145,11 +153,11 @@ const ResultPage = () => {
           tags: typeTags,
         });
 
-       
+        // AuthContext 업데이트
         if (userProfile) {
           loginSuccess({
             ...userProfile,
-            ...rawUser, 
+            ...rawUser,
           });
         } else {
           loginSuccess(rawUser);
@@ -163,7 +171,6 @@ const ResultPage = () => {
     };
 
     load();
-    
   }, []);
 
   const handleStart = () => navigate("/home");
@@ -176,16 +183,20 @@ const ResultPage = () => {
       <div className="result-page error-message">결과 데이터가 없습니다.</div>
     );
 
+  // 최종 이미지 src (코드 → 에셋, 없으면 백엔드 썸네일)
+  const imageSrc = TYPE_IMAGES[runType.code] || runType.thumbnail || undefined;
+
+  console.log("최종 runType:", runType);
+  console.log("이미지 src:", imageSrc);
+
   return (
     <div className="result-page-container">
       <div className="content-area">
         <span className="my-type-label">나의 러너 유형</span>
 
-        <img
-          src={TYPE_IMAGES[runType.code] || runType.thumbnail} 
-          alt={runType.name}
-          className="type-thumbnail"
-        />
+        {imageSrc && (
+          <img src={imageSrc} alt={runType.name} className="type-thumbnail" />
+        )}
 
         <h1 className="r-type-name">{runType.name}</h1>
 
