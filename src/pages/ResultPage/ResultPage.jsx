@@ -138,6 +138,7 @@ const ResultPage = () => {
 
        
         setRunType({
+          code: runBtiCode,
           name: finalTypeName,
           description: typeDescription,
           thumbnail: typeThumbnail,
@@ -181,7 +182,7 @@ const ResultPage = () => {
         <span className="my-type-label">나의 러너 유형</span>
 
         <img
-          src={TYPE_IMAGES[runType.name]}
+          src={TYPE_IMAGES[runType.code] || runType.thumbnail} 
           alt={runType.name}
           className="type-thumbnail"
         />
