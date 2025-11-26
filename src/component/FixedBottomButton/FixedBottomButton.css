@@ -56,6 +56,10 @@
     font-family: Pretendard;
     font-size: 14px;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 140%; 
+}
+
+.button-text:disabled{
+    color: var(--lightgray, #B3B3B3);
 }
