@@ -5,7 +5,7 @@ import StarIcon from "../../assets/Star.svg";
 
 import "./ReviewMy.css";
 
-// ✅ 아이콘들을 로컬에서 불러오는 대신 S3 URL을 직접 사용합니다.
+
 const ICONS = {
   LeftArrow: "https://runcode-likelion.s3.us-east-2.amazonaws.com/global/back.svg",
   Distance: "https://runcode-likelion.s3.us-east-2.amazonaws.com/course/distance.svg",
@@ -13,10 +13,13 @@ const ICONS = {
   Setting: "https://runcode-likelion.s3.us-east-2.amazonaws.com/my/setting.svg",
 };
 
-// ✅ 실제 API 함수 임포트
+
 import { getMyreviewedCourses } from "../../api/userAPI";
 
-// ⭐ rating 만큼 색칠되는 별
+
+const STAR_ON = "https://runcode-likelion.s3.us-east-2.amazonaws.com/course/detail/star_on.svg";
+const STAR_OFF = "https://runcode-likelion.s3.us-east-2.amazonaws.com/course/detail/star_off.svg";
+
 const Stars = ({ value }) => {
   const filled = Math.max(0, Math.min(5, Math.floor(Number(value) || 0)));
 
@@ -25,33 +28,33 @@ const Stars = ({ value }) => {
       {Array.from({ length: 5 }).map((_, i) => (
         <img
           key={i}
-          src={StarIcon} // 👉 이모티콘(★) 대신 asset 사용
+          src={i < filled ? STAR_ON : STAR_OFF}  
           alt={i < filled ? "채워진 별" : "빈 별"}
-          className={`reviewmy-star-icon ${i < filled ? "filled" : "empty"}`}
+          className="reviewmy-star-icon"
         />
       ))}
     </div>
   );
 };
 
+
 const ReviewMy = () => {
   const navigate = useNavigate();
   const handleBack = () => navigate(-1);
 
-  // ✅ API로부터 받아온 리뷰 목록 상태
+  
   const [reviews, setReviews] = useState([]);
-  // ✅ 로딩 상태
+ 
   const [loading, setLoading] = useState(true);
 
 
-  // ================== ✅ 추가된 상태들 ==================
-  // 어떤 카드의 점3개 메뉴가 열려 있는지
+
   const [openedMenuId, setOpenedMenuId] = useState(null);
-  // 삭제 확인 모달 표시 여부
+  
   const [showConfirm, setShowConfirm] = useState(false);
-  // 실제 삭제 대상 (지금은 네비용)
+  
   const [targetReviewId, setTargetReviewId] = useState(null);
-  // ====================================================
+  
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -59,7 +62,7 @@ const ReviewMy = () => {
       try {
         const result = await getMyreviewedCourses();
         if (result.success && Array.isArray(result.data)) {
-          setReviews(result.data); // ✅ API 응답의 data 배열을 상태에 저장합니다.
+          setReviews(result.data);
         } else {
           console.error("작성한 리뷰 조회 실패:", result.message);
         }
