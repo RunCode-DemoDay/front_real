@@ -349,7 +349,7 @@ function ArchivingDetailPage() {
               <p
                 className="memo-content"
                 onClick={() => setIsEditingMemo(true)}
-                style={{ minHeight: `${memoRowCount * 1.5}em` }}
+                
               >
                 {finalMemoContent || "메모를 추가하려면 클릭하세요."}
               </p>
