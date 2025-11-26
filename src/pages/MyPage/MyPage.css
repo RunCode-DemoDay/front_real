@@ -22,7 +22,7 @@ text-align: center;
 font-family: Pretendard;
 font-size: 16px;
 font-style: normal;
-font-weight: 600;
+font-weight: 500;
 line-height: 140%; 
 display: flex;
 width: 375px;
@@ -174,7 +174,7 @@ font-style: normal;
   text-align: left;
   font-size: 16px;
   padding: 0 0 20px 0;
-  font-weight: 600;
+  font-weight: 500;
 line-height: 140%; 
   cursor: pointer;
   font-family: Pretendard;
@@ -198,7 +198,7 @@ font-style: normal;
 .divider {
   width: 100%;
   height: 1px;
-  background-color: #333;
+  color: var(--White-Line, rgba(255, 255, 255, 0.12));
 }
 
 
@@ -240,7 +240,7 @@ font-style: normal;
 .logout-modal-text {
   font-family: Pretendard;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   color: rgba(255, 255, 255, 0.88);
   padding: 16px;
   text-align: center;
@@ -268,7 +268,7 @@ font-style: normal;
   border: none;
   font-family: Pretendard;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   color: #ff003c;
   cursor: pointer;
   transition: background 0.2s ease;
@@ -282,5 +282,6 @@ font-style: normal;
 .logout-divider-vertical {
   width: 1px;
   background: rgba(30, 30, 30, 0.75);
+
 }
 
