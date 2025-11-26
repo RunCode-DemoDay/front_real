@@ -5,9 +5,11 @@ import './FixedBottomButton.css';
 const FixedBottomButton = ({ label, onClick, disabled = false, backgroundColor = '#FF004E' }) => {
   
   const finalBackgroundColor = disabled ? "#2C2C2C" : backgroundColor; 
+   const finalTextColor = disabled ? "#B3B3B3" : "rgba(255, 255, 255, 0.88)";
 
   const buttonStyle = {
     backgroundColor: finalBackgroundColor,
+    color: finalTextColor,
   };
 
   return (
