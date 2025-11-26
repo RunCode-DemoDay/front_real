@@ -235,7 +235,7 @@ export default function RunningStop() {
 
   const avgPace = useMemo(() => {
     const dist = Number(totalDistanceKm);
-    if (!dist || dist < 0.02) return "-'--\"";
+    if (!dist || dist < 0.02) return "--'--\"";
     const secPerKm = Math.round(elapsedSec / dist);
     const m = Math.floor(secPerKm / 60);
     const s = String(secPerKm % 60).padStart(2, "0");
