@@ -327,7 +327,7 @@ function ArchivingDetailPage() {
 
          
           <div className="memo-section">
-            <h3 className="ssection-title">메모</h3>
+            <h3 className="ssection-title-memo">메모</h3>
             {isEditingMemo ? (
               <textarea
                 value={newContent}
@@ -343,7 +343,7 @@ function ArchivingDetailPage() {
                 }}
                 className="memo-textarea"
                 rows={memoRowCount}
-                autoFocus
+              
               />
             ) : (
               <p

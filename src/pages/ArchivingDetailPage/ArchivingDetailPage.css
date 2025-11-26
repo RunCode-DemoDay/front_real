@@ -187,6 +187,19 @@
     font-weight: 500;
     line-height: 120%; 
 }
+.ssection-title-memo{
+        color: var(--White-High, rgba(255, 255, 255, 0.88));
+
+   
+    margin: 16px 4px 0 4px;
+    font-family: Pretendard;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 120%; 
+    margin-bottom: 8px;
+
+}
 
 
 
@@ -302,7 +315,7 @@
     font-weight: 350;
     line-height: 140%; 
     margin: 0;
-    margin-top: 8px;
+    
     min-height: 104px;
 }
 
