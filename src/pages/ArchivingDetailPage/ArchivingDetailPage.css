@@ -303,6 +303,7 @@
     line-height: 140%; 
     margin: 0;
     margin-top: 8px;
+    min-height: 104px;
 }
 
 .memo-char-count {
