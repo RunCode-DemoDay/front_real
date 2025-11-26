@@ -15,9 +15,9 @@ const DROPDOWN_ARROW_SRC = 'https://runcode-likelion.s3.us-east-2.amazonaws.com/
 
 
 const ORDER_OPTIONS = [
-    { label: "최신 순", value: "latest" }, 
-    { label: "짧은 순", value: "DISTANCE_ASC" },
-    { label: "별점 순", value: "RATING_DESC" },
+    { label: "최신순", value: "latest" }, 
+    { label: "짧은순", value: "DISTANCE_ASC" },
+    { label: "별점순", value: "RATING_DESC" },
 ];
 
 
@@ -90,7 +90,7 @@ function SavedCoursesPage() {
                         options={ORDER_OPTIONS}
                         value={selectedOrder}
                         onChange={handleOrderChange}
-                        placeholder="최신 순" 
+                        placeholder="최신순" 
                     />
                 </div>
 
