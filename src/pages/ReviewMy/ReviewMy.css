@@ -163,7 +163,7 @@
   cursor: pointer;
 }
 
-/* 날짜 */
+
 .reviewmy-date {
   color: var(--White-Low, rgba(255, 255, 255, 0.20));
   font-family: Pretendard;
@@ -182,7 +182,6 @@
   display: flex;
   align-items: center;
   padding-left: 4px;
-  gap: 4px;
   width: 10.021px;
   height: 9.6px;
   flex-shrink: 0;
