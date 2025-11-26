@@ -343,6 +343,7 @@ function ArchivingDetailPage() {
                 }}
                 className="memo-textarea"
                 rows={memoRowCount}
+                autofocus
               
               />
             ) : (
