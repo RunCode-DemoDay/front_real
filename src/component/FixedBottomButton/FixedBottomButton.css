@@ -28,7 +28,7 @@
 .main-action-button:disabled {
     
     
-    color: #2C2C2C;
+    background: var(--Black-Interact, #2C2C2C);
     cursor: not-allowed;
     
     box-shadow: none; 
