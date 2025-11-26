@@ -31,7 +31,7 @@ const BottomNavigator = () => {
       { name: "홈", key: "home", path: "/home" },
       { name: "런코드", key: "record", path: "/archiving" },
       { name: "마이", key: "my", path: "/mypage" },
-      { name: "홈", key: "home", path: "/search" },
+      
     ];
     
     const handleTabClick = (path) => {
