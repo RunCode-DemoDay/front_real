@@ -300,7 +300,24 @@
     padding-bottom: 20px;
 }
 
+.memo-content {
+    background-color: #2C2C2C;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 0;
+    white-space: pre-wrap; 
+    color: var(--White-Medium, rgba(255, 255, 255, 0.60));
 
+   
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 350;
+    line-height: 140%; 
+    margin: 0;
+    
+    min-height: 104px;
+}
 
 .memo-char-count {
     color: var(--White-Medium, rgba(255, 255, 255, 0.60));
@@ -315,28 +332,25 @@
     margin: 4px;
 }
 
-.memo-content,
 .memo-textarea {
-  background-color: #2C2C2C;
-  border-radius: 8px;
-  padding: 15px;
-  margin-top: 0;
-  white-space: pre-wrap;
+    width: 100%;
+     background-color: #2C2C2C;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 0;
+    white-space: pre-wrap; 
+    color: var(--White-Medium, rgba(255, 255, 255, 0.60));
 
-  font-family: Pretendard;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 350;
-  line-height: 140%;
-  color: var(--White-Medium, rgba(255, 255, 255, 0.60));
-
-  min-height: 104px;
+   
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 350;
+    line-height: 140%; 
+    margin: 0;
+      border: none;        /* 기본 테두리 제거 */
+  outline: none;       /* 포커스시 파란/흰 테두리 제거 */
+  resize: none;        /* 크기 조절 막기 */
+  min-height: 104px;   /* .memo-content와 높이 맞추기 */
   box-sizing: border-box;
-}
-
-/* textarea 전용 덮어쓰기 */
-.memo-textarea {
-  border: none;
-  outline: none;
-  resize: none;
 }
