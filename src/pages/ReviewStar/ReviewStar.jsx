@@ -7,15 +7,16 @@ import ReviewsIcon from "../../assets/Reviews.svg";
 import DistanceIcon from "../../assets/Distance.svg";
 import BigStarIcon from "../../assets/ReviewStar.svg";
 
+import AppContainer from "../../AppContainer/AppContainer"; // ⬅ 추가됨
 import "./ReviewStar.css";
 
-const LeftArrow = 'https://runcode-likelion.s3.us-east-2.amazonaws.com/global/back.svg'
+const LeftArrow =
+  "https://runcode-likelion.s3.us-east-2.amazonaws.com/global/back.svg";
 
 const ReviewStar = () => {
   const { courseId } = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
-
 
   const course = state?.course || {
     title: "한강 반포 러닝 코스",
@@ -25,45 +26,39 @@ const ReviewStar = () => {
     distance: 5.2,
   };
 
-  const [rating, setRating] = useState(0); 
-  const [content, setContent] = useState(""); 
-  const [showModal, setShowModal] = useState(false); 
+  const [rating, setRating] = useState(0);
+  const [content, setContent] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
-  
   const handleGoBack = () => {
     navigate("/reviewadd");
   };
-
 
   const handleRating = (value) => {
     setRating(value);
   };
 
-  // 등록하기 클릭
   const handleSubmit = () => {
-    if (rating === 0) return; 
+    if (rating === 0) return;
 
-   
     console.log("리뷰 등록", {
       courseId,
       rating,
       content,
     });
 
-    
     setShowModal(true);
   };
 
-  
   const handleConfirmModal = () => {
     setShowModal(false);
     navigate("/mypage");
   };
 
   return (
-    <>
+    <AppContainer>
       <div className="reviewstar-page">
-        
+        {/* 헤더 */}
         <header className="reviewstar-header">
           <button className="reviewstar-back-btn" onClick={handleGoBack}>
             <img
@@ -76,9 +71,8 @@ const ReviewStar = () => {
           <h2 className="reviewstar-title">리뷰 작성</h2>
         </header>
 
-     
+        {/* 코스 정보 */}
         <section className="reviewstar-coursebox">
-        
           <div className="reviewstar-course-thumb">
             {course.thumbnail ? (
               <img src={course.thumbnail} alt={course.title} />
@@ -87,7 +81,6 @@ const ReviewStar = () => {
             )}
           </div>
 
-       
           <div className="reviewstar-course-info">
             <p className="reviewstar-course-title">{course.title}</p>
 
@@ -122,10 +115,9 @@ const ReviewStar = () => {
           </div>
         </section>
 
-        
         <div className="reviewstar-separator" />
 
-        
+        {/* 별점 */}
         <section className="reviewstar-rating-block">
           <div className="reviewstar-stars">
             {[1, 2, 3, 4, 5].map((num) => (
@@ -149,7 +141,7 @@ const ReviewStar = () => {
           </div>
         </section>
 
-        
+        {/* 후기 입력 */}
         <section className="reviewstar-input-wrapper">
           <div className="reviewstar-input-block">
             <textarea
@@ -164,7 +156,7 @@ const ReviewStar = () => {
           <div className="reviewstar-count">{content.length} / 500자</div>
         </section>
 
-        
+        {/* 등록 버튼 */}
         <button
           className={`reviewstar-submit ${rating > 0 ? "active" : ""}`}
           onClick={handleSubmit}
@@ -172,29 +164,28 @@ const ReviewStar = () => {
         >
           등록하기
         </button>
-      </div>
 
-      
-      {showModal && (
-        <div className="reviewstar-modal-overlay">
-          <div className="reviewstar-modal-card">
-            <p className="reviewstar-modal-text">
-              리뷰 작성이 완료되었습니다.
-            </p>
+        {/* 완료 모달 */}
+        {showModal && (
+          <div className="reviewstar-modal-overlay">
+            <div className="reviewstar-modal-card">
+              <p className="reviewstar-modal-text">
+                리뷰 작성이 완료되었습니다.
+              </p>
 
-            
-            <div className="reviewstar-modal-separator" />
+              <div className="reviewstar-modal-separator" />
 
-            <button
-              className="reviewstar-modal-confirm"
-              onClick={handleConfirmModal}
-            >
-              확인
-            </button>
+              <button
+                className="reviewstar-modal-confirm"
+                onClick={handleConfirmModal}
+              >
+                확인
+              </button>
+            </div>
           </div>
-        </div>
-      )}
-    </>
+        )}
+      </div>
+    </AppContainer>
   );
 };
 

@@ -250,7 +250,7 @@ line-height: 140%;
 
 .reviewstar-submit {
     position: absolute;   
-  bottom: max(40px, calc((100vh - 812px) / 2 + 40px));
+  bottom: 40px;
   width: 335px;
   border: none;
   border-radius: 12px;
