@@ -17,7 +17,6 @@ export async function patchInfo(params) {
 export const getUnreviewedCourses = async () => {
   try {
     const response = await apiClient.get("/users/me/courses/unreviewed");
-    console.log(response);
     return response.data;
   } catch (error) {
     console.error("리뷰 미작성 코스 조회 API 오류:", error);
@@ -62,8 +61,24 @@ export const getMyArchivedCourses = async () => {
   }
 };
 
-// ✅ 리뷰 삭제 API
-// DELETE /courses/{courseId}/reviews/{reviewId}
+// ✅ 리뷰 생성 API (POST /courses/{courseId}/reviews)
+export const createCourseReview = async (courseId, body) => {
+  try {
+    const response = await apiClient.post(`/courses/${courseId}/reviews`, body);
+    // { success, code, message, data: { reviewId, courseId } } 형태 예상
+    return response.data;
+  } catch (error) {
+    console.error("리뷰 생성 API 오류:", error);
+    return (
+      error.response?.data || {
+        success: false,
+        message: "네트워크 오류 또는 서버 응답 없음",
+      }
+    );
+  }
+};
+
+// ✅ 리뷰 삭제 API (DELETE /courses/{courseId}/reviews/{reviewId})
 export const deleteCourseReview = async ({ courseId, reviewId }) => {
   try {
     const response = await apiClient.delete(

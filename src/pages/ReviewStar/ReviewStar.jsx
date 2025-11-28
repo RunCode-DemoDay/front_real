@@ -7,7 +7,9 @@ import ReviewsIcon from "../../assets/Reviews.svg";
 import DistanceIcon from "../../assets/Distance.svg";
 import BigStarIcon from "../../assets/ReviewStar.svg";
 
-import AppContainer from "../../AppContainer/AppContainer"; // ⬅ 추가됨
+import AppContainer from "../../AppContainer/AppContainer";
+import { createCourseReview } from "../../api/userAPI"; // ✅ 추가
+
 import "./ReviewStar.css";
 
 const LeftArrow =
@@ -30,29 +32,39 @@ const ReviewStar = () => {
   const [content, setContent] = useState("");
   const [showModal, setShowModal] = useState(false);
 
+  // 뒤로가기 (리뷰 미작성 리스트로)
   const handleGoBack = () => {
     navigate("/reviewadd");
   };
 
+  // 별점 선택
   const handleRating = (value) => {
     setRating(value);
   };
 
-  const handleSubmit = () => {
+  // ✅ 리뷰 등록 API 호출
+  const handleSubmit = async () => {
     if (rating === 0) return;
 
-    console.log("리뷰 등록", {
-      courseId,
-      rating,
-      content,
-    });
+    const body = {
+      star: rating,
+      content: content,
+    };
 
-    setShowModal(true);
+    const result = await createCourseReview(courseId, body);
+
+    if (result.success) {
+      // 성공 시 완료 모달
+      setShowModal(true);
+    } else {
+      alert("리뷰 등록에 실패했습니다.\n" + (result.message || ""));
+    }
   };
 
+  // 모달 확인 → 리뷰 미작성 리스트로 이동
   const handleConfirmModal = () => {
     setShowModal(false);
-    navigate("/mypage");
+    navigate("/reviewadd");
   };
 
   return (
