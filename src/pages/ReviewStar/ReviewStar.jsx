@@ -174,7 +174,9 @@ const ReviewStar = () => {
       {showModal && (
         <div className="reviewstar-modal-overlay">
           <div className="reviewstar-modal-card">
-            <p className="reviewstar-modal-text">리뷰 작성이 완료되었습니다.</p>
+            <p className="reviewstar-modal-text">
+              리뷰 작성이 완료되었습니다.
+            </p>
 
             <div className="reviewstar-modal-separator" />
 
