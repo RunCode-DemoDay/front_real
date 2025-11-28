@@ -98,7 +98,7 @@ const ReviewStar = () => {
                   alt="평점"
                   className="reviewstar-meta-icon"
                 />
-                {course.star_average}
+                {course.star_average.toFixed(2)}
               </span>
 
               <span>
