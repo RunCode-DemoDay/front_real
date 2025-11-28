@@ -17,6 +17,7 @@ export async function patchInfo(params) {
 export const getUnreviewedCourses = async () => {
   try {
     const response = await apiClient.get("/users/me/courses/unreviewed");
+    console.log(response);
     return response.data;
   } catch (error) {
     console.error("리뷰 미작성 코스 조회 API 오류:", error);
