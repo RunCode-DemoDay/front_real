@@ -1,26 +1,20 @@
 // src/api/bookmarkAPI.js
-import apiClient from "./index";
+import apiClient from './index';
 
 /**
- * UI에서 선택한 정렬 옵션 → 백엔드에서 기대하는 정렬 파라미터 매핑
- * 실제 백엔드 스펙에 따라 아래 값만 바꿔주면 됨
- */
-const BOOKMARK_ORDER_MAP = {
-  latest: "latest", // 최신순
-  DISTANCE_ASC: "distance", // 짧은순 (백엔드 스펙에 맞게 수정)
-  RATING_DESC: "rating", // 별점순 (백엔드 스펙에 맞게 수정)
-};
-
-/**
- * 북마크 생성
+ 
+ * @param {number} courseId - 북마크할 코스의 ID
+ * @returns {Promise<object>} API 응답 데이터
  */
 export const createBookmark = async (courseId) => {
-  const response = await apiClient.post("/bookmarks", { courseId });
+  const response = await apiClient.post('/bookmarks', { courseId: courseId });
   return response.data;
 };
 
 /**
- * 북마크 삭제
+
+ * @param {number} courseId - 삭제할 북마크의 ID
+ * @returns {Promise<object>} API 응답 데이터
  */
 export const deleteBookmark = async (courseId) => {
   const response = await apiClient.delete(`/bookmarks/${courseId}`);
@@ -28,15 +22,11 @@ export const deleteBookmark = async (courseId) => {
 };
 
 /**
- * 북마크 목록 조회
+ * 저장된 북마크 목록을 조회하는 API
+ * @param {string} order 
+ * @returns {Promise<object>}
  */
-export const getBookmarks = async (orderKey = "latest") => {
-  // UI에서 온 orderKey → 백엔드에서 이해하는 orderParam으로 변환
-  const orderParam = BOOKMARK_ORDER_MAP[orderKey] || BOOKMARK_ORDER_MAP.latest;
-
-  const response = await apiClient.get("/bookmarks", {
-    params: { order: orderParam },
-  });
-
+export const getBookmarks = async (order) => {
+  const response = await apiClient.get('/bookmarks', { params: { order } });
   return response.data;
 };
